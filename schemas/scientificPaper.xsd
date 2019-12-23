@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:sp="https://www.uns.ac.rs/scientificPaper"
+    targetNamespace="https://www.uns.ac.rs/scientificPaper" elementFormDefault="qualified">
+    <xs:element name="scientificPaper">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="sp:title"/>
+                <xs:element name="authors">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="sp:author"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="abstract">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="sp:plainChapter"/>
+                            <xs:element name="keywords">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" ref="sp:keyword"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="chapters">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="sp:chapter"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="references">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="sp:reference"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="datePublished" type="xs:date"/>
+            <xs:attribute name="institution" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="TChapter">
+        <xs:sequence>
+            <xs:element ref="sp:title"/>
+            <xs:element name="text">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="sp:paragraph"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute ref="sp:id"/>
+    </xs:complexType>
+    <xs:element name="chapter">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="sp:TChapter">
+                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                        <xs:element ref="sp:image"/>
+                        <xs:element ref="sp:list"/>
+                        <xs:element ref="sp:table"/>
+                        <xs:element name="codeBlock">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute ref="sp:id"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="referencePointer">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute ref="sp:id"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="plainChapter" type="sp:TChapter"/>
+    <xs:element name="keyword" type="xs:string"/>
+    <xs:element name="paragraph">
+        <xs:complexType>
+            <xs:sequence/>
+            <xs:attribute ref="sp:fontsize"/>
+            <xs:attribute ref="sp:id"/>
+            <xs:attribute ref="sp:style"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="TTitle">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="sp:level"/>
+                <xs:attribute ref="sp:fontsize"/>
+                <xs:attribute ref="sp:style"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:element name="title" type="sp:TTitle"/>
+    <xs:simpleType name="TLevel">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="8"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:attribute name="level" type="sp:TLevel"/>
+    <xs:simpleType name="TFontSize">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:maxInclusive value="545"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:attribute name="fontsize" type="sp:TFontSize"/>
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="style" type="xs:string"/>
+    <xs:attribute name="ordinal" type="xs:positiveInteger"/>
+    <xs:complexType name="TAuthor">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element minOccurs="0" name="profession" type="xs:string"/>
+            <xs:element minOccurs="0" name="contact" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="author">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="sp:TAuthor">
+                    <xs:attribute ref="sp:id"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="reference">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="sp:author"/>
+                <xs:element minOccurs="0" name="url" type="xs:string"/>
+                <xs:element name="referenceName" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute ref="sp:id"/>
+            <xs:attribute name="year" type="xs:date"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="list">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="listItem" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute ref="sp:id"/>
+            <xs:attribute ref="sp:style"/>
+            <xs:attribute name="isOrdered" type="xs:boolean"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="table">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="row">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="cell">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute ref="sp:style"/>
+                                            <xs:attribute ref="sp:ordinal"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute ref="sp:ordinal"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute ref="sp:id"/>
+            <xs:attribute name="width" type="xs:positiveInteger"/>
+            <xs:attribute name="height" type="xs:positiveInteger"/>
+            <xs:attribute name="measuringUnit" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="image">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string"/>
+                <xs:element name="concreteImage" type="xs:base64Binary"/>
+            </xs:sequence>
+            <xs:attribute ref="sp:id"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
