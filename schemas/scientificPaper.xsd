@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:sp="https://www.uns.ac.rs/scientificPaper"
-    targetNamespace="https://www.uns.ac.rs/scientificPaper" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="https://github.com/milica152/XML_tim27"
+           xmlns:sp ="https://github.com/milica152/XML_tim27">
     <xs:element name="scientificPaper">
         <xs:complexType>
             <xs:sequence>
