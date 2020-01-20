@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-           targetNamespace="https://github.com/milica152/XML_tim27"
-           xmlns:sp="https://github.com/milica152/XML_tim27">
+    targetNamespace="https://github.com/milica152/XML_tim27"
+    xmlns:sp="https://github.com/milica152/XML_tim27">
     <xs:element name="scientificPaper">
         <xs:complexType>
             <xs:sequence>
@@ -21,7 +21,7 @@
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element maxOccurs="unbounded" name="keyword"
-                                                    type="xs:string"/>
+                                            type="xs:string"/>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
