@@ -59,6 +59,7 @@
             </xs:sequence>
             <xs:attribute name="datePublished" type="xs:date"/>
             <xs:attribute name="institution" type="xs:string"/>
+            <xs:attribute ref="sp:id"/>
         </xs:complexType>
     </xs:element>
     <xs:complexType name="TChapter">
