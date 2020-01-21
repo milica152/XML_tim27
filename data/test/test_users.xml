@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users xmlns="https://github.com/milica152/XML_tim27"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/C:/Users/mica/Desktop/xml/milica/XML_tim27/schemas/users.xsd">
+    <user>
+        <username>IVDsqSxkX</username>
+        <password>qM0uc</password>
+        <name>RcrQgAQI8Olz2PlglIqlXm-85IWmAW4p_dL.uowukvV885im7</name>
+        <surname>Zk7PnRp1BXdap2FhT91gBk7</surname>
+        <email>y@e</email>
+        <myPapers>
+            <myScientificPaperID>dDhtcyKV1dfCV0xMXqg9EnnTV</myScientificPaperID>
+            <myScientificPaperID>G0V</myScientificPaperID>
+        </myPapers>
+        <myReviews>
+            <myReviewID>pKEhO-j7yC4U75f_._t</myReviewID>
+            <myReviewID>BRH</myReviewID>
+        </myReviews>
+        <pendingPapersToReview>
+            <paperToReviewID>uPUaieJIpv7HbjpiMw</paperToReviewID>
+            <paperToReviewID>qzGwRmw_KGcrEEhZgTlEOQGL</paperToReviewID>
+        </pendingPapersToReview>
+        <role>author</role>
+    </user>
+    <user>
+        <username>ssKMDNEbbGV2fRQbLl9rSC</username>
+        <password>D1l9tLy</password>
+        <name>bu8ItF-SzHkOZvwAkLFdt_K75o377Yb</name>
+        <surname>rSXWPkOlM.VWAKOKta0</surname>
+        <email>c@h</email>
+        <myPapers>
+            <myScientificPaperID>IkOJ3MmMvnUXaFLu6r9siKtSV</myScientificPaperID>
+            <myScientificPaperID>Wbe4tcgTb4ONQ</myScientificPaperID>
+        </myPapers>
+        <myReviews>
+            <myReviewID>LqIGjL6</myReviewID>
+            <myReviewID>F9tj_cu1LVQauA6I1iJ6u5</myReviewID>
+        </myReviews>
+        <pendingPapersToReview>
+            <paperToReviewID>Nx</paperToReviewID>
+            <paperToReviewID>j_gG3C</paperToReviewID>
+        </pendingPapersToReview>
+        <role>reviewer</role>
+    </user>
+</users>
