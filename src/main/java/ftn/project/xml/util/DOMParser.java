@@ -19,21 +19,15 @@ import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 
-import static org.apache.xerces.jaxp.JAXPConstants.JAXP_SCHEMA_LANGUAGE;
-import static org.apache.xerces.jaxp.JAXPConstants.W3C_XML_SCHEMA;
-
 public class DOMParser  implements ErrorHandler {
 
-    /*
-
-    //FOR TESTING PURPOSES:
-    public static void main(String args[]) throws SAXException, IOException, ParserConfigurationException {
+    /*public static void main(String args[]) throws SAXException, IOException, ParserConfigurationException {
         DOMParser handler = new DOMParser();
         handler.buildDocument("data\\test\\test_users.xml", "schemas\\users.xsd");
     }
     */
-
         public Document buildDocument(String filePath, String schemaPath) throws SAXException, ParserConfigurationException, IOException {
+            System.out.println(filePath);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
