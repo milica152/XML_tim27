@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class AuthenticationUtilities {
-    //ima klasu koja dobavlja propertise iz exist.properties fajla
-
     private static String connectionUri = "xmldb:exist://%1$s:%2$s/exist/xmlrpc";
 
 
@@ -28,17 +26,17 @@ public class AuthenticationUtilities {
             host = props.getProperty("conn.host").trim();
             port = Integer.parseInt(props.getProperty("conn.port"));
 
-    uri = String.format(connectionUri, host, port);
+            uri = String.format(connectionUri, host, port);
 
-    driver = props.getProperty("conn.driver").trim();
-}
+            driver = props.getProperty("conn.driver").trim();
+        }
     }
 
 
     public static ConnectionProperties loadProperties() throws IOException {
         String propsName = "exist.properties";
-
         InputStream propsStream = openStream(propsName);
+
         if (propsStream == null)
             throw new IOException("Could not read properties " + propsName);
 
@@ -49,7 +47,7 @@ public class AuthenticationUtilities {
     }
 
 
-    public static InputStream openStream(String fileName) throws IOException {
+    public static InputStream openStream(String fileName) {
         return AuthenticationUtilities.class.getClassLoader().getResourceAsStream(fileName);
     }
 }
