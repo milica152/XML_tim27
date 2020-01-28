@@ -62,6 +62,38 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Review }
+     * 
+     */
+    public Review createReview() {
+        return new Review();
+    }
+
+    /**
+     * Create an instance of {@link Review.Comments }
+     * 
+     */
+    public Review.Comments createReviewComments() {
+        return new Review.Comments();
+    }
+
+    /**
+     * Create an instance of {@link Review.Questionnaire }
+     * 
+     */
+    public Review.Questionnaire createReviewQuestionnaire() {
+        return new Review.Questionnaire();
+    }
+
+    /**
+     * Create an instance of {@link Review.Questionnaire.Item }
+     * 
+     */
+    public Review.Questionnaire.Item createReviewQuestionnaireItem() {
+        return new Review.Questionnaire.Item();
+    }
+
+    /**
      * Create an instance of {@link Table.Row }
      * 
      */
@@ -171,6 +203,30 @@ public class ObjectFactory {
      */
     public TAuthor createTAuthor() {
         return new TAuthor();
+    }
+
+    /**
+     * Create an instance of {@link Review.Authors }
+     * 
+     */
+    public Review.Authors createReviewAuthors() {
+        return new Review.Authors();
+    }
+
+    /**
+     * Create an instance of {@link Review.Comments.Comment }
+     * 
+     */
+    public Review.Comments.Comment createReviewCommentsComment() {
+        return new Review.Comments.Comment();
+    }
+
+    /**
+     * Create an instance of {@link Review.Questionnaire.Item.CommentExample }
+     * 
+     */
+    public Review.Questionnaire.Item.CommentExample createReviewQuestionnaireItemCommentExample() {
+        return new Review.Questionnaire.Item.CommentExample();
     }
 
     /**
