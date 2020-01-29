@@ -1,13 +1,13 @@
 package ftn.project.xml.repository;
 
-import ftn.project.xml.util.AuthenticationUtilities;
+import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
 import org.xmldb.api.base.XMLDBException;
-import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XUpdateQueryService;
 
@@ -27,7 +27,7 @@ public class UserRepository {
 
     // FOR TESTING PURPOSES (FIRST MAKE save() STATIC, THEN RUN MAIN):
 
-    /*
+
     public static void main(String[] args) throws Exception {
         TUser user = new TUser();
         user.setEmail("email");
@@ -43,7 +43,7 @@ public class UserRepository {
         conn = AuthenticationUtilities.loadProperties();
         UserRepository.save(conn, args, user);
     }
-    */
+
 
     public static TUser save(AuthenticationUtilities.ConnectionProperties conn, String args[], TUser user) throws Exception {
         Class<?> cl = Class.forName(conn.driver);
