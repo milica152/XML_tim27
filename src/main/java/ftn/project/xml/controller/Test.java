@@ -46,4 +46,20 @@ public class Test {
         scientificPaperRepository.save(conn, "1");
     }
 
+    @GetMapping("/getScientificPaper")
+    @ResponseBody
+    public void getScientificPaperById() throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        scientificPaperRepository.getScientificPaperById(conn, "1");
+    }
+
+
+    @GetMapping("/getUserByEmail")
+    @ResponseBody
+    public void getUserByEmail() throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        userRepository.getUserByEmail(conn, "email");
+    }
+
+
 }

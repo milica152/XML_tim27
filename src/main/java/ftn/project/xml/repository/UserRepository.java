@@ -6,6 +6,7 @@ import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.HelpFunctions;
 import org.apache.commons.io.FileUtils;
+import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
@@ -18,6 +19,8 @@ import org.xmldb.api.modules.XUpdateQueryService;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.OutputKeys;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
@@ -78,6 +81,11 @@ public class UserRepository {
         return user;
     }
 
+    public TUser getUserByEmail(AuthenticationUtilities.ConnectionProperties conn, String email) {
+        TUser user = new TUser();
+        return user;
+    }
+
     private static String user2XML(TUser user) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
         OutputStream os = new ByteArrayOutputStream();
@@ -90,6 +98,7 @@ public class UserRepository {
         String pureUserXml = userXml.substring(userXml.indexOf('\n') + 1);
         return pureUserXml;
     }
+
 
 
 }
