@@ -31,7 +31,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ScientificPaper }
-     * 
+     *
      */
     public ScientificPaper createScientificPaper() {
         return new ScientificPaper();
@@ -39,7 +39,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link TChapter }
-     * 
+     *
      */
     public TChapter createTChapter() {
         return new TChapter();
@@ -47,7 +47,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Table }
-     * 
+     *
      */
     public Table createTable() {
         return new Table();
@@ -55,47 +55,15 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Chapter }
-     * 
+     *
      */
     public Chapter createChapter() {
         return new Chapter();
     }
 
     /**
-     * Create an instance of {@link Review }
-     * 
-     */
-    public Review createReview() {
-        return new Review();
-    }
-
-    /**
-     * Create an instance of {@link Review.Comments }
-     * 
-     */
-    public Review.Comments createReviewComments() {
-        return new Review.Comments();
-    }
-
-    /**
-     * Create an instance of {@link Review.Questionnaire }
-     * 
-     */
-    public Review.Questionnaire createReviewQuestionnaire() {
-        return new Review.Questionnaire();
-    }
-
-    /**
-     * Create an instance of {@link Review.Questionnaire.Item }
-     * 
-     */
-    public Review.Questionnaire.Item createReviewQuestionnaireItem() {
-        return new Review.Questionnaire.Item();
-    }
-
-    /**
      * Create an instance of {@link Table.Row }
-     * 
+     *
      */
     public Table.Row createTableRow() {
         return new Table.Row();
@@ -103,7 +71,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ScientificPaper.References }
-     * 
+     *
      */
     public ScientificPaper.References createScientificPaperReferences() {
         return new ScientificPaper.References();
@@ -111,7 +79,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ScientificPaper.Abstract }
-     * 
+     *
      */
     public ScientificPaper.Abstract createScientificPaperAbstract() {
         return new ScientificPaper.Abstract();
@@ -119,7 +87,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Title }
-     * 
+     *
      */
     public Title createTitle() {
         return new Title();
@@ -127,7 +95,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ScientificPaper.Authors }
-     * 
+     *
      */
     public ScientificPaper.Authors createScientificPaperAuthors() {
         return new ScientificPaper.Authors();
@@ -135,7 +103,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ScientificPaper.Chapters }
-     * 
+     *
      */
     public ScientificPaper.Chapters createScientificPaperChapters() {
         return new ScientificPaper.Chapters();
@@ -143,7 +111,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link TChapter.Text }
-     * 
+     *
      */
     public TChapter.Text createTChapterText() {
         return new TChapter.Text();
@@ -151,7 +119,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Image }
-     * 
+     *
      */
     public Image createImage() {
         return new Image();
@@ -159,7 +127,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link List }
-     * 
+     *
      */
     public List createList() {
         return new List();
@@ -167,7 +135,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Chapter.CodeBlock }
-     * 
+     *
      */
     public Chapter.CodeBlock createChapterCodeBlock() {
         return new Chapter.CodeBlock();
@@ -175,7 +143,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Chapter.ReferencePointer }
-     * 
+     *
      */
     public Chapter.ReferencePointer createChapterReferencePointer() {
         return new Chapter.ReferencePointer();
@@ -183,7 +151,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Paragraph }
-     * 
+     *
      */
     public Paragraph createParagraph() {
         return new Paragraph();
@@ -191,7 +159,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Author }
-     * 
+     *
      */
     public Author createAuthor() {
         return new Author();
@@ -199,39 +167,15 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link TAuthor }
-     * 
+     *
      */
     public TAuthor createTAuthor() {
         return new TAuthor();
     }
 
     /**
-     * Create an instance of {@link Review.Authors }
-     * 
-     */
-    public Review.Authors createReviewAuthors() {
-        return new Review.Authors();
-    }
-
-    /**
-     * Create an instance of {@link Review.Comments.Comment }
-     * 
-     */
-    public Review.Comments.Comment createReviewCommentsComment() {
-        return new Review.Comments.Comment();
-    }
-
-    /**
-     * Create an instance of {@link Review.Questionnaire.Item.CommentExample }
-     * 
-     */
-    public Review.Questionnaire.Item.CommentExample createReviewQuestionnaireItemCommentExample() {
-        return new Review.Questionnaire.Item.CommentExample();
-    }
-
-    /**
      * Create an instance of {@link Table.Row.Cell }
-     * 
+     *
      */
     public Table.Row.Cell createTableRowCell() {
         return new Table.Row.Cell();
@@ -239,7 +183,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ScientificPaper.References.Reference }
-     * 
+     *
      */
     public ScientificPaper.References.Reference createScientificPaperReferencesReference() {
         return new ScientificPaper.References.Reference();
@@ -247,10 +191,27 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ScientificPaper.Abstract.Keywords }
-     * 
+     *
      */
     public ScientificPaper.Abstract.Keywords createScientificPaperAbstractKeywords() {
         return new ScientificPaper.Abstract.Keywords();
+    }
+
+
+    /**
+     * Create an instance of {@link TUser }
+     *
+     */
+    public TUser createTUser() {
+        return new TUser();
+    }
+
+    /**
+     * Create an instance of {@link Users }
+     *
+     */
+    public Users createUsers() {
+        return new Users();
     }
 
 }

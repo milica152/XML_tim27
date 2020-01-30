@@ -100,8 +100,7 @@ import javax.xml.bind.annotation.*;
     "pendingPapersToReview",
     "role"
 })
-
-@XmlRootElement(name = "user")
+@XmlRootElement(name = "user", namespace = "https://github.com/milica152/XML_tim27")
 public class TUser {
 
     @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)

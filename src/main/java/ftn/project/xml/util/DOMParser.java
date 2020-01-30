@@ -1,11 +1,9 @@
 package ftn.project.xml.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -21,13 +19,7 @@ import java.io.IOException;
 
 public class DOMParser  implements ErrorHandler {
 
-    /*public static void main(String args[]) throws SAXException, IOException, ParserConfigurationException {
-        DOMParser handler = new DOMParser();
-        handler.buildDocument("data\\test\\test_users.xml", "schemas\\users.xsd");
-    }
-    */
         public Document buildDocument(String filePath, String schemaPath) throws SAXException, ParserConfigurationException, IOException {
-            System.out.println(filePath);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
