@@ -67,6 +67,195 @@ public class ObjectFactory {
      */
     public TUser.PendingPapersToReview createTUserPendingPapersToReview() {
         return new TUser.PendingPapersToReview();
+     * Create an instance of {@link Review }
+     * 
+     */
+    public Review createReview() {
+        return new Review();
+    }
+
+    /**
+     * Create an instance of {@link Review.Comments }
+     * 
+     */
+    public Review.Comments createReviewComments() {
+        return new Review.Comments();
+    }
+
+    /**
+     * Create an instance of {@link Review.Questionnaire }
+     * 
+     */
+    public Review.Questionnaire createReviewQuestionnaire() {
+        return new Review.Questionnaire();
+    }
+
+    /**
+     * Create an instance of {@link Review.Questionnaire.Item }
+     * 
+     */
+    public Review.Questionnaire.Item createReviewQuestionnaireItem() {
+        return new Review.Questionnaire.Item();
+    }
+
+    /**
+     * Create an instance of {@link Table.Row }
+     * 
+     */
+    public Table.Row createTableRow() {
+        return new Table.Row();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.References }
+     * 
+     */
+    public ScientificPaper.References createScientificPaperReferences() {
+        return new ScientificPaper.References();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Abstract }
+     * 
+     */
+    public ScientificPaper.Abstract createScientificPaperAbstract() {
+        return new ScientificPaper.Abstract();
+    }
+
+    /**
+     * Create an instance of {@link Title }
+     * 
+     */
+    public Title createTitle() {
+        return new Title();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Authors }
+     * 
+     */
+    public ScientificPaper.Authors createScientificPaperAuthors() {
+        return new ScientificPaper.Authors();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Chapters }
+     * 
+     */
+    public ScientificPaper.Chapters createScientificPaperChapters() {
+        return new ScientificPaper.Chapters();
+    }
+
+    /**
+     * Create an instance of {@link TChapter.Text }
+     * 
+     */
+    public TChapter.Text createTChapterText() {
+        return new TChapter.Text();
+    }
+
+    /**
+     * Create an instance of {@link Image }
+     * 
+     */
+    public Image createImage() {
+        return new Image();
+    }
+
+    /**
+     * Create an instance of {@link List }
+     * 
+     */
+    public List createList() {
+        return new List();
+    }
+
+    /**
+     * Create an instance of {@link Chapter.CodeBlock }
+     * 
+     */
+    public Chapter.CodeBlock createChapterCodeBlock() {
+        return new Chapter.CodeBlock();
+    }
+
+    /**
+     * Create an instance of {@link Chapter.ReferencePointer }
+     * 
+     */
+    public Chapter.ReferencePointer createChapterReferencePointer() {
+        return new Chapter.ReferencePointer();
+    }
+
+    /**
+     * Create an instance of {@link Paragraph }
+     * 
+     */
+    public Paragraph createParagraph() {
+        return new Paragraph();
+    }
+
+    /**
+     * Create an instance of {@link Author }
+     * 
+     */
+    public Author createAuthor() {
+        return new Author();
+    }
+
+    /**
+     * Create an instance of {@link TAuthor }
+     * 
+     */
+    public TAuthor createTAuthor() {
+        return new TAuthor();
+    }
+
+    /**
+     * Create an instance of {@link Review.Authors }
+     * 
+     */
+    public Review.Authors createReviewAuthors() {
+        return new Review.Authors();
+    }
+
+    /**
+     * Create an instance of {@link Review.Comments.Comment }
+     * 
+     */
+    public Review.Comments.Comment createReviewCommentsComment() {
+        return new Review.Comments.Comment();
+    }
+
+    /**
+     * Create an instance of {@link Review.Questionnaire.Item.CommentExample }
+     * 
+     */
+    public Review.Questionnaire.Item.CommentExample createReviewQuestionnaireItemCommentExample() {
+        return new Review.Questionnaire.Item.CommentExample();
+    }
+
+    /**
+     * Create an instance of {@link Table.Row.Cell }
+     * 
+     */
+    public Table.Row.Cell createTableRowCell() {
+        return new Table.Row.Cell();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.References.Reference }
+     * 
+     */
+    public ScientificPaper.References.Reference createScientificPaperReferencesReference() {
+        return new ScientificPaper.References.Reference();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Abstract.Keywords }
+     * 
+     */
+    public ScientificPaper.Abstract.Keywords createScientificPaperAbstractKeywords() {
+        return new ScientificPaper.Abstract.Keywords();
     }
 
 }
