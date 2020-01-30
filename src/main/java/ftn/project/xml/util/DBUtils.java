@@ -1,21 +1,26 @@
 package ftn.project.xml.util;
 
+import org.springframework.stereotype.Component;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
+import org.xmldb.api.modules.XMLResource;
 
+import java.io.File;
+
+@Component
 public class DBUtils {
 
-
-    public static Collection getOrCreateCollection(AuthenticationUtilities.ConnectionProperties conn, String collectionUri) throws XMLDBException {
+    public Collection getOrCreateCollection(AuthenticationUtilities.ConnectionProperties conn, String collectionUri) throws XMLDBException {
         return getOrCreateCollection(conn, collectionUri, 0);
     }
 
-    public static Collection getOrCreateCollection(AuthenticationUtilities.ConnectionProperties conn, String collectionUri, int pathSegmentOffset) throws XMLDBException {
+    private Collection getOrCreateCollection(AuthenticationUtilities.ConnectionProperties conn, String collectionUri, int pathSegmentOffset) throws XMLDBException {
         Collection col = DatabaseManager.getCollection(conn.uri + collectionUri, conn.user, conn.password);
         System.out.println(conn.uri + collectionUri);
         // create the collection if it does not exist
+
         if(col == null) {
 
             if(collectionUri.startsWith("/")) {
@@ -56,6 +61,20 @@ public class DBUtils {
         } else {
             return col;
         }
+    }
+
+    public void storeDocument(String documentId, String xmlResource, Collection col) throws Exception {
+        XMLResource res = null;
+        try {
+            res = (XMLResource) col.createResource(documentId, XMLResource.RESOURCE_TYPE);
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        }
+
+        res.setContent(xmlResource);
+
+        System.out.println("[INFO] Storing the document: " + res.getId());
+        col.storeResource(res);
     }
 
 }
