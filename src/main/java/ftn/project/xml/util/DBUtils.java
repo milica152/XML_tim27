@@ -3,6 +3,7 @@ package ftn.project.xml.util;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
+import org.xmldb.api.base.Database;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
@@ -77,4 +78,14 @@ public class DBUtils {
         col.storeResource(res);
     }
 
+    public void initilizeDBserver(AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
+        System.out.println("[INFO] Loading driver class: " + conn.driver);
+        Class<?> cl = Class.forName(conn.driver);
+
+        Database database = (Database) cl.newInstance();
+        database.setProperty("create-database", "true");
+
+        DatabaseManager.registerDatabase(database);
+
+    }
 }
