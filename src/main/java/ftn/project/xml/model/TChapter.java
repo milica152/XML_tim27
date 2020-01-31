@@ -52,6 +52,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "text"
 })
 @XmlSeeAlso({
+    ftn.project.xml.model.CoverLetter.Chapters.class,
     Chapter.class
 })
 public class TChapter {

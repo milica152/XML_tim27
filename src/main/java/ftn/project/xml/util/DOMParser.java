@@ -14,18 +14,18 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class DOMParser  implements ErrorHandler {
 
-        public Document buildDocument(String filePath, String schemaPath) throws SAXException, ParserConfigurationException, IOException {
+        public Document buildDocument(String xmlResource, String schemaPath) throws SAXException, ParserConfigurationException, IOException {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setErrorHandler(this);
             Document document;
-            document = builder.parse(new File( filePath ));
+            InputStream targetStream = new ByteArrayInputStream(xmlResource.getBytes());
+            document = builder.parse(targetStream);
 
             Schema schema = null;
             try {
