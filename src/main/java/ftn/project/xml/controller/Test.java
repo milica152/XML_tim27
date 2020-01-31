@@ -56,9 +56,16 @@ public class Test {
 
     @GetMapping("/getUserByEmail")
     @ResponseBody
-    public void getUserByEmail() throws Exception {
+    public TUser getUserByEmail() throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        userRepository.getUserByEmail(conn, "email");
+        return userRepository.getUserByEmail(conn, "y@e");
+    }
+
+    @GetMapping("/getUserByEmailAndPassword")
+    @ResponseBody
+    public TUser getUserByEmailAndPassword() throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        return userRepository.getUserByEmailAndPassword(conn, "y@e", "qM0uc");
     }
 
 

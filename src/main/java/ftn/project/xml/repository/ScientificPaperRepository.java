@@ -110,7 +110,7 @@ public class ScientificPaperRepository {
                 ScientificPaper sPaper = (ScientificPaper) unmarshaller.unmarshal(res.getContentAsDOM());
                 sp = sPaper;
                 System.out.println("[INFO] Showing the document as JAXB instance: ");
-                System.out.println(sPaper);
+                System.out.println(sPaper.getTitle().getValue());
             }
         } catch (XMLDBException e) {
             e.printStackTrace();
@@ -137,4 +137,6 @@ public class ScientificPaperRepository {
         }
         return sp;
     }
+
+
 }

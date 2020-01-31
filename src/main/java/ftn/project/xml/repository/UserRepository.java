@@ -10,10 +10,9 @@ import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
-import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.Database;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XMLResource;
+import org.xmldb.api.modules.XPathQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
 import javax.xml.bind.JAXBContext;
@@ -21,10 +20,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.OutputKeys;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 import static ftn.project.xml.templates.XUpdateTemplate.*;
 
@@ -35,7 +33,6 @@ public class UserRepository {
 
     @Autowired
     DBUtils dbUtils;
-
 
     public TUser save(AuthenticationUtilities.ConnectionProperties conn, TUser user) throws Exception {
         Class<?> cl = Class.forName(conn.driver);
@@ -81,9 +78,66 @@ public class UserRepository {
         return user;
     }
 
-    public TUser getUserByEmail(AuthenticationUtilities.ConnectionProperties conn, String email) {
+    public TUser getUserByEmail(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
         TUser user = new TUser();
+        String xpathExp = "/users/user[email=\""+ email + "\"]";
+        return getUserByXPathExpr(xpathExp, conn);
+    }
+
+
+    public TUser getUserByEmailAndPassword(AuthenticationUtilities.ConnectionProperties conn, String email, String password) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
+        TUser user = new TUser();
+        String xpathExp = "/users/user[email=\""+ email + "\" and password=\""+ password + "\"]";
+        return getUserByXPathExpr(xpathExp, conn);
+    }
+
+
+    private TUser getUserByXPathExpr(String xpathExp, AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        Collection col = null;
+        TUser user = new TUser();
+
+        // initialize database driver
+        dbUtils.initilizeDBserver(conn);
+
+        try {
+            // get the collection
+            System.out.println("[INFO] Retrieving the collection: " + usersCollectionPathInDB);
+            col = DatabaseManager.getCollection(conn.uri + usersCollectionPathInDB);
+
+            // get an instance of xpath query service
+            XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            xpathService.setProperty("indent", "yes");
+
+            // make the service aware of namespaces, using the default one
+            xpathService.setNamespace("", TARGET_NAMESPACE);
+
+            // execute xpath expression
+            System.out.println("[INFO] Invoking XPath query service for: " + xpathExp);
+            ResourceSet result = xpathService.query(xpathExp);
+
+            // handle the results
+            System.out.println("[INFO] Handling the results... ");
+
+            ResourceIterator i = result.getIterator();
+            Resource res  = i.nextResource();
+            System.out.println(res.getContent().toString());
+            // unmarshall content
+            user = XML2User(res.getContent().toString());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } finally {
+
+            // don't forget to cleanup
+            if(col != null) {
+                try {
+                    col.close();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+        }
         return user;
+
     }
 
     private static String user2XML(TUser user) throws JAXBException {
@@ -97,6 +151,17 @@ public class UserRepository {
         String userXml = os.toString();
         String pureUserXml = userXml.substring(userXml.indexOf('\n') + 1);
         return pureUserXml;
+    }
+
+    private static TUser XML2User(String xmlContent) throws JAXBException {
+        TUser result = new TUser();
+        StringReader reader = new StringReader(xmlContent);
+
+        JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        result = (TUser) unmarshaller.unmarshal(reader);
+
+        return result;
     }
 
 
