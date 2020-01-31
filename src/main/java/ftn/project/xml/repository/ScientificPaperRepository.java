@@ -25,7 +25,6 @@ import java.nio.charset.StandardCharsets;
 @Repository
 public class ScientificPaperRepository {
     private static String papersCollectionPathInDB = "/db/xml/scientificPapers";   //path kolekcije
-    private static String testFilePath = "data\\test\\test_paper.xml";
     private static String papersDocumentID = "paper.xml";
 
     @Autowired

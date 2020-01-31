@@ -229,22 +229,4 @@ public class ObjectFactory {
         return new ScientificPaper.Abstract.Keywords();
     }
 
-
-
-    /**
-     * Create an instance of {@link TUser }
-     *
-     */
-    public TUser createTUser() {
-        return new TUser();
-    }
-
-    /**
-     * Create an instance of {@link Users }
-     *
-     */
-    public Users createUsers() {
-        return new Users();
-    }
-
 }

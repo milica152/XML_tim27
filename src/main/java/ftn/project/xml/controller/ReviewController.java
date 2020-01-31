@@ -1,10 +1,11 @@
 package ftn.project.xml.controller;
 
 import ftn.project.xml.model.Review;
-import ftn.project.xml.model.TAuthor;
 import ftn.project.xml.service.ReviewService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,18 +19,9 @@ public class ReviewController {
 
     @PostMapping("/add")
     @ResponseBody
-    public void saveReview() throws Exception {
+    public ResponseEntity<String> saveReview(@RequestBody String reviewXML) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        Review r = new Review();
-        r.setAuthors(new Review.Authors());
-        r.setComments(new Review.Comments());
-        r.setId("review1");
-        r.setPaperRating("outstanding");
-        r.setQuestionnaire(new Review.Questionnaire());
-        r.setRecommendation("accept");
-        r.setReviewer(new TAuthor());
-        r.setTitle("title1");
-        reviewService.save(conn, r);
+        return new ResponseEntity<>(reviewService.save(conn, reviewXML, "1"), HttpStatus.OK);
     }
 
 
@@ -48,6 +40,12 @@ public class ReviewController {
         reviewService.update(conn, id);
     }
 
+    @PostMapping("/getByDocumentId/{id}")
+    @ResponseBody
+    public ResponseEntity<Review> getByDocumentId(@PathVariable("id") String id) throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        return new ResponseEntity<Review>(reviewService.getByDocumentId(conn, id), HttpStatus.OK);
+    }
 
 
 }
