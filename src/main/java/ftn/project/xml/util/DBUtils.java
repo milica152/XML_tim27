@@ -86,5 +86,6 @@ public class DBUtils {
         database.setProperty("create-database", "true");
 
         DatabaseManager.registerDatabase(database);
+
     }
 }

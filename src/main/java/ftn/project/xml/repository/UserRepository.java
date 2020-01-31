@@ -1,17 +1,13 @@
 package ftn.project.xml.repository;
 
-import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
-import ftn.project.xml.util.HelpFunctions;
 import org.apache.commons.io.FileUtils;
-import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
-import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
@@ -19,10 +15,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.OutputKeys;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import static ftn.project.xml.templates.XUpdateTemplate.*;
 
@@ -92,7 +86,7 @@ public class UserRepository {
     }
 
 
-    private TUser getUserByXPathExpr(String xpathExp, AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public TUser getUserByXPathExpr(String xpathExp, AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         Collection col = null;
         TUser user = new TUser();
 
@@ -140,7 +134,7 @@ public class UserRepository {
 
     }
 
-    private static String user2XML(TUser user) throws JAXBException {
+    public static String user2XML(TUser user) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
         OutputStream os = new ByteArrayOutputStream();
 
@@ -153,7 +147,7 @@ public class UserRepository {
         return pureUserXml;
     }
 
-    private static TUser XML2User(String xmlContent) throws JAXBException {
+    public static TUser XML2User(String xmlContent) throws JAXBException {
         TUser result = new TUser();
         StringReader reader = new StringReader(xmlContent);
 
