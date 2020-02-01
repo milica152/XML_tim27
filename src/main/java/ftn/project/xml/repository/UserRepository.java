@@ -95,7 +95,6 @@ public class UserRepository {
 
         try {
             // get the collection
-            System.out.println("[INFO] Retrieving the collection: " + usersCollectionPathInDB);
             col = DatabaseManager.getCollection(conn.uri + usersCollectionPathInDB);
 
             // get an instance of xpath query service
@@ -106,18 +105,16 @@ public class UserRepository {
             xpathService.setNamespace("", TARGET_NAMESPACE);
 
             // execute xpath expression
-            System.out.println("[INFO] Invoking XPath query service for: " + xpathExp);
             ResourceSet result = xpathService.query(xpathExp);
 
             // handle the results
-            System.out.println("[INFO] Handling the results... ");
 
             ResourceIterator i = result.getIterator();
             Resource res  = i.nextResource();
-            System.out.println(res.getContent().toString());
             // unmarshall content
             user = XML2User(res.getContent().toString());
-        } catch (JAXBException e) {
+
+        } catch (JAXBException | NullPointerException e) {
             e.printStackTrace();
         } finally {
 

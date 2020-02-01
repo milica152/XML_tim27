@@ -1,17 +1,13 @@
 package ftn.project.xml.repository;
 
-import ftn.project.xml.model.ScientificPaper;
+import ftn.project.xml.model.CoverLetter;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
-import ftn.project.xml.util.DOMParser;
-import org.apache.commons.io.FileUtils;
 import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.w3c.dom.Document;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.Database;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
@@ -19,25 +15,25 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.OutputKeys;
-import java.io.File;
-import java.nio.charset.StandardCharsets;
 
 @Repository
-public class ScientificPaperRepository {
-    private static String papersCollectionPathInDB = "/db/xml/scientificPapers";   //path kolekcije
-    private static String papersDocumentID = "paper.xml";
+public class CoverLetterRepository {
+
+
+    private static String cLettersCollectionPathInDB = "/db/xml/cLetters";
+    private static String cLetterDocumentID = "cLetter.xml";
 
     @Autowired
     private DBUtils dbUtils;
 
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
+    public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, String reviewID) throws Exception {
         Collection col = null;
         dbUtils.initilizeDBserver(conn);
 
         try {
-            col = dbUtils.getOrCreateCollection(conn, papersCollectionPathInDB);
+            col = dbUtils.getOrCreateCollection(conn, cLettersCollectionPathInDB);
             col.setProperty("indent", "yes");
-            dbUtils.storeDocument(papersDocumentID + paperID, xmlRes, col);
+            dbUtils.storeDocument(cLetterDocumentID + reviewID, xmlRes, col);
             return xmlRes;
 
         } finally {
@@ -53,29 +49,29 @@ public class ScientificPaperRepository {
         }
     }
 
-    public ScientificPaper getScientificPaperById(AuthenticationUtilities.ConnectionProperties conn, String paperID) throws XMLDBException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        ScientificPaper sp = null;
+    public CoverLetter getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        CoverLetter result = null;
         dbUtils.initilizeDBserver(conn);
 
         Collection col = null;
         XMLResource res = null;
 
         try {
-            col = DatabaseManager.getCollection(conn.uri + papersCollectionPathInDB);
+            col = DatabaseManager.getCollection(conn.uri + cLettersCollectionPathInDB);
             col.setProperty(OutputKeys.INDENT, "yes");
 
-            res = (XMLResource)col.getResource(papersDocumentID + paperID);
+            res = (XMLResource)col.getResource(cLetterDocumentID + id);
 
             if(res == null) {
-                System.out.println("[WARNING] Document '" + papersDocumentID+paperID + "' can not be found!");
+                System.out.println("[WARNING] Document '" + cLetterDocumentID + id + "' can not be found!");
             } else {
 
                 JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
 
                 Unmarshaller unmarshaller = context.createUnmarshaller();
 
-                ScientificPaper sPaper = (ScientificPaper) unmarshaller.unmarshal(res.getContentAsDOM());
-                sp = sPaper;
+                CoverLetter review = (CoverLetter) unmarshaller.unmarshal(res.getContentAsDOM());
+                result = review;
             }
         } catch (XMLDBException e) {
             e.printStackTrace();
@@ -100,8 +96,9 @@ public class ScientificPaperRepository {
                 }
             }
         }
-        return sp;
+        return result;
     }
+
 
 
 }

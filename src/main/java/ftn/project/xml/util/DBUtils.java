@@ -19,8 +19,6 @@ public class DBUtils {
 
     private Collection getOrCreateCollection(AuthenticationUtilities.ConnectionProperties conn, String collectionUri, int pathSegmentOffset) throws XMLDBException {
         Collection col = DatabaseManager.getCollection(conn.uri + collectionUri, conn.user, conn.password);
-        System.out.println(conn.uri + collectionUri);
-        // create the collection if it does not exist
 
         if(col == null) {
 
@@ -48,7 +46,6 @@ public class DBUtils {
 
                     CollectionManagementService mgt = (CollectionManagementService) parentCol.getService("CollectionManagementService", "1.0");
 
-                    System.out.println("[INFO] Creating the collection: " + pathSegments[pathSegmentOffset]);
                     col = mgt.createCollection(pathSegments[pathSegmentOffset]);
 
                     col.close();
@@ -74,14 +71,11 @@ public class DBUtils {
 
         res.setContent(xmlResource);
 
-        System.out.println("[INFO] Storing the document: " + res.getId());
         col.storeResource(res);
     }
 
     public void initilizeDBserver(AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
-        System.out.println("[INFO] Loading driver class: " + conn.driver);
         Class<?> cl = Class.forName(conn.driver);
-
         Database database = (Database) cl.newInstance();
         database.setProperty("create-database", "true");
 
