@@ -27,4 +27,8 @@ public class UserService {
     public TUser getUserByEmailAndPassword(AuthenticationUtilities.ConnectionProperties conn, UserLoginDTO userLogin) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return userRepository.getUserByEmailAndPassword(conn, userLogin.getEmail(), userLogin.getPassword());
     }
+
+    public TUser getEditor(AuthenticationUtilities.ConnectionProperties conn) throws Exception {
+        return userRepository.getEditor(conn);
+    }
 }

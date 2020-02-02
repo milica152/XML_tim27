@@ -229,4 +229,46 @@ public class ObjectFactory {
         return new ScientificPaper.Abstract.Keywords();
     }
 
+
+
+    /**
+     * Create an instance of {@link TUser }
+     *
+     */
+    public TUser createTUser() {
+        return new TUser();
+    }
+
+    /**
+     * Create an instance of {@link Users }
+     *
+     */
+    public Users createUsers() {
+        return new Users();
+    }
+
+    /**
+     * Create an instance of {@link TUser.MyPapers }
+     *
+     */
+    public TUser.MyPapers createTUserMyPapers() {
+        return new TUser.MyPapers();
+    }
+
+    /**
+     * Create an instance of {@link TUser.MyReviews }
+     *
+     */
+    public TUser.MyReviews createTUserMyReviews() {
+        return new TUser.MyReviews();
+    }
+
+    /**
+     * Create an instance of {@link TUser.PendingPapersToReview }
+     *
+     */
+    public TUser.PendingPapersToReview createTUserPendingPapersToReview() {
+        return new TUser.PendingPapersToReview();
+    }
+
 }

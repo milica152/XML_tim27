@@ -1,5 +1,6 @@
 package ftn.project.xml.repository;
 
+import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
@@ -17,6 +18,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ftn.project.xml.templates.XUpdateTemplate.*;
 
@@ -73,22 +76,75 @@ public class UserRepository {
     }
 
     public TUser getUserByEmail(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
-        TUser user = new TUser();
         String xpathExp = "/users/user[email=\""+ email + "\"]";
-        return getUserByXPathExpr(xpathExp, conn);
-    }
+        ResourceSet result = getByXPathExpr(xpathExp, conn);
+        ResourceIterator i = result.getIterator();
+        Resource res  = i.nextResource();
 
+        TUser user = null;
+        try {
+            user = XML2User(res.getContent().toString());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return user;    }
+
+    public List<TUser> getUsersByRole(AuthenticationUtilities.ConnectionProperties conn, String role) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException, JAXBException {
+        String xpathExp = "/users/user[role=\""+ role + "\"]";
+        List<TUser> lista = new ArrayList<>();
+
+        ResourceSet result = getByXPathExpr(xpathExp, conn);
+        ResourceIterator i = result.getIterator();
+        while(i.hasMoreResources()){
+            Resource res  = i.nextResource();
+            lista.add(XML2User(res.getContent().toString()));
+        }
+
+        return lista;
+    }
 
     public TUser getUserByEmailAndPassword(AuthenticationUtilities.ConnectionProperties conn, String email, String password) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
-        TUser user = new TUser();
         String xpathExp = "/users/user[email=\""+ email + "\" and password=\""+ password + "\"]";
-        return getUserByXPathExpr(xpathExp, conn);
+
+        ResourceSet result = getByXPathExpr(xpathExp, conn);
+        ResourceIterator i = result.getIterator();
+        Resource res  = i.nextResource();
+
+        TUser user = null;
+        try {
+            user = XML2User(res.getContent().toString());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
+    public TUser getEditor(AuthenticationUtilities.ConnectionProperties conn) throws Exception {
+        List<TUser> users = getUsersByRole(conn, "EDITOR");
+        if(users.size()==0){    // ako nema editora, inicijalizuj
+            TUser user = new TUser();
+            user.setUsername("editor");
+            user.setSurname("editorski");
+            user.setRole(TRole.EDITOR);
+            user.setPendingPapersToReview(new TUser.PendingPapersToReview());
+            user.setMyPapers(new TUser.MyPapers());
+            user.setMyReviews(new TUser.MyReviews());
+            user.setPassword("editor");
+            user.setName("editor");
+            user.setEmail("milica.medic@gmail.com");
 
-    public TUser getUserByXPathExpr(String xpathExp, AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+            this.save(conn, user);
+            return user;
+
+        }else{
+            return users.get(0);
+        }
+    }
+
+    public ResourceSet getByXPathExpr(String xpathExp, AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         Collection col = null;
-        TUser user = new TUser();
 
         // initialize database driver
         dbUtils.initilizeDBserver(conn);
@@ -106,15 +162,8 @@ public class UserRepository {
 
             // execute xpath expression
             ResourceSet result = xpathService.query(xpathExp);
-
-            // handle the results
-
-            ResourceIterator i = result.getIterator();
-            Resource res  = i.nextResource();
-            // unmarshall content
-            user = XML2User(res.getContent().toString());
-
-        } catch (JAXBException | NullPointerException e) {
+            return result;
+        } catch (NullPointerException e) {
             e.printStackTrace();
         } finally {
 
@@ -127,7 +176,7 @@ public class UserRepository {
                 }
             }
         }
-        return user;
+        return null;
 
     }
 
