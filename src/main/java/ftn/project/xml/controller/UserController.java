@@ -52,5 +52,11 @@ public class UserController {
     }
 
 
+    @GetMapping("/getEditor")
+    @ResponseBody
+    public ResponseEntity<TUser> getEditor() throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        return new ResponseEntity<>(userService.getEditor(conn), HttpStatus.OK);
+    }
 
 }
