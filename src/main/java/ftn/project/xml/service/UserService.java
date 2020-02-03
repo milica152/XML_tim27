@@ -56,4 +56,8 @@ public class UserService {
     public TUser getEditor(AuthenticationUtilities.ConnectionProperties conn) throws Exception {
         return userRepository.getEditor(conn);
     }
+
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return userRepository.delete(conn, email);
+    }
 }

@@ -1,38 +1,38 @@
 package ftn.project.xml.controller;
 
+import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.AuthenticationUtilities;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/scientificPaper")
 public class ScientificPaperController {
-    private AuthenticationUtilities.ConnectionProperties conn;
 
     @Autowired
     private ScientificPaperService scientificPaperService;
 
-    @PostMapping("/save")
+    @PostMapping("/save/{title}")
     @ResponseBody
-    public ResponseEntity<String> saveScientificPaper() throws Exception {
-        conn = AuthenticationUtilities.loadProperties();
-        String xmlRes = FileUtils.readFileToString(new File("data\\test\\test_paper.xml"), StandardCharsets.UTF_8);
-        return new ResponseEntity<>(scientificPaperService.save(conn, "2", xmlRes), HttpStatus.OK);
+    public ResponseEntity<String> saveScientificPaper(@PathVariable String title, @RequestBody String xmlRes) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.save(AuthenticationUtilities.loadProperties(), title, xmlRes), HttpStatus.OK);
     }
 
-    @GetMapping("/findByDocumentId/{id}")
+    @GetMapping("/findByTitle")
     @ResponseBody
-    public ResponseEntity<ScientificPaper> getScientificPaperById(@PathVariable("id") String id) throws Exception {
-        conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>(scientificPaperService.getScientificPaperById(conn, id), HttpStatus.OK);
+    public ResponseEntity<ScientificPaper> getScientificPaperById(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    @ResponseBody
+    public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
+    }
 }

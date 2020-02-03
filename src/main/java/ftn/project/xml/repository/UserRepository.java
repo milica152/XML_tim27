@@ -74,6 +74,7 @@ public class UserRepository {
                     col.close();
                 } catch (XMLDBException xe) {
                     xe.printStackTrace();
+                    return new TUser();
                 }
             }
         }
@@ -85,15 +86,17 @@ public class UserRepository {
         System.out.println(xpathExp);
         ResourceSet result = getByXPathExpr(xpathExp, conn);
         ResourceIterator i = result.getIterator();
-        Resource res = i.nextResource();
-
+        Resource res  = i.nextResource();
+        if(res==null){
+            return new TUser();
+        }
         TUser user = null;
         try {
             user = XML2User(res.getContent().toString());
         } catch (JAXBException e) {
             e.printStackTrace();
+            return new TUser();
         }
-
         return user;
     }
 
@@ -212,5 +215,63 @@ public class UserRepository {
         return result;
     }
 
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String email){
+        Collection col = null;
+
+        // initialize database driver
+        try {
+            dbUtils.initilizeDBserver(conn);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return "Problem kod inicijalizovanja baze(IllegalAccessException)";
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return "Problem kod inicijalizovanja baze(InstantiationException)";
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            return "Problem kod inicijalizovanja baze(XMLDBException)";
+        }
+
+        // get the collection
+        System.out.println("[INFO] Retrieving the collection: " + usersCollectionPathInDB);
+        try {
+            col = DatabaseManager.getCollection(conn.uri + usersCollectionPathInDB, conn.user, conn.password);
+            col.setProperty("indent", "yes");
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            return "Problem dobavljanja kolekcije: " + usersCollectionPathInDB;
+        }
+
+        XUpdateQueryService xupdateService = null;
+        try {
+            xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            return "Problem dobavljanja XUpdateQueryService-a";
+        }
+
+
+
+        String xQuery = String.format(
+                "for $user in doc(\"%s\")//user\n" +
+                        "where $user/email = \"%s\"\n" +
+                        "return (update delete $user)",
+                usersCollectionPathInDB + "/" + usersDocumentID,
+                email);
+
+
+        try {
+            XPathQueryService xPathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            xPathService.setProperty("indent", "yes");
+            xPathService.query(xQuery);
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            return "Problem prilikom rada sa XPathQueryService-om.";
+        }
+        return "ok";
+    }
 
 }
