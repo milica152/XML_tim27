@@ -1,16 +1,19 @@
 package ftn.project.xml.controller;
 
 import ftn.project.xml.dto.UserLoginDTO;
+import ftn.project.xml.dto.UserRegisterDTO;
 import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.service.UserService;
 import ftn.project.xml.util.AuthenticationUtilities;
+import ftn.project.xml.util.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(allowedHeaders = "*")
 @RequestMapping(value = "/user")
 public class UserController {
     private AuthenticationUtilities.ConnectionProperties conn;
@@ -18,26 +21,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/save")
+    @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<TUser> saveUser() throws Exception {
-        TUser user = new TUser();
-        user.setEmail("email");
-        user.setMyPapers(new TUser.MyPapers());
-        user.setMyReviews(new TUser.MyReviews());
-        user.setName("name");
-        user.setPassword("pass");
-        user.setPendingPapersToReview(new TUser.PendingPapersToReview());
-        user.setRole(TRole.AUTHOR);
-        user.setSurname("surname");
-        user.setUsername("username");
-
+    public ResponseEntity<TUser> saveUser(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>( userService.save(conn, user), HttpStatus.OK);
+        return new ResponseEntity<>( userService.save(conn, userRegisterDTO), HttpStatus.OK);
     }
 
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<TUser> login(@RequestBody UserLoginDTO userLoginDTO) throws Exception  {
+        conn = AuthenticationUtilities.loadProperties();
+        return userService.login(conn, userLoginDTO);
+    }
 
-    @GetMapping("/getByEmail")
+    @PostMapping("/getByEmail")
     @ResponseBody
     public ResponseEntity<TUser> getUserByEmail(@RequestBody String email) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
