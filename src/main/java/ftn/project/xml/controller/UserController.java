@@ -59,4 +59,12 @@ public class UserController {
         return new ResponseEntity<>(userService.getEditor(conn), HttpStatus.OK);
     }
 
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<String> delete(@RequestBody String email) throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        return new ResponseEntity<>(userService.delete(conn, email), HttpStatus.OK);
+    }
+
 }
