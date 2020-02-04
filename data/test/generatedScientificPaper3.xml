@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scientificPaper xmlns="https://github.com/milica152/XML_tim27"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/scientificPaper.xsd" institution="ko4hiSoUyQN">
+    <metadata>
+        <status>accepted</status>
+        <datePublished>2020-09-29Z</datePublished>
+        <dateAccepted>2020-11-28</dateAccepted>
+        <keywords>
+            <keyword>I</keyword>
+            <keyword>KTZsealjymwbht4l</keyword>
+        </keywords>
+    </metadata>
+    <title>Q0HNd_4</title>
+    <authors>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="vug/ru">
+            <name>qBXYF6YbrWVSdolA3-_</name>
+            <surname>a5OMP3wFT-</surname>
+            <profession>qH2kuqYDZ_e</profession>
+            <contact>PtdK9vOce2ZAtVshsMP3W3CXxswrSh</contact>
+        </author>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="nn/g">
+            <name>CE7emXvfnMvc5</name>
+            <surname>o6I_tI</surname>
+            <profession>AS2DU</profession>
+            <contact>S5Jc3rZtsZNLRnj67</contact>
+        </author>
+    </authors>
+    <abstract>
+        <plainChapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="syoc/pxklz/wur/vo/mr">
+            <title level="366262141" fontsize="896610096" style="OjiIOn9._T2ICfGT">Hs3JqEq2CbTFy7l1tYqA2oLLXx64LV</title>
+            <text>
+                <paragraph fontsize="1752524501" sp:id="qg/dlfzt/yfv/rsujj/wwlo" style="PQ">Qkwa22kms1NhebUcl6E7bmz</paragraph>
+                <paragraph fontsize="295407291" sp:id="f/xp" style="dpctodlI39LdbghPAptB">YlLc_2zKVYiELMR</paragraph>
+            </text>
+        </plainChapter>
+        <plainChapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="d/i">
+            <title level="1880002945" fontsize="481197230" style="hZDvSaSnfjhUVe1UuA">e4iAu30n6l_jf3kiwwu0y</title>
+            <text>
+                <paragraph fontsize="1358830038" sp:id="ltwr/c" style="Kch">Rcw_X8.bUzBKzeL9N2u-Wje</paragraph>
+                <paragraph fontsize="399365471" sp:id="du/nn/nr/u" style="R-d1c9647mU2EyrONr">dbkj.G.pX1</paragraph>
+            </text>
+        </plainChapter>
+    </abstract>
+    <chapters>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="d/pay">
+            <title level="1595258764" fontsize="649918079" style="v0igRdw6.jLx5ePc1Ttw">J9</title>
+            <text>
+                <paragraph fontsize="366950184" sp:id="n/fqls" style="mmW.7.2K3">G</paragraph>
+                <paragraph fontsize="13189870" sp:id="j/gtj/tnuhc/pvz/p" style="k1zIrGw5w68.u5SsU-1z._RJC">i3hJQ92vuHbhIc3Pvs9ypSJo</paragraph>
+            </text>
+            <codeBlock sp:id="ptm/za">kwj-ZSkzX</codeBlock>
+            <codeBlock sp:id="q/esqgb/sb/pddu">s6_QdsLRDKbHtE1BrJw89W.2Boe</codeBlock>
+        </chapter>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="ybb/an/vv/ffqtgql/uvqj">
+            <title level="1471830779" fontsize="1820272237" style="DWj0ljw">gHu-_Fc</title>
+            <text>
+                <paragraph fontsize="1936930895" sp:id="xln/zs/rhmlp/cq/pm" style="pbMLGB_408q-t7rIeJ">Q8XEL7</paragraph>
+                <paragraph fontsize="2027159805" sp:id="n/puzu" style="tzTKoUXq6v">cW0cfl49_4_</paragraph>
+            </text>
+            <referencePointer sp:id="e/llta/bqw">CBQDyjWcDaCbq7KjlvUDb</referencePointer>
+            <image sp:id="u/u">
+                <description>A5wE-5NMY</description>
+                <concreteImage>76777580896978878866738177817069878883678877807067858176736672658072868668717287826889718187688071876778</concreteImage>
+            </image>
+        </chapter>
+    </chapters>
+    <references>
+        <reference xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="ri/z" year="2021-08-01" authorName="giS_YPJX9McVY4D-Rx">
+            <url>mgat</url>
+            <name>Ynzl52w.6</name>
+        </reference>
+    </references>
+</scientificPaper>
