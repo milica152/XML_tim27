@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<review xmlns="https://github.com/milica152/XML_tim27"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/Review.xsd">
+    <title level="682544976" fontsize="392786430" style="jls4VT6mqvgMSwfZKSIOq3">jY4Ywxx.MX6OnGdswJayV.JRA</title>
+    <id>http://wfjrmJhn/</id>
+    <reviewer>
+        <name>Jj3AeG9E5eK52Y</name>
+        <surname>ljar</surname>
+        <profession>YlibzQpi4Ky-oVB7YDvmakauVd9</profession>
+        <contact>EMsAEW8X8vQ</contact>
+    </reviewer>
+    <authors>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="m/u">
+            <name>JRhSU6ZB3jVZQoDjzTsGx</name>
+            <surname>pHLiDL.5NC3NSNXK</surname>
+            <profession>BYBupxh.4Wn5</profession>
+            <contact>FBl6vr75</contact>
+        </author>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="r/sz/wl/y">
+            <name>jwq</name>
+            <surname>WHEt5gW6jFrb7yLmACA5AiV</surname>
+            <profession>tiYK-BrBX30d-NlNZ</profession>
+            <contact>Vr8I7pL-OY2E</contact>
+        </author>
+    </authors>
+    <questionnaire>
+        <item>
+            <question>h4kWagE</question>
+            <answer>meets_expectations</answer>
+            <comment_example id="http://CEajcvue/">Qvic-.CwNvDlf1W7VsHEm-</comment_example>
+        </item>
+        <item>
+            <question>vl6pX4aUffXwLIQ8</question>
+            <answer>meets_expectations</answer>
+            <comment_example id="http://KBzFzLWP/">nEB0Qddra5lngo8dGz9cmqUl1ziG</comment_example>
+        </item>
+    </questionnaire>
+    <comments>
+        <comment id="http://KmsmUWlB/">n-ZXOgNbzLXCFi</comment>
+        <comment id="http://UbNJUPdT/">UI6WrKz</comment>
+    </comments>
+    <paperRating>good</paperRating>
+    <recommendation>reject</recommendation>
+</review>
