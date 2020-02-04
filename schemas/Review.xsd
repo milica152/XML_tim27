@@ -2,12 +2,11 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="https://github.com/milica152/XML_tim27"
     xmlns="https://github.com/milica152/XML_tim27">
-
     <xs:include schemaLocation="scientificPaper.xsd"/>
     <xs:element name="review">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="title" type="xs:string"/>
+                <xs:element ref="title"/>
                 <xs:element name="id" type="xs:anyURI"/>
                 <xs:element name="reviewer" type="TAuthor"> </xs:element>
                 <xs:element name="authors">
@@ -37,9 +36,9 @@
                                         <xs:element name="comment_example">
                                             <xs:complexType>
                                                 <xs:simpleContent>
-                                                    <xs:extension base="xs:string">
-                                                        <xs:attribute name="id" type="xs:anyURI"/>
-                                                    </xs:extension>
+                                                  <xs:extension base="xs:string">
+                                                  <xs:attribute name="id" type="xs:anyURI"/>
+                                                  </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
                                         </xs:element>
