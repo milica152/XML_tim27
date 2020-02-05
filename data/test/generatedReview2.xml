@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <review xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/Review.xsd">
-    <title level="682544976" fontsize="392786430" style="jls4VT6mqvgMSwfZKSIOq3">jY4Ywxx.MX6OnGdswJayV.JRA</title>
-    <id>http://wfjrmJhn/</id>
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/ANIN%20KOMP/XML/Projekat/XML_tim27/src/main/resources/static/schemas/Review.xsd">
+    <title>EKs99_JrOuo.ER_4RIy5Wk0oNu</title>
+    <id>http://wNdnjyzW/</id>
     <reviewer>
-        <name>Jj3AeG9E5eK52Y</name>
-        <surname>ljar</surname>
-        <profession>YlibzQpi4Ky-oVB7YDvmakauVd9</profession>
-        <contact>EMsAEW8X8vQ</contact>
+        <name>h3MMr2-Q-7y0h3w675B</name>
+        <surname>TrUczco9m</surname>
+        <profession>mz.8ktdHkd_QjMpBmX</profession>
+        <contact>ke</contact>
     </reviewer>
     <authors>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="m/u">
-            <name>JRhSU6ZB3jVZQoDjzTsGx</name>
-            <surname>pHLiDL.5NC3NSNXK</surname>
-            <profession>BYBupxh.4Wn5</profession>
-            <contact>FBl6vr75</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="s/jye/pcb/pwki/zn">
+            <name>VjT9LTCXCwnNq.b</name>
+            <surname>Pqt2Zlz5IPLZtPJxGXj_NH2lifK</surname>
+            <profession>uTYc.J.F0O2uUwEJ.EP.mme</profession>
+            <contact>hD-72L.WYOQV</contact>
         </author>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="r/sz/wl/y">
-            <name>jwq</name>
-            <surname>WHEt5gW6jFrb7yLmACA5AiV</surname>
-            <profession>tiYK-BrBX30d-NlNZ</profession>
-            <contact>Vr8I7pL-OY2E</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="n/sj">
+            <name>A_T_ZDoDdfD3U2Mieh7ISjV2</name>
+            <surname>goC.BC</surname>
+            <profession>DjruF_Kz1M84FKX0</profession>
+            <contact>o_uNOsHbbBkSxw3oxlyKnqRvOi9XF</contact>
         </author>
     </authors>
     <questionnaire>
         <item>
-            <question>h4kWagE</question>
-            <answer>meets_expectations</answer>
-            <comment_example id="http://CEajcvue/">Qvic-.CwNvDlf1W7VsHEm-</comment_example>
+            <question>ZZDhdLQrAJtO-XDffbl8HmT7uTPR</question>
+            <answer>exceeds_expectations</answer>
+            <comment_example id="http://sEoKDron/">reUvEL9C9zUhO3NCjl.ILAb</comment_example>
         </item>
         <item>
-            <question>vl6pX4aUffXwLIQ8</question>
+            <question>D-f8TFtt</question>
             <answer>meets_expectations</answer>
-            <comment_example id="http://KBzFzLWP/">nEB0Qddra5lngo8dGz9cmqUl1ziG</comment_example>
+            <comment_example id="http://bHuuaLLs/">qs52RRDlw2zJ.fvr</comment_example>
         </item>
     </questionnaire>
     <comments>
-        <comment id="http://KmsmUWlB/">n-ZXOgNbzLXCFi</comment>
-        <comment id="http://UbNJUPdT/">UI6WrKz</comment>
+        <comment id="http://CyefKNnT/">KV34d2a</comment>
+        <comment id="http://PDHSaCdm/">_CZWHAMW</comment>
     </comments>
-    <paperRating>good</paperRating>
-    <recommendation>reject</recommendation>
+    <paperRating>poor</paperRating>
+    <recommendation>return</recommendation>
 </review>
