@@ -1,4 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { ScientificPaperService } from "src/app/user/services/scientificPaper.service";
+import { NewScientificPaper } from "src/app/models/newScientificPaper.model";
+declare const Xonomy: any;
 
 export interface PeriodicElement {
   name: string;
@@ -26,10 +29,52 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ["./author-dashboard.component.scss"]
 })
 export class AuthorDashboardComponent implements OnInit {
+  @ViewChild("editor", { static: false }) editor: ElementRef;
+  //@ViewChild("spTitle", { static: false }) spTitle: ElementRef;
   displayedColumns: string[] = ["position", "name", "weight", "symbol"];
   dataSource = ELEMENT_DATA;
-
-  constructor() {}
+  newScientificPaper: NewScientificPaper = new NewScientificPaper();
+  constructor(private scientificPaperService: ScientificPaperService) {}
 
   ngOnInit() {}
+
+  start() {
+    console.log(this.editor.nativeElement);
+  }
+
+  readXMLFile(event) {
+    let input = event.target;
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+      let fileContent = fileReader.result.toString();
+      this.newScientificPaper.content = fileReader.result.toString();
+      this.renderXonomy(fileContent);
+    };
+    fileReader.readAsText(input.files[0]);
+  }
+
+  publishScientificPaper() {
+    console.log(this.newScientificPaper);
+    this.scientificPaperService
+      .saveScientificPaper(
+        this.newScientificPaper.title,
+        this.newScientificPaper.content
+      )
+      .subscribe(
+        response => {
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          console.log("Done!");
+        }
+      );
+  }
+
+  renderXonomy(xml: string) {
+    Xonomy.setMode("laic");
+    Xonomy.render(xml, this.editor.nativeElement, null);
+  }
 }
