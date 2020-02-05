@@ -2,11 +2,14 @@ package ftn.project.xml.repository;
 
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
+import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.DOMParser;
 import org.apache.commons.io.FileUtils;
 import org.exist.xmldb.EXistResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
@@ -30,6 +33,8 @@ import static ftn.project.xml.templates.XUpdateTemplate.TARGET_NAMESPACE;
 public class ScientificPaperRepository {
     private static String papersCollectionPathInDB = "/db/xml/scientificPapers";
     private static String papersDocumentID = "paper.xml";
+
+    Logger logger = LoggerFactory.getLogger(ScientificPaperRepository.class);
 
     @Autowired
     private DBUtils dbUtils;

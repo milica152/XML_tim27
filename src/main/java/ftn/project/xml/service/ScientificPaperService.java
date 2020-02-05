@@ -5,6 +5,8 @@ import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DOMParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -16,6 +18,9 @@ import java.util.List;
 public class ScientificPaperService {
     private static String schemaPath = "schemas\\scientificPaper.xsd";
 
+
+    Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
+
     @Autowired
     private ScientificPaperRepository scientificPaperRepository;
 
@@ -24,8 +29,9 @@ public class ScientificPaperService {
         try{
             DOMParser parser = new DOMParser();
             Document d = parser.buildDocument(xmlRes, schemaPath);
+            logger.info("New Scientific paper published under the title: " + title);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.warn("Ivalid document type! Must be ScientificPaper");
         }
 
         return scientificPaperRepository.save(conn, title, xmlRes);
