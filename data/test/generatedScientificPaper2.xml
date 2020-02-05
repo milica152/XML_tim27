@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scientificPaper xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/scientificPaper.xsd" institution="FtoM">
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 schemas/scientificPaper.xsd" institution="FtoM">
     <metadata>
         <status>in process</status>
         <datePublished>2020-10-22</datePublished>

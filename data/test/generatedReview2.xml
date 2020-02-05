@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <review xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/Review.xsd">
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 schemas/Review.xsd">
     <title level="682544976" fontsize="392786430" style="jls4VT6mqvgMSwfZKSIOq3">jY4Ywxx.MX6OnGdswJayV.JRA</title>
     <id>http://wfjrmJhn/</id>
     <reviewer>
