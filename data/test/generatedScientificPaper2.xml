@@ -1,86 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scientificPaper xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/milica152/XML_tim27 schemas/scientificPaper.xsd" institution="FtoM">
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/ANIN%20KOMP/XML/Projekat/XML_tim27/src/main/resources/static/schemas/scientificPaper.xsd" institution="QWYz0gMfkGKfdi3jOtOB">
     <metadata>
-        <status>in process</status>
-        <datePublished>2020-10-22</datePublished>
-        <dateAccepted>2021-10-02</dateAccepted>
+        <status>accepted</status>
+        <datePublished>2020-11-19Z</datePublished>
+        <dateAccepted>2021-07-24Z</dateAccepted>
         <keywords>
-            <keyword>LItQc</keyword>
-            <keyword>qkE_fOZKJUOugU</keyword>
+            <keyword>B5UU5hDOyKM.GLJs</keyword>
+            <keyword>qrMGBimDehlc.JqPvMT</keyword>
         </keywords>
     </metadata>
-    <title>tIogeSvgcHq_fbuw.8lKW5URIG</title>
+    <title>cKRhBdQtM7cR9WTyGi59E9I</title>
     <authors>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="x/k">
-            <name>piLjI1h2pC</name>
-            <surname>yv_3aCJ5yXd.Ny-Yo</surname>
-            <profession>HoVQchB_8ol3vhnqqhTFer</profession>
-            <contact>RSw3e-vRExqVbbCoI357mRcCVeK</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="j/v">
+            <name>Nlb6sTk9teKZO</name>
+            <surname>HhO</surname>
+            <profession>LUlAmppEzegckna9CPpC-wnGTno6uH</profession>
+            <contact>I1NhjxdNyh4RVwXIDmDQe3YTX4C</contact>
         </author>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="ni/m">
-            <name>Oh1R00Atz4kkOs1pZTWocfb2-rDEg</name>
-            <surname>eWJmul1a8Qzn</surname>
-            <profession>jtK2GN2IlszNtY..PehYZ</profession>
-            <contact>nOwac0.unGa</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="ac/qka/fim/issz">
+            <name>pXwNuL4_Beoc3lztO-Z2S1r_aD2</name>
+            <surname>ijG19Weg</surname>
+            <profession>ba6K7zO</profession>
+            <contact>h</contact>
         </author>
     </authors>
     <abstract>
-        <plainChapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="c/t">
-            <title level="1077475065" fontsize="1961138767" style="DOf">ngikyU8qlz.zsz</title>
+        <plainChapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="w/qbu/cf/brkq">
             <text>
-                <paragraph fontsize="1402827581" sp:id="r/m" style="Ywi3TJnJ">IRfIqEiC</paragraph>
-                <paragraph fontsize="287715495" sp:id="wq/zqi/qndb/pmzcn/n" style="s1Z1mGrlKu94">jP.f56d0ATeM_8WwqNoC5</paragraph>
-            </text>
-        </plainChapter>
-        <plainChapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="p/w">
-            <title level="625632140" fontsize="1074829505" style="v09Gl">CUD-m.vJ</title>
-            <text>
-                <paragraph fontsize="1941759700" sp:id="wo/el" style="HZIy9ihhO9D2ZYkbsvnIPAfj">Ae2dOauE.dl2aJSV0DMEkMj7rtbV87</paragraph>
-                <paragraph fontsize="1909097554" sp:id="q/i" style="PnEB1NUtXuMce7LAAU__gBiIC7D">vXh5cfhXfjhV1Nm</paragraph>
+                <paragraph sp:id="s/k">RKQhQGKDl2Ouz-3nqzt3gq9xJl__C</paragraph>
             </text>
         </plainChapter>
     </abstract>
     <chapters>
-        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="e/zkho">
-            <title level="962179640" fontsize="747008617" style="V5lZKIBs">Qqf4kU8E8.9GW0blmbd51ZD1Uy</title>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="wkf/tw">
+            <title>tpZJuroECYPIyhG8</title>
             <text>
-                <paragraph fontsize="589489746" sp:id="i/cba" style="AlrQIXHPo12J">Z2s</paragraph>
-                <paragraph fontsize="1872486487" sp:id="t/j" style="IUa9DoZqJc1HhfAUjkldK">iS5-iuREvYdv2_LEX-jHrOuU</paragraph>
+                <paragraph sp:id="q/n">hYsvc8HyLYU9HWFJCkkUj7-Srkt</paragraph>
+                <paragraph sp:id="l/qs/fxlk/cf">tGanRjzB76yljCj</paragraph>
             </text>
-            <referencePointer sp:id="x/ueor/qjzx/r">L1K1Slmu</referencePointer>
-            <list sp:id="lp/o" style="L5zbyo1zItxXknS-jnagowUij" isOrdered="true">
-                <listItem>mhK</listItem>
-                <listItem>RHNgkPeZ_4rGUXl3L336</listItem>
-            </list>
+            <codeBlock sp:id="za/jdz">QicLvLKdVolaD5I1PbEz</codeBlock>
+            <referencePointer sp:id="y/v">Nf2Y7zEmfEU52dCq8Ybg</referencePointer>
         </chapter>
-        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="or/gos">
-            <title level="621509873" fontsize="655351111" style="uJbI8tXqy25ZGP">JXSVJM7nQp73B-PvD8grrMsVLkR7b7</title>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="uvrc/v">
+            <title>G</title>
             <text>
-                <paragraph fontsize="1223764467" sp:id="p/fq" style="CmxzxwuBh8A.jNkDsZmWjfgiIU5">kCndu4cI</paragraph>
-                <paragraph fontsize="691335598" sp:id="opfx/ikc/rkjqe/orqy/y" style="GG_3RUQJCcUiUGG">nB</paragraph>
+                <paragraph sp:id="t/rxq">zErv_uXCgw5S3</paragraph>
+                <paragraph sp:id="rah/j">CYfgjXNXwevXkXWJ</paragraph>
             </text>
-            <table sp:id="k/oi/zb/bj/rggl" width="876756953" height="1163918171" measuringUnit="VrobmvLK8tIKnDTxPoHLRL0mMF">
-                <row ordinal="1217501282">
-                    <cell style="s" ordinal="530477398">efyP</cell>
-                    <cell style="cs0FL-FMu2AQoOL2f" ordinal="207069550">Nw4cncNoOXG</cell>
-                </row>
-                <row ordinal="1355771679">
-                    <cell style="sh9nGsDARFcJ8zMP" ordinal="995734741">uMiA37aSCLo</cell>
-                    <cell style="hO5I" ordinal="1371327264">b-tD6Xs</cell>
-                </row>
-            </table>
-            <list sp:id="cev/c" style="i0pgFhKfZ3EOW" isOrdered="0">
-                <listItem>tN80GPNbyVPKDuGH.</listItem>
-                <listItem>rcXNi.79</listItem>
-            </list>
+            <image sp:id="do/rna">
+                <description>n5CxUP7Y71oL</description>
+                <concreteImage>ZGVmYXVsdA==</concreteImage>
+            </image>
+            <image sp:id="k/nnc">
+                <description>cu</description>
+                <concreteImage>8886697469668581</concreteImage>
+            </image>
         </chapter>
     </chapters>
     <references>
-        <reference xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="g/epja" year="2022-01-15" authorName="eFHL7z46">
-            <url>qRTzvhuaD</url>
-            <name>y</name>
+        <reference xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="k/wuh" year="2020-03-08" authorName="GieiQqS090lfM">
+            <url>lIvXAKANewz3toai.2ut0h</url>
+            <name>HalMogj5AQsP38hEMARtrUb</name>
         </reference>
     </references>
 </scientificPaper>
