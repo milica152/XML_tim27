@@ -2,7 +2,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="https://github.com/milica152/XML_tim27"
     xmlns:sp="https://github.com/milica152/XML_tim27">
-    <xs:include schemaLocation="Review.xsd"/>
     <xs:element name="scientificPaper">
         <xs:complexType>
             <xs:sequence>
@@ -111,7 +110,6 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element maxOccurs="unbounded" minOccurs="0" ref="sp:review"/>
             </xs:sequence>
             <xs:attribute name="institution" type="xs:string"/>
             <xs:anyAttribute namespace="##local" processContents="skip"/>
