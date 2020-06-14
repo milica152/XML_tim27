@@ -76,8 +76,7 @@
                 <xs:element name="abstract">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element maxOccurs="unbounded" name="plainChapter" type="sp:TChapter"
-                            />
+                            <xs:element minOccurs="1" maxOccurs="unbounded" ref="sp:paragraph"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -96,14 +95,14 @@
                                     <xs:sequence>
                                         <xs:element minOccurs="0" name="url" type="xs:string"/>
                                         <xs:element name="name" type="xs:string"/>
+                                        <xs:element name="year" type="xs:string"/>
+                                        <xs:element name="authorName">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string"/>
+                                            </xs:simpleType>
+                                        </xs:element>
                                     </xs:sequence>
                                     <xs:attribute ref="sp:id"/>
-                                    <xs:attribute name="year" type="xs:date"/>
-                                    <xs:attribute name="authorName">
-                                        <xs:simpleType>
-                                            <xs:restriction base="xs:string"/>
-                                        </xs:simpleType>
-                                    </xs:attribute>
                                     <xs:anyAttribute namespace="##local" processContents="skip"/>
                                 </xs:complexType>
                             </xs:element>
@@ -163,7 +162,6 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
-                    <xs:attribute name="fontsize" type="xs:positiveInteger"/>
                     <xs:attribute ref="sp:id"/>
                     <xs:attribute name="style" type="xs:string"/>
                 </xs:extension>
@@ -174,8 +172,14 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
-                    <xs:attribute name="level" type="xs:positiveInteger"/>
-                    <xs:attribute name="fontsize" type="xs:positiveInteger"/>
+                    <xs:attribute name="level">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:positiveInteger">
+                                <xs:minInclusive value="1"/>
+                                <xs:maxInclusive value="10"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
                     <xs:attribute name="style" type="xs:string"/>
                 </xs:extension>
             </xs:simpleContent>
@@ -184,7 +188,7 @@
     <xs:attribute name="id" type="sp:TId"/>
     <xs:simpleType name="TId">
         <xs:restriction base="xs:string">
-            <xs:pattern value="(.+\/.+)+"/>
+            <xs:pattern value="(.+/.+)+"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="TAuthor">
@@ -226,20 +230,43 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
                                             <xs:attribute name="style" type="xs:string"/>
-                                            <xs:attribute name="ordinal" type="xs:positiveInteger"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="ordinal" type="xs:positiveInteger"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
             <xs:attribute ref="sp:id"/>
-            <xs:attribute name="width" type="xs:positiveInteger"/>
-            <xs:attribute name="height" type="xs:positiveInteger"/>
-            <xs:attribute name="measuringUnit" type="xs:string"/>
+            <xs:attribute name="width">
+                <xs:simpleType>
+                    <xs:restriction base="xs:positiveInteger">
+                        <xs:minInclusive value="1"/>
+                        <xs:maxInclusive value="1000"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="height">
+                <xs:simpleType>
+                    <xs:restriction base="xs:positiveInteger">
+                        <xs:minInclusive value="1"/>
+                        <xs:maxInclusive value="1000"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="measuringUnit">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="cm"/>
+                        <xs:enumeration value="mm"/>
+                        <xs:enumeration value="in"/>
+                        <xs:enumeration value="px"/>
+                        <xs:enumeration value="pt"/>
+                        <xs:enumeration value="pc"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
     <xs:element name="image">
