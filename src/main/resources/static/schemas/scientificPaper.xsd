@@ -228,13 +228,9 @@
                             <xs:element maxOccurs="unbounded" name="cell">
                                 <xs:complexType>
                                     <xs:simpleContent>
-<<<<<<<< HEAD:src/main/resources/static/schemas/scientificPaper.xsd
                                         <xs:extension base="xs:string">
                                             <xs:attribute name="style" type="xs:string"/>
                                         </xs:extension>
-========
-                                        <xs:extension base="xs:string"> </xs:extension>
->>>>>>>> origin/ana:schemas/scientificPaper.xsd
                                     </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
@@ -243,7 +239,6 @@
                 </xs:element>
             </xs:sequence>
             <xs:attribute ref="sp:id"/>
-<<<<<<<< HEAD:src/main/resources/static/schemas/scientificPaper.xsd
             <xs:attribute name="width">
                 <xs:simpleType>
                     <xs:restriction base="xs:positiveInteger">
@@ -272,8 +267,6 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
-========
->>>>>>>> origin/ana:schemas/scientificPaper.xsd
         </xs:complexType>
     </xs:element>
     <xs:element name="image">
