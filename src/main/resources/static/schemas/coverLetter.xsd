@@ -7,42 +7,30 @@
     <xs:element name="coverLetter">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="title"/>
+                <xs:element name="date" type="xs:date"/>
                 <xs:element ref="author"/>
-                <xs:element name="chapters">
+                <xs:element maxOccurs="unbounded" ref="paragraph"/>
+                <xs:element name="signature">
                     <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="TChapter">
-                                <xs:choice>
-                                    <xs:element ref="image"/>
-                                    <xs:element ref="table"/>
-                                    <xs:element ref="list"/>
-                                    <xs:element name="codeBlock">
-                                        <xs:complexType>
-                                            <xs:simpleContent>
-                                                <xs:extension base="xs:string">
-                                                  <xs:attribute ref="id"/>
-                                                </xs:extension>
-                                            </xs:simpleContent>
-                                        </xs:complexType>
-                                    </xs:element>
-                                    <xs:element name="referencePointer">
-                                        <xs:complexType>
-                                            <xs:simpleContent>
-                                                <xs:extension base="xs:string">
-                                                  <xs:attribute ref="id"/>
-                                                </xs:extension>
-                                            </xs:simpleContent>
-                                        </xs:complexType>
-                                    </xs:element>
-                                </xs:choice>
-                            </xs:extension>
-                        </xs:complexContent>
+                        <xs:sequence>
+                            <xs:element name="sincerely">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:pattern value="Sincerely, "/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="signatureImage">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:base64Binary"/>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element ref="scientificPaper"/>
             </xs:sequence>
-            <xs:attribute ref="id"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

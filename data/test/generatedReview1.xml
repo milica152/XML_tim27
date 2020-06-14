@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <review xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/ANIN%20KOMP/XML/Projekat/XML_tim27/src/main/resources/static/schemas/Review.xsd">
-    <title>kj2QwjLf8i5FSj-1.-3YXdCBTM9</title>
-    <id>http://iSTynxvb/</id>
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/Review.xsd">
+    <title level="1" style="GRGKU.dxm5MsQ">nSozGMZ6CO51x</title>
+    <id>http://dRXMxSYw/</id>
     <reviewer>
-        <name>tKuk.</name>
-        <surname>g.GO6URLrgCntOrhWCd_TaT</surname>
-        <profession>bErN2qjqT1lbzvo</profession>
-        <contact>o7d2vyaSxYh62</contact>
+        <name>EFld2bqjAcWI</name>
+        <surname>Tefz4u-fTy</surname>
+        <profession>r</profession>
+        <contact>d-7LgbTI0k-l.f6XxhzxSwTBLffjc</contact>
     </reviewer>
     <authors>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="rl/w">
-            <name>f</name>
-            <surname>sDovhNzxIv_e</surname>
-            <profession>CXCe.TBeO5Zvt1Ix</profession>
-            <contact>baLRe_SeViTk_</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="i/lm/ge/hmd">
+            <name>ASzL4okl1qweYN62T</name>
+            <surname>bUR67rGlM4FJ3O2Lv5r</surname>
+            <profession>Cpi</profession>
+            <contact>uGlCFlepqKLWHO0</contact>
         </author>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="c/rkt/engya/vvk/u">
-            <name>s</name>
-            <surname>t03cbOexRRGsUX7WN</surname>
-            <profession>q3VW</profession>
-            <contact>WJpLCe-BimR0vhKV-1d</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="j/th">
+            <name>XR</name>
+            <surname>SHBPamld</surname>
+            <profession>gmvIwZglH3Y3UHZsXUb0r_hWo6Ags</profession>
+            <contact>xWpCnrKP</contact>
         </author>
     </authors>
     <questionnaire>
         <item>
-            <question>v9DP</question>
-            <answer>exceeds_expectations</answer>
-            <comment_example id="http://ZKTzxrRk/">rn58rKQqF4.BdwL.Gl.AsTGGwkTu0t</comment_example>
+            <question>UM9NnA</question>
+            <answer>unacceptable</answer>
+            <comment_example id="http://MyijmmuS/">MV7_FiR2CFCtN3yblQjm3d_.3VcVKM</comment_example>
         </item>
         <item>
-            <question>kpo.iRf9yH3C</question>
-            <answer>needs_improvement</answer>
-            <comment_example id="http://dcCCdJqV/">PRGWAe0x29d9yG</comment_example>
+            <question>RT-Aa-xpGZtvkwV</question>
+            <answer>exceeds_expectations</answer>
+            <comment_example id="http://nZQGVXLQ/">FnrlnLRPkuQHv1gZ9FsE-fg.WtamI</comment_example>
         </item>
     </questionnaire>
     <comments>
-        <comment id="http://gCthaRDZ/">hS2Yij3kZCTuJ0l7wRNOlsJnP</comment>
-        <comment id="http://DigACBPy/">FzQzl.e2TjwiZmVkV4z-JVteJ3gM</comment>
+        <comment id="http://zUhCnCAa/">vOJ10pFwTWBh0VUOGcc.pjOn</comment>
+        <comment id="http://stYfxBus/">VcLscBKwCIa</comment>
     </comments>
-    <paperRating>very_good</paperRating>
+    <paperRating>fair</paperRating>
     <recommendation>accept</recommendation>
 </review>
