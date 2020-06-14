@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-    targetNamespace="https://github.com/milica152/XML_tim27"
-    xmlns:sp="https://github.com/milica152/XML_tim27">
+           targetNamespace="https://github.com/milica152/XML_tim27"
+           xmlns:sp="https://github.com/milica152/XML_tim27">
     <xs:element name="scientificPaper">
         <xs:complexType>
             <xs:sequence>
@@ -13,7 +13,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="sp:TStatusS">
                                             <xs:anyAttribute namespace="##local"
-                                                processContents="skip"/>
+                                                             processContents="skip"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -23,7 +23,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:date">
                                             <xs:anyAttribute namespace="##local"
-                                                processContents="skip"/>
+                                                             processContents="skip"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -33,7 +33,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:date">
                                             <xs:anyAttribute namespace="##local"
-                                                processContents="skip"/>
+                                                             processContents="skip"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -44,10 +44,10 @@
                                         <xs:element maxOccurs="unbounded" name="keyword">
                                             <xs:complexType>
                                                 <xs:simpleContent>
-                                                  <xs:extension base="xs:string">
-                                                  <xs:anyAttribute namespace="##local"
-                                                  processContents="skip"/>
-                                                  </xs:extension>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:anyAttribute namespace="##local"
+                                                                         processContents="skip"/>
+                                                    </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
                                         </xs:element>
@@ -228,9 +228,13 @@
                             <xs:element maxOccurs="unbounded" name="cell">
                                 <xs:complexType>
                                     <xs:simpleContent>
+<<<<<<<< HEAD:src/main/resources/static/schemas/scientificPaper.xsd
                                         <xs:extension base="xs:string">
                                             <xs:attribute name="style" type="xs:string"/>
                                         </xs:extension>
+========
+                                        <xs:extension base="xs:string"> </xs:extension>
+>>>>>>>> origin/ana:schemas/scientificPaper.xsd
                                     </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
@@ -239,6 +243,7 @@
                 </xs:element>
             </xs:sequence>
             <xs:attribute ref="sp:id"/>
+<<<<<<<< HEAD:src/main/resources/static/schemas/scientificPaper.xsd
             <xs:attribute name="width">
                 <xs:simpleType>
                     <xs:restriction base="xs:positiveInteger">
@@ -267,6 +272,8 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
+========
+>>>>>>>> origin/ana:schemas/scientificPaper.xsd
         </xs:complexType>
     </xs:element>
     <xs:element name="image">
