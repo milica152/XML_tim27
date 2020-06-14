@@ -13,8 +13,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xmldb.api.base.XMLDBException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -86,5 +90,29 @@ public class ScientificPaperService {
 
     public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String title, String keyword) {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
+    }
+
+    public void transformToHTML(String xml) throws IOException,
+            URISyntaxException, TransformerException {
+        //TODO: dodaj proveru koji tip korisnika zeli da uradi transformaciju (da se ukloni autor ako treba itd)
+        //TODO: promeni putanje
+        String xslFile = "C:\\Users\\anaan\\OneDrive\\Desktop\\scientificPaper.xsl";
+        String outputFile = "C:\\Users\\anaan\\OneDrive\\Desktop\\outpuuuut.html";
+//        if (!outputFile.endsWith(".html"))
+////            outputFile += ".html";
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Source xslStream = new StreamSource(new File(xslFile));
+        Transformer transformer = null;
+        try {
+            transformer = factory.newTransformer(xslStream);
+        } catch (TransformerConfigurationException e) {
+            System.out.println("Error while creating XSLT transformer object.");
+        }
+
+        StreamSource in = new StreamSource(new StringReader(xml));
+        StreamResult out = new StreamResult(new File(outputFile));
+        transformer.transform(in, out);
+        System.out.println("The generated HTML file is:" + outputFile);
+
     }
 }

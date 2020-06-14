@@ -35,4 +35,12 @@ public class ScientificPaperController {
     public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
         return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
     }
+
+    @PutMapping("/transformHTML")
+    @ResponseBody
+    public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {
+        scientificPaperService.transformToHTML(xml);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }
