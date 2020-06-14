@@ -18,10 +18,10 @@ public class ScientificPaperController {
     @Autowired
     private ScientificPaperService scientificPaperService;
 
-    @PostMapping("/save/{title}")
+    @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<String> saveScientificPaper(@PathVariable String title, @RequestBody String xmlRes) throws Exception {
-        return new ResponseEntity<>(scientificPaperService.save(AuthenticationUtilities.loadProperties(), title, xmlRes), HttpStatus.OK);
+    public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.save(AuthenticationUtilities.loadProperties(), xmlRes), HttpStatus.OK);
     }
 
     @GetMapping("/findByTitle")
