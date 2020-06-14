@@ -12,6 +12,10 @@ import org.xmldb.api.base.XMLDBException;
 @Service
 public class CoverLetterService {
 
+
+    @Autowired
+    public DOMParser domParser;
+
     @Autowired
     private CoverLetterRepository coverLetterRepository;
     private static String schemaPath = "schemas\\coverLetter.xsd";
@@ -24,8 +28,7 @@ public class CoverLetterService {
     public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML, String reviewID) throws Exception {
 
         try{
-            DOMParser parser = new DOMParser();
-            Document d = parser.buildDocument(reviewXML, schemaPath);
+            Document d = domParser.buildDocument(reviewXML, schemaPath);
         }catch (Exception e){
             e.printStackTrace();
         }

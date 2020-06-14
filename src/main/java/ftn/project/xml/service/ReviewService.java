@@ -13,6 +13,10 @@ import org.xmldb.api.base.XMLDBException;
 public class ReviewService {
     private static String schemaPath = "schemas\\Review.xsd";
 
+
+    @Autowired
+    public DOMParser domParser;
+
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -24,8 +28,7 @@ public class ReviewService {
     public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML, String reviewID) throws Exception {
 
         try{
-            DOMParser parser = new DOMParser();
-            Document d = parser.buildDocument(reviewXML, schemaPath);
+            Document d = domParser.buildDocument(reviewXML, schemaPath);
         }catch (Exception e){
             e.printStackTrace();
         }
