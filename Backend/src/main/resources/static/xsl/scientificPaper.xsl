@@ -30,8 +30,8 @@
             <tbody>
                 <tr>
                     <xsl:for-each select="/scientificPaper/authors/author">
+                        <xsl:attribute name="id"> <xsl:value-of select="@id"></xsl:value-of></xsl:attribute>
                         <td align="center" style="padding-right:20px;">
-                            <xsl:attribute name="id"> <xsl:value-of select="@id"></xsl:value-of></xsl:attribute>
                             <h4><xsl:value-of select="surname"/>, <xsl:value-of select="name"/></h4>
                             <p><xsl:value-of select="profession"/></p>
                             <p><xsl:value-of select="contact"/></p>
@@ -132,7 +132,7 @@
     </xsl:template>
 
     <xsl:template match="table">
-        <table border="1px" align ="center">
+        <table border="1px">
             <xsl:attribute name="id"> <xsl:value-of select="@id"></xsl:value-of></xsl:attribute>
             <xsl:attribute name="width"> <xsl:value-of select="@width"></xsl:value-of><xsl:value-of select="@measuringUnit"></xsl:value-of></xsl:attribute>
             <xsl:attribute name="height"> <xsl:value-of select="@height"></xsl:value-of><xsl:value-of select="@measuringUnit"></xsl:value-of></xsl:attribute>
@@ -149,7 +149,7 @@
     </xsl:template>
 
     <xsl:template match="image">
-        <table border="1px" align ="center">>
+        <table border="1px">
             <tr>
                 <td align="center">
                     <img width="100%">

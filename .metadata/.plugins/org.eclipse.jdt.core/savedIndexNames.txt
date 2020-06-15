@@ -1,0 +1,2 @@
+INDEX VERSION 1.131+D:\Faks\VII semestar - XML\XML-Projekat\.metadata\.plugins\org.eclipse.jdt.core
+444450886.index
