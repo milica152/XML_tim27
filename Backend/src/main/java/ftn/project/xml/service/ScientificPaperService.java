@@ -5,8 +5,11 @@ import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DOMParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ftn.project.xml.util.MetadataExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,10 +25,14 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ScientificPaperService {
     private static String schemaPath = "schemas\\scientificPaper.xsd";
+
+
+    Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
 
     @Autowired
     public DOMParser domParser;
@@ -36,12 +43,22 @@ public class ScientificPaperService {
     @Autowired
     private MetadataExtractor metadataExtractor;
 
+    @Value("${scientificPaper.XSLPath}")
+    private String xslPath;
+
+    @Value("${scientificPaper.XHTMLPath}")
+    private String htmlPath;
+
     public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes) throws Exception {
         try{
+            DOMParser parser = new DOMParser();
+            Document d = parser.buildDocument(xmlRes, schemaPath);
+
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Document d = domParser.buildDocument(xmlRes, schemaPath);
-            NodeList nl = d.getElementsByTagName("title");
+             NodeList nl = d.getElementsByTagName("title");
             String title = nl.item(0).getTextContent();
+            logger.info("New Scientific paper published under the title: " + title);
+
             //System.out.println(title);
             // pokreni bussiness process
 
@@ -79,7 +96,7 @@ public class ScientificPaperService {
             return "ok";
 
         }catch (Exception e){
-            e.printStackTrace();
+            logger.warn("Ivalid document type! Must be ScientificPaper");
         }
         return "error";
     }
@@ -92,16 +109,11 @@ public class ScientificPaperService {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
     }
 
-    public void transformToHTML(String xml) throws IOException,
-            URISyntaxException, TransformerException {
+    public void transformToHTML(String xml) throws TransformerException {
         //TODO: dodaj proveru koji tip korisnika zeli da uradi transformaciju (da se ukloni autor ako treba itd)
-        //TODO: promeni putanje
-        String xslFile = "C:\\Users\\anaan\\OneDrive\\Desktop\\scientificPaper.xsl";
-        String outputFile = "C:\\Users\\anaan\\OneDrive\\Desktop\\outpuuuut.html";
-//        if (!outputFile.endsWith(".html"))
-////            outputFile += ".html";
+
         TransformerFactory factory = TransformerFactory.newInstance();
-        Source xslStream = new StreamSource(new File(xslFile));
+        Source xslStream = new StreamSource(new File(xslPath));
         Transformer transformer = null;
         try {
             transformer = factory.newTransformer(xslStream);
@@ -109,8 +121,12 @@ public class ScientificPaperService {
             System.out.println("Error while creating XSLT transformer object.");
         }
 
+        int number = Objects.requireNonNull(new File(htmlPath).list()).length;
+        String outputFile = htmlPath + "scientificPaperHTML" + number +".html";
+
         StreamSource in = new StreamSource(new StringReader(xml));
         StreamResult out = new StreamResult(new File(outputFile));
+        assert transformer != null;
         transformer.transform(in, out);
         System.out.println("The generated HTML file is:" + outputFile);
 

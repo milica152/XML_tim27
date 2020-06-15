@@ -46,4 +46,11 @@ public class CoverLetterController {
         conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<CoverLetter>(coverLetterService.getByDocumentId(conn, id), HttpStatus.OK);
     }
+
+    @PutMapping("/transformHTML")
+    @ResponseBody
+    public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {
+        coverLetterService.transformToHTML(xml);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
