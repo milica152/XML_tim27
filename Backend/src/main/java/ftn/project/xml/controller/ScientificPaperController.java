@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(allowedHeaders = "http://localhost:4200/")
 @RequestMapping(value = "/scientificPaper")
 public class ScientificPaperController {
 
@@ -42,5 +43,4 @@ public class ScientificPaperController {
         scientificPaperService.transformToHTML(xml);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
 }
