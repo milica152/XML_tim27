@@ -31,7 +31,7 @@ import java.util.Objects;
 
 @Service
 public class ScientificPaperService {
-    private static String schemaPath = "schemas\\scientificPaper.xsd";
+    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
@@ -57,7 +57,7 @@ public class ScientificPaperService {
             Document d = parser.buildDocument(xmlRes, schemaPath);
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-             NodeList nl = d.getElementsByTagName("title");
+            NodeList nl = d.getElementsByTagName("title");
             String title = nl.item(0).getTextContent();
             logger.info("New Scientific paper published under the title: " + title);
 
