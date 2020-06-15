@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(allowedHeaders = "http://localhost:4200/")
 @RequestMapping(value = "/scientificPaper")
 public class ScientificPaperController {
 
@@ -49,5 +50,12 @@ public class ScientificPaperController {
     @ResponseBody
     public ResponseEntity<String> delete(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.delete(title, AuthenticationUtilities.loadProperties()), HttpStatus.OK);
+    }
+
+    @PutMapping("/transformHTML")
+    @ResponseBody
+    public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {
+        scientificPaperService.transformToHTML(xml);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

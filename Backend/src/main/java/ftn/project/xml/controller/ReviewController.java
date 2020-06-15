@@ -47,5 +47,12 @@ public class ReviewController {
         return new ResponseEntity<Review>(reviewService.getByDocumentId(conn, id), HttpStatus.OK);
     }
 
+    @PutMapping("/transformHTML")
+    @ResponseBody
+    public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {
+        reviewService.transformToHTML(xml);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 
 }

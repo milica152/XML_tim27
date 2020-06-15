@@ -3,6 +3,7 @@ package ftn.project.xml.repository;
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
+import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.RDFAuthenticationUtilities;
@@ -19,6 +20,8 @@ import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
 import org.apache.jena.update.UpdateRequest;
 import org.exist.xmldb.EXistResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
@@ -43,6 +46,8 @@ public class ScientificPaperRepository {
     private static String papersCollectionPathInDB = "/db/xml/scientificPaper";
     private static String papersDocumentID = "paper.xml";
     private static String SPARQL_NAMED_GRAPH_URI = "/sp";
+
+    Logger logger = LoggerFactory.getLogger(ScientificPaperRepository.class);
 
     @Autowired
     private DBUtils dbUtils;
