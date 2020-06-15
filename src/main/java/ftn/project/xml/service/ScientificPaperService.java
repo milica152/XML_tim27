@@ -87,4 +87,8 @@ public class ScientificPaperService {
     public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String title, String keyword) {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
     }
+
+    public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return scientificPaperRepository.delete(loadProperties, title);
+    }
 }

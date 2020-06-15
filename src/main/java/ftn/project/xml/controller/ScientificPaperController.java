@@ -35,4 +35,11 @@ public class ScientificPaperController {
     public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
         return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
     }
+
+
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<String> delete(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.delete(title, AuthenticationUtilities.loadProperties()), HttpStatus.OK);
+    }
 }

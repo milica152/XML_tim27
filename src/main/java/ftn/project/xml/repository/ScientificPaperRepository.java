@@ -5,11 +5,9 @@ import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.RDFAuthenticationUtilities;
-import ftn.project.xml.util.RDFAuthenticationUtilities.RDFConnectionProperties;
 import ftn.project.xml.util.SparqlUtil;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
@@ -38,7 +36,6 @@ public class ScientificPaperRepository {
     private static String papersCollectionPathInDB = "/db/xml/scientificPaper";
     private static String papersDocumentID = "paper.xml";
     private static String SPARQL_NAMED_GRAPH_URI = "/sp";
-
 
     @Autowired
     private DBUtils dbUtils;
@@ -251,5 +248,46 @@ public class ScientificPaperRepository {
 
         UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint);
         processor.execute();
+    }
+
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        dbUtils.initilizeDBserver(conn);
+
+        Collection col = null;
+        Resource res = null;
+
+        try {
+            col = DatabaseManager.getCollection(conn.uri + papersCollectionPathInDB);
+            col.setProperty(OutputKeys.INDENT, "yes");
+
+            res = col.getResource(papersDocumentID + title);
+
+            if(res == null) {
+                System.out.println("[WARNING] Document '" + papersDocumentID+title + "' can not be found!");
+            } else {
+                col.removeResource(res);
+            }
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } finally {
+            //don't forget to clean up!
+
+            if(res != null) {
+                try {
+                    ((EXistResource)res).freeResources();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+
+            if(col != null) {
+                try {
+                    col.close();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+        }
+        return "ok";
     }
 }
