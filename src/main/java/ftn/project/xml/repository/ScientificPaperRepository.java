@@ -1,13 +1,19 @@
 package ftn.project.xml.repository;
 
+import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.RDFAuthenticationUtilities;
 import ftn.project.xml.util.SparqlUtil;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
@@ -27,6 +33,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static ftn.project.xml.templates.XUpdateTemplate.TARGET_NAMESPACE;
@@ -290,4 +297,50 @@ public class ScientificPaperRepository {
         }
         return "ok";
     }
+
+    public ArrayList<MetadataDTO> getMetadata(RDFAuthenticationUtilities.RDFConnectionProperties conn, String title) {
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + SPARQL_NAMED_GRAPH_URI, "?s ?p ?o");
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+        ResultSet results = query.execSelect();
+        String varName;
+        RDFNode varValue;
+        ArrayList<MetadataDTO> metadataDTOs = new ArrayList<MetadataDTO>();
+
+        while(results.hasNext()) {
+
+            // A single answer from a SELECT query
+            QuerySolution querySolution = results.next() ;
+            Iterator<String> variableBindings = querySolution.varNames();
+            MetadataDTO metadataDTO = new MetadataDTO();
+
+            // Retrieve variable bindings
+            while (variableBindings.hasNext()) {
+
+                varName = variableBindings.next();
+                varValue = querySolution.get(varName);
+                if(varName.equalsIgnoreCase("o")){
+                    metadataDTO.setObject(varValue.toString());
+                } else if(varName.equalsIgnoreCase("p")){
+                    metadataDTO.setPredicate(varValue.toString());
+                } else if(varName.equalsIgnoreCase("s")){
+                    int lastIndex = varValue.toString().lastIndexOf('/');
+                    if(varValue.toString().substring(lastIndex + 1).equalsIgnoreCase(title)){
+                        metadataDTO.setSubject(varValue.toString());
+                    }else{
+                        metadataDTO.setSubject(null);
+                    }
+                } else{
+                    System.out.println("No attribute with that name!");
+                }
+                //System.out.println(varName + ": " + varValue);
+            }
+            if(metadataDTO.getSubject() != null){
+                metadataDTOs.add(metadataDTO);
+            }
+            //System.out.println();
+        }
+        return metadataDTOs;
+
+    }
+
 }

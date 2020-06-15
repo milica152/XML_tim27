@@ -1,11 +1,13 @@
 package ftn.project.xml.service;
 
+import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DOMParser;
 import ftn.project.xml.util.MetadataExtractor;
+import ftn.project.xml.util.RDFAuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -58,6 +60,11 @@ public class ScientificPaperService {
             status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
             status.setTextContent("in process");
 
+            // about
+            Element about = d.createElement("about");
+            d.getDocumentElement().setAttribute("about", title);
+
+
             metadata.item(0).insertBefore(datePublished, keywords.item(0));
             metadata.item(0).insertBefore(status, datePublished);
 
@@ -90,5 +97,9 @@ public class ScientificPaperService {
 
     public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return scientificPaperRepository.delete(loadProperties, title);
+    }
+
+    public List<MetadataDTO> getMetadata(RDFAuthenticationUtilities.RDFConnectionProperties properties, String title) {
+        return scientificPaperRepository.getMetadata(properties, title);
     }
 }
