@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scientificPaper xmlns="https://github.com/milica152/XML_tim27"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/ANIN%20KOMP/XML/Projekat/XML_tim27/src/main/resources/static/schemas/scientificPaper.xsd" institution="QWYz0gMfkGKfdi3jOtOB">
+    <metadata>
+        <status>accepted</status>
+        <datePublished>2020-11-19Z</datePublished>
+        <dateAccepted>2021-07-24Z</dateAccepted>
+        <keywords>
+            <keyword>B5UU5hDOyKM.GLJs</keyword>
+            <keyword>qrMGBimDehlc.JqPvMT</keyword>
+        </keywords>
+    </metadata>
+    <title>cKRhBdQtM7cR9WTyGi59E9I</title>
+    <authors>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="j/v">
+            <name>Nlb6sTk9teKZO</name>
+            <surname>HhO</surname>
+            <profession>LUlAmppEzegckna9CPpC-wnGTno6uH</profession>
+            <contact>I1NhjxdNyh4RVwXIDmDQe3YTX4C</contact>
+        </author>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="ac/qka/fim/issz">
+            <name>pXwNuL4_Beoc3lztO-Z2S1r_aD2</name>
+            <surname>ijG19Weg</surname>
+            <profession>ba6K7zO</profession>
+            <contact>h</contact>
+        </author>
+    </authors>
+    <abstract>
+        <plainChapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="w/qbu/cf/brkq">
+            <text>
+                <paragraph sp:id="s/k">RKQhQGKDl2Ouz-3nqzt3gq9xJl__C</paragraph>
+            </text>
+        </plainChapter>
+    </abstract>
+    <chapters>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="wkf/tw">
+            <title>tpZJuroECYPIyhG8</title>
+            <text>
+                <paragraph sp:id="q/n">hYsvc8HyLYU9HWFJCkkUj7-Srkt</paragraph>
+                <paragraph sp:id="l/qs/fxlk/cf">tGanRjzB76yljCj</paragraph>
+            </text>
+            <codeBlock sp:id="za/jdz">QicLvLKdVolaD5I1PbEz</codeBlock>
+            <referencePointer sp:id="y/v">Nf2Y7zEmfEU52dCq8Ybg</referencePointer>
+        </chapter>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="uvrc/v">
+            <title>G</title>
+            <text>
+                <paragraph sp:id="t/rxq">zErv_uXCgw5S3</paragraph>
+                <paragraph sp:id="rah/j">CYfgjXNXwevXkXWJ</paragraph>
+            </text>
+            <image sp:id="do/rna">
+                <description>n5CxUP7Y71oL</description>
+                <concreteImage>ZGVmYXVsdA==</concreteImage>
+            </image>
+            <image sp:id="k/nnc">
+                <description>cu</description>
+                <concreteImage>8886697469668581</concreteImage>
+            </image>
+        </chapter>
+    </chapters>
+    <references>
+        <reference xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="k/wuh" year="2020-03-08" authorName="GieiQqS090lfM">
+            <url>lIvXAKANewz3toai.2ut0h</url>
+            <name>HalMogj5AQsP38hEMARtrUb</name>
+        </reference>
+    </references>
+</scientificPaper>
