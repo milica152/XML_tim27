@@ -1,11 +1,14 @@
 package ftn.project.xml.util;
 
+
+import ftn.project.xml.repository.ScientificPaperRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,6 +25,8 @@ import java.io.*;
 
 @Component
 public class DOMParser  implements ErrorHandler {
+    Logger logger = LoggerFactory.getLogger(DOMParser.class);
+
 
     public Document buildDocument(String xmlResource, String schemaPath) throws SAXException, ParserConfigurationException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -51,22 +56,22 @@ public class DOMParser  implements ErrorHandler {
 
     @Override
     public void error(SAXParseException err) throws SAXParseException {
-        System.out.println("error");
-        err.printStackTrace();
+        logger.error("Error with parsing.");
+        logger.trace(err.toString());
         throw err;
     }
 
     @Override
     public void fatalError(SAXParseException err) throws SAXException {
-        System.out.println("big error");
-        err.printStackTrace();
+        logger.error("Error with parsing.");
+        logger.trace(err.toString());
         throw err;
     }
 
     @Override
     public void warning(SAXParseException err) throws SAXParseException {
-        System.out.println("warning");
-        err.printStackTrace();
+        logger.error("Error with parsing.");
+        logger.trace(err.toString());
     }
 
 
