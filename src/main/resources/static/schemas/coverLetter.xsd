@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://github.com/milica152/XML_tim27"
+    xmlns="https://github.com/milica152/XML_tim27">
+
+    <xs:include schemaLocation="scientificPaper.xsd"/>
+    <xs:element name="coverLetter">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="date" type="xs:date"/>
+                <xs:element ref="author"/>
+                <xs:element maxOccurs="unbounded" ref="paragraph"/>
+                <xs:element name="signature">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="sincerely">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:pattern value="Sincerely, "/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="signatureImage">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:base64Binary"/>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
