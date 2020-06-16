@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://github.com/milica152/XML_tim27"
+    xmlns="https://github.com/milica152/XML_tim27">
+    <xs:include schemaLocation="scientificPaper.xsd"/>
+    <xs:complexType name="Correction">
+        <xs:sequence>
+            <xs:element name="original">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element ref="image"/>
+                        <xs:element ref="chapter"/>
+                        <xs:element ref="paragraph"/>
+                        <xs:element ref="title"/>
+                        <xs:element ref="table"/>
+                        <xs:element name="string" type="xs:string"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="corrected">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element ref="image"/>
+                        <xs:element ref="chapter"/>
+                        <xs:element ref="paragraph"/>
+                        <xs:element ref="title"/>
+                        <xs:element ref="table"/>
+                        <xs:element name="string" type="xs:string"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="eMailNotification">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="corrections">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="listItem">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="correction">
+                                            <xs:complexType>
+                                                <xs:complexContent>
+                                                  <xs:extension base="Correction">
+                                                  <xs:attribute ref="id"/>
+                                                  </xs:extension>
+                                                </xs:complexContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute ref="id"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute ref="id"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

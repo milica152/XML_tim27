@@ -1,137 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scientificPaper xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/scientificPaper.xsd" institution="_iK">
+ xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/ANIN%20KOMP/XML/Projekat/XML_tim27/src/main/resources/static/schemas/scientificPaper.xsd" institution="QWYz0gMfkGKfdi3jOtOB">
     <metadata>
-        <status>rejected</status>
-        <datePublished>2020-07-11</datePublished>
-        <dateAccepted>2022-04-19Z</dateAccepted>
+        <status>accepted</status>
+        <datePublished>2020-11-19Z</datePublished>
+        <dateAccepted>2021-07-24Z</dateAccepted>
         <keywords>
-            <keyword>MIOiBffSqF</keyword>
-            <keyword>lCn8Ho</keyword>
+            <keyword>B5UU5hDOyKM.GLJs</keyword>
+            <keyword>qrMGBimDehlc.JqPvMT</keyword>
         </keywords>
     </metadata>
-    <title>g.MNRXfgxtmFfMuUfWUQ15</title>
+    <title>cKRhBdQtM7cR9WTyGi59E9I</title>
     <authors>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="s/jye/pcb/pwki/zn">
-            <name>SDdNkyAaZLeXeExYCAeUjgxAIbk05</name>
-            <surname>pikExE</surname>
-            <profession>mF9nwysyp4DMJIWj8.eIrCde</profession>
-            <contact>aSnv03Xl2o2qo4</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="j/v">
+            <name>Nlb6sTk9teKZO</name>
+            <surname>HhO</surname>
+            <profession>LUlAmppEzegckna9CPpC-wnGTno6uH</profession>
+            <contact>I1NhjxdNyh4RVwXIDmDQe3YTX4C</contact>
         </author>
-        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="n/sj">
-            <name>dNIQ0Q</name>
-            <surname>YzF_ij9</surname>
-            <profession>FCo2</profession>
-            <contact>TzhNd2aIJo3BU8P1-nrRB16s6n</contact>
+        <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="ac/qka/fim/issz">
+            <name>pXwNuL4_Beoc3lztO-Z2S1r_aD2</name>
+            <surname>ijG19Weg</surname>
+            <profession>ba6K7zO</profession>
+            <contact>h</contact>
         </author>
     </authors>
     <abstract>
-        <paragraph xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="clnk/t" style="d3">paanOB74fYN.Uf</paragraph>
-        <paragraph xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="sa/m" style="NBp2j">Tsfv0OetWSRoTMGX1</paragraph>
+        <plainChapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="w/qbu/cf/brkq">
+            <text>
+                <paragraph sp:id="s/k">RKQhQGKDl2Ouz-3nqzt3gq9xJl__C</paragraph>
+            </text>
+        </plainChapter>
     </abstract>
     <chapters>
-        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="u/t">
-            <title level="3" style="BNsp0UiFtKkv03XkE3">mR</title>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="wkf/tw">
+            <title>tpZJuroECYPIyhG8</title>
             <text>
-                <paragraph sp:id="e/uj/tyqt/kz/xr" style="hmGwNOp468Z33xl1gtWxk">YV</paragraph>
-                <paragraph sp:id="q/go" style="NJh0jr5d-">hElLgmGu1iMkfEhbi</paragraph>
+                <paragraph sp:id="q/n">hYsvc8HyLYU9HWFJCkkUj7-Srkt</paragraph>
+                <paragraph sp:id="l/qs/fxlk/cf">tGanRjzB76yljCj</paragraph>
             </text>
-<!--            <image sp:id="z/vh">
-                <description>ttZPY0-vnjmuVMqWv</description>
-                <concreteImage>7283838367666887857977717082857484808588</concreteImage>
-            </image>-->
-<!--            <list sp:id="t/dy/unpglb/gaiiz/hh" style="OKyqeAOBQlfFr0v1L" isOrdered="1">
-                <listItem>dgE8G.9a6NwFIQPlDls84T.iaoG9d</listItem>
-                <listItem>qb</listItem>
-            </list>-->
-<!--            <table sp:id="lq/fcfn/ksy" width="425" height="413" measuringUnit="mm">
-                <row>
-                    <cell style="Et8sKyKFEh">sgcJ_wrvoLFjRlNdD48.tPlx.T</cell>
-                    <cell style="EhUBM7qIA2SDVIUrheU">vIdhHy5LySIhx.6</cell>
-                </row>
-                <row>
-                    <cell style="H6VRnpkrNDr.1VKal">eEHOGt0mNeSsLO</cell>
-                    <cell style="Qyep3EzH">byObK8roI1I</cell>
-                </row>
-            </table>-->
-            <codeBlock sp:id="e/d">jnxI6PvKVx4jX.3osRR45ZH</codeBlock>
-<!--            <referencePointer sp:id="cudp/kuu/kx/xhelhdgd/z">sgk1WFvUyTNNVhNpKWThwb</referencePointer>-->
-<!--            <image sp:id="a/tacxicy/ownzdeb/je/l">
-                <description>prHjrNVa</description>
-                <concreteImage>7381836674797579789083826875857384836779</concreteImage>
-            </image>-->
-            <list sp:id="y/wpc" style="c" isOrdered="1">
-                <listItem>g.</listItem>
-                <listItem>LGNYCdQ1XMRgGg_fLDuJ</listItem>
-            </list>
-<!--            <table sp:id="a/wtnwu/cfb/mq/z" width="72" height="844" measuringUnit="cm">
-                <row>
-                    <cell style="t_N269vpTY">pHhTSDgjtzbffFp8_</cell>
-                    <cell style="KtRbjAp2BQpAPAKotE4e12VHTU">Eb4rNzI60fbuXug</cell>
-                </row>
-                <row>
-                    <cell style="JqJevp_OrMR">eAXy2Ew0</cell>
-                    <cell style="QwsNxbe5">ZZw</cell>
-                </row>
-            </table>-->
-<!--            <codeBlock sp:id="wd/x">lxDgqXRfF2jR7m34A.Dw6SY</codeBlock>-->
-<!--            <referencePointer sp:id="k/c">tqj9CaJaXPrrC_W9</referencePointer>-->
+            <codeBlock sp:id="za/jdz">QicLvLKdVolaD5I1PbEz</codeBlock>
+            <referencePointer sp:id="y/v">Nf2Y7zEmfEU52dCq8Ybg</referencePointer>
         </chapter>
-        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="m/w">
-            <title level="4" style="i9lyF_5JC9a.la">ie_UwowVrmuAVmg.94EJvmVo2POU6k</title>
+        <chapter xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="uvrc/v">
+            <title>G</title>
             <text>
-                <paragraph sp:id="t/x" style="wkJQuOrm40wX7Lj">p3</paragraph>
-                <paragraph sp:id="w/m" style="ksCodZqpNzb.SF2Ax0T0mi2pm">jAYHDpW36Yd3Osg-nv1wZA</paragraph>
+                <paragraph sp:id="t/rxq">zErv_uXCgw5S3</paragraph>
+                <paragraph sp:id="rah/j">CYfgjXNXwevXkXWJ</paragraph>
             </text>
-<!--            <image sp:id="t/sbp">
-                <description>MvItpXln0ye6EX6ZLN7Q_Oi_xRk</description>
-                <concreteImage>7565668879697767858365897570706689858884797288888782806975797276</concreteImage>
-            </image>-->
-<!--            <list sp:id="foz/raq/se/xn/e" style="rReCMIeai1moTSb4GS-YDG1" isOrdered="1">
-                <listItem>VNp1TGV5Bmo2</listItem>
-                <listItem>mkxREVZcWJ6iqy59NaGzGK9SdaN</listItem>
-            </list>-->
-            <table sp:id="l/zuk/xj" width="531" height="476" measuringUnit="px">
-                <row>
-                    <cell style="_fFqZOiipQ8t1yo-AFN9z2JGY">fwa</cell>
-                    <cell style="QWAUyvt3oArvr9qhi0C5uj-MRe7x">ehRFcM6rQAh_hu2Yb8vD63hZdc8xV</cell>
-                </row>
-                <row>
-                    <cell style="BjQDru7z-l0g">rFglA0eyIU1J6QUD</cell>
-                    <cell style="b-9i31lX0i9n">h.WG8E_Q7Nsru1Mz989.Mb22ubld</cell>
-                </row>
-            </table>
-<!--            <codeBlock sp:id="xlmd/xlbb">X5k5N_tb18OWh</codeBlock>-->
-<!--            <referencePointer sp:id="l/knfi/p">hOLHvvWU4</referencePointer>-->
-<!--            <image sp:id="n/ainq">
-                <description>LXMTwIklvn2g</description>
-                <concreteImage>7989888670786788</concreteImage>
-            </image>-->
-<!--            <list sp:id="aad/dnaz/fs/fs/e" style="sSb8g8DJuUYy6PA7qQA" isOrdered="0">
-                <listItem>beH5NYPMeiHLT4BDKKIlNM</listItem>
-                <listItem>SzU</listItem>
-            </list>-->
-            <table sp:id="c/a" width="727" height="852" measuringUnit="cm">
-                <row>
-                    <cell style="h">ix6skPoY89z2QdTKaLUmhjmfA0Vat</cell>
-                    <cell style="nDz.vy">bn</cell>
-                </row>
-                <row>
-                    <cell style="WOH">iAaFkTtJz</cell>
-                    <cell style="rPEEc7laxFkjjWt24rM9MzmS3W">gptwaTkJhZB</cell>
-                </row>
-            </table>
-<!--            <codeBlock sp:id="ln/r">vanaKpJJzo0H9FRoOgZT</codeBlock>-->
-<!--            <referencePointer sp:id="s/i">vOnJh-YmEpF-Dyl0iucIMQF_</referencePointer>-->
+            <image sp:id="do/rna">
+                <description>n5CxUP7Y71oL</description>
+                <concreteImage>ZGVmYXVsdA==</concreteImage>
+            </image>
+            <image sp:id="k/nnc">
+                <description>cu</description>
+                <concreteImage>8886697469668581</concreteImage>
+            </image>
         </chapter>
     </chapters>
     <references>
-        <reference xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="g/s">
-            <url>igoqN_CFSD</url>
-            <name>BN7Yy2LQ-Tb6x-Hmm99UZYtP.ve8</name>
-            <year>uCddQLc34aj3XyuaT2JzqJ7</year>
-            <authorName>KblgSXP.magUW8M2AaxA</authorName>
+        <reference xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="k/wuh" year="2020-03-08" authorName="GieiQqS090lfM">
+            <url>lIvXAKANewz3toai.2ut0h</url>
+            <name>HalMogj5AQsP38hEMARtrUb</name>
         </reference>
     </references>
 </scientificPaper>

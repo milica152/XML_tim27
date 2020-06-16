@@ -1,5 +1,6 @@
 package ftn.project.xml.service;
 
+import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.repository.ScientificPaperRepository;
@@ -8,6 +9,7 @@ import ftn.project.xml.util.DOMParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ftn.project.xml.util.MetadataExtractor;
+import ftn.project.xml.util.RDFAuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ import java.util.Objects;
 
 @Service
 public class ScientificPaperService {
-    private static String schemaPath = "schemas\\scientificPaper.xsd";
+    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
@@ -55,7 +57,7 @@ public class ScientificPaperService {
             Document d = parser.buildDocument(xmlRes, schemaPath);
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-             NodeList nl = d.getElementsByTagName("title");
+            NodeList nl = d.getElementsByTagName("title");
             String title = nl.item(0).getTextContent();
             logger.info("New Scientific paper published under the title: " + title);
 
@@ -78,6 +80,11 @@ public class ScientificPaperService {
             Element status = d.createElement("status");
             status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
             status.setTextContent("in process");
+
+            // about
+            Element about = d.createElement("about");
+            d.getDocumentElement().setAttribute("about", title);
+
 
             metadata.item(0).insertBefore(datePublished, keywords.item(0));
             metadata.item(0).insertBefore(status, datePublished);
@@ -107,6 +114,14 @@ public class ScientificPaperService {
 
     public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String title, String keyword) {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
+    }
+
+    public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return scientificPaperRepository.delete(loadProperties, title);
+    }
+
+    public List<MetadataDTO> getMetadata(RDFAuthenticationUtilities.RDFConnectionProperties properties, String title) {
+        return scientificPaperRepository.getMetadata(properties, title);
     }
 
     public void transformToHTML(String xml) throws TransformerException {

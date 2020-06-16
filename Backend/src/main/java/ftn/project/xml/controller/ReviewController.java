@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/review")
 public class ReviewController {
@@ -21,31 +23,31 @@ public class ReviewController {
     @ResponseBody
     public ResponseEntity<String> saveReview(@RequestBody String reviewXML) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>(reviewService.save(conn, reviewXML, "1"), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.save(conn, reviewXML), HttpStatus.OK);
     }
 
-
-    @PutMapping("/update")
+    @DeleteMapping("/delete")
     @ResponseBody
-    public void updateReview(@RequestBody String reviewXML) throws Exception {
+    public ResponseEntity<String> deleteReview(@RequestBody String title) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        reviewService.update(conn, reviewXML);
+        return new ResponseEntity<>(reviewService.delete(conn, title), HttpStatus.OK);
     }
 
-
-    @PostMapping("/delete/{id}")
+    @PostMapping("/findByTitle")
     @ResponseBody
-    public void deleteReview(@PathVariable("id") String id) throws Exception {
+    public ResponseEntity<String> getByDocumentId(@RequestBody String title) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        reviewService.update(conn, id);
+        return new ResponseEntity<>(reviewService.getByDocumentId(conn, title), HttpStatus.OK);
     }
 
-    @PostMapping("/getByDocumentId/{id}")
+
+    @PostMapping("/findAllBySPTitle")
     @ResponseBody
-    public ResponseEntity<Review> getByDocumentId(@PathVariable("id") String id) throws Exception {
+    public ResponseEntity<List<String>> findAllBySPTitle(@RequestBody String title) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<Review>(reviewService.getByDocumentId(conn, id), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.findAllBySPTitle(conn, title), HttpStatus.OK);
     }
+
 
     @PutMapping("/transformHTML")
     @ResponseBody

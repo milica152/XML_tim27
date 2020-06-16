@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
+import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
@@ -49,7 +50,7 @@ public class CoverLetterRepository {
         }
     }
 
-    public CoverLetter getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         CoverLetter result = null;
         dbUtils.initilizeDBserver(conn);
 
@@ -62,20 +63,8 @@ public class CoverLetterRepository {
 
             res = (XMLResource)col.getResource(cLetterDocumentID + id);
 
-            if(res == null) {
-                System.out.println("[WARNING] Document '" + cLetterDocumentID + id + "' can not be found!");
-            } else {
 
-                JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
-
-                Unmarshaller unmarshaller = context.createUnmarshaller();
-
-                CoverLetter review = (CoverLetter) unmarshaller.unmarshal(res.getContentAsDOM());
-                result = review;
-            }
         } catch (XMLDBException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
             e.printStackTrace();
         } finally {
             //don't forget to clean up!
@@ -96,9 +85,50 @@ public class CoverLetterRepository {
                 }
             }
         }
-        return result;
+        if(res == null) {
+            System.out.println("[WARNING] Document '" + cLetterDocumentID + id + "' can not be found!");
+        }
+        return (String) res.getContent();
     }
 
 
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        dbUtils.initilizeDBserver(conn);
 
+        Collection col = null;
+        Resource res = null;
+        try {
+            col = DatabaseManager.getCollection(conn.uri + cLettersCollectionPathInDB);
+            col.setProperty(OutputKeys.INDENT, "yes");
+
+            res = col.getResource(cLetterDocumentID + title);
+
+            if(res == null) {
+                System.out.println("[WARNING] Document '" + cLetterDocumentID+title + "' can not be found!");
+            } else {
+                col.removeResource(res);
+            }
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } finally {
+            //don't forget to clean up!
+
+            if(res != null) {
+                try {
+                    ((EXistResource)res).freeResources();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+
+            if(col != null) {
+                try {
+                    col.close();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+        }
+        return "ok";
+    }
 }

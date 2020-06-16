@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.xml.transform.*;
@@ -15,11 +16,13 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 public class ReviewService {
-    private static String schemaPath = "schemas\\Review.xsd";
+    private static String schemaPath = "src\\main\\resources\\static\\schemas\\Review.xsd";
 
 
     @Autowired
@@ -34,23 +37,25 @@ public class ReviewService {
     @Value("${review.XHTMLPath}")
     private String htmlPath;
 
-
-    public void update(AuthenticationUtilities.ConnectionProperties conn, String id) {
-
-    }
-
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML, String reviewID) throws Exception {
-
+    public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML) throws Exception {
+        Document d = null;
+        String title = null;
         try{
-            Document d = domParser.buildDocument(reviewXML, schemaPath);
+            d = domParser.buildDocument(reviewXML, schemaPath);
         }catch (Exception e){
             e.printStackTrace();
         }
+        if(d != null){
+            NodeList nl = d.getElementsByTagName("title");
+            title = nl.item(0).getTextContent();
+        }else{
+            return "error";
+        }
 
-        return reviewRepository.save(conn, reviewXML, reviewID);
+        return reviewRepository.save(conn, reviewXML, title);
     }
 
-    public Review getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return reviewRepository.getByDocumentId(conn, id);
     }
 
@@ -75,5 +80,14 @@ public class ReviewService {
         transformer.transform(in, out);
         System.out.println("The generated HTML file is:" + outputFile);
 
+    }
+
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return reviewRepository.delete(conn, title);
+    }
+
+    public List<String> findAllBySPTitle(AuthenticationUtilities.ConnectionProperties conn, String title) {
+        // TODO - dodati ovu fju kad se povezu lepo ScientificPaper i Review
+        return new ArrayList<>();
     }
 }
