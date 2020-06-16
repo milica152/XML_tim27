@@ -1,6 +1,5 @@
 package ftn.project.xml.controller;
 
-import ftn.project.xml.model.CoverLetter;
 import ftn.project.xml.service.CoverLetterService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,30 +20,22 @@ public class CoverLetterController {
     @ResponseBody
     public ResponseEntity<String> save(@RequestBody String reviewXML) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>(coverLetterService.save(conn, reviewXML, "1"), HttpStatus.OK);
+        return new ResponseEntity<>(coverLetterService.save(conn, reviewXML), HttpStatus.OK);
     }
 
 
-    @PutMapping("/update")
+    @DeleteMapping("/delete")
     @ResponseBody
-    public void update(@RequestBody String reviewXML) throws Exception {
+    public ResponseEntity<String> delete(@RequestBody String title) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        coverLetterService.update(conn, reviewXML);
+        return new ResponseEntity<>(coverLetterService.delete(conn, title), HttpStatus.OK);
     }
 
-
-    @PostMapping("/delete/{id}")
+    @PostMapping("/getByDocumentId")
     @ResponseBody
-    public void delete(@PathVariable("id") String id) throws Exception {
+    public ResponseEntity<String> getByDocumentId(@RequestBody String title) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        coverLetterService.update(conn, id);
-    }
-
-    @PostMapping("/getByDocumentId/{id}")
-    @ResponseBody
-    public ResponseEntity<CoverLetter> getByDocumentId(@PathVariable("id") String id) throws Exception {
-        conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<CoverLetter>(coverLetterService.getByDocumentId(conn, id), HttpStatus.OK);
+        return new ResponseEntity<>(coverLetterService.getByDocumentId(conn, title), HttpStatus.OK);
     }
 
     @PutMapping("/transformHTML")

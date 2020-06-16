@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.xml.transform.*;
@@ -26,7 +27,7 @@ public class CoverLetterService {
 
     @Autowired
     private CoverLetterRepository coverLetterRepository;
-    private static String schemaPath = "schemas\\coverLetter.xsd";
+    private static String schemaPath = "src\\main\\resources\\static\\schemas\\coverLetter.xsd";
 
     @Value("${coverLetter.XSLPath}")
     private String xslPath;
@@ -34,23 +35,26 @@ public class CoverLetterService {
     @Value("${coverLetter.XHTMLPath}")
     private String htmlPath;
 
-
-    public void update(AuthenticationUtilities.ConnectionProperties conn, String id) {
-
-    }
-
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML, String reviewID) throws Exception {
+    public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML) throws Exception {
+        String paperTitle = null;
+        Document d = null;
 
         try{
-            Document d = domParser.buildDocument(reviewXML, schemaPath);
+            d = domParser.buildDocument(reviewXML, schemaPath);
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return coverLetterRepository.save(conn, reviewXML, reviewID);
+            if(d != null){
+                NodeList nl = d.getElementsByTagName("paperTitle");
+                paperTitle = nl.item(0).getTextContent();
+            }else{
+                return "error";
+        }
+        return coverLetterRepository.save(conn, reviewXML, paperTitle);
     }
 
-    public CoverLetter getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return coverLetterRepository.getByDocumentId(conn, id);
     }
 
@@ -78,4 +82,7 @@ public class CoverLetterService {
     }
 
 
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return coverLetterRepository.delete(conn, title);
+    }
 }
