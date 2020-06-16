@@ -98,7 +98,7 @@ public class ScientificPaperService {
 
             // saving to RDF store
             scientificPaperRepository.saveMetadata(extractedMetadata);
-            scientificPaperRepository.save(conn, title, xmlRes);
+            scientificPaperRepository.save(conn, title, newSciPap);
 
             return "ok";
 
@@ -108,7 +108,7 @@ public class ScientificPaperService {
         return "error";
     }
 
-    public ScientificPaper getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         return scientificPaperRepository.getByTitle(conn, s);
     }
 
@@ -145,5 +145,48 @@ public class ScientificPaperService {
         transformer.transform(in, out);
         System.out.println("The generated HTML file is:" + outputFile);
 
+    }
+
+    public String exportMetadataToRDF(AuthenticationUtilities.ConnectionProperties loadProperties   ,  String title, String filePath) throws IOException {
+        BufferedWriter out = null;
+
+        File f = new File(filePath);
+        if(f.isFile()){
+            return "error";
+        }
+        try {
+            FileWriter fstream = new FileWriter(filePath + "/" + title + ".txt", false); //true tells to append data.
+            out = new BufferedWriter(fstream);
+            ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
+            String sp = getByTitle(loadProperties, title);
+            System.out.println(sp);
+            metadataExtractor.extractMetadata(new ByteArrayInputStream(sp.getBytes()), metadataStream);
+            String extractedMetadata = new String(metadataStream.toByteArray());
+            System.out.println(extractedMetadata);
+            out.write(extractedMetadata);
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if(out != null) {
+                out.close();
+            }
+        }
+        return "ok";
+    }
+
+    public String exportMetadataToJSON(RDFAuthenticationUtilities.RDFConnectionProperties loadProperties, String title, String filePath) {
+
+
+        return "ok";
     }
 }
