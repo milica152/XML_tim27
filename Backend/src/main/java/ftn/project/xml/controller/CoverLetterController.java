@@ -5,6 +5,7 @@ import ftn.project.xml.util.AuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class CoverLetterController {
     @Autowired
     private CoverLetterService coverLetterService;
 
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<String> save(@RequestBody String reviewXML) throws Exception {
@@ -23,7 +25,7 @@ public class CoverLetterController {
         return new ResponseEntity<>(coverLetterService.save(conn, reviewXML), HttpStatus.OK);
     }
 
-
+    @PreAuthorize("(hasAuthority('EDITOR'))")
     @DeleteMapping("/delete")
     @ResponseBody
     public ResponseEntity<String> delete(@RequestBody String title) throws Exception {
