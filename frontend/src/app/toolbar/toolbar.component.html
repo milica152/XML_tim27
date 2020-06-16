@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+  <span>
+    <a mat-button routerLink="/dashboard/previewAllPapers">Home</a>
+    <button *ngIf="getRole != 'PUBLIC'" routerLink="/dashboard/previewMyPapers" mat-button>My Papers</button>
+    <button *ngIf="getRole != 'PUBLIC'" routerLink="/dashboard/addPaper" mat-button>Add Paper</button>
+    <button *ngIf="getRole == 'EDITOR'" routerLink="/dashboard/assignReviewers" mat-button>Assign Reviewers</button>
+    <button *ngIf="getRole == 'EDITOR'" routerLink="/dashboard/previewReviewedPapers" mat-button>Reviewed</button>
+    <button *ngIf="getRole == 'EDITOR'" routerLink="/dashboard/previewRevisedPapers" mat-button>Revised</button>
+    <button *ngIf="getRole == 'EDITOR' || getRole == 'REVIEWER'" routerLink="/dashboard/previewPapersToReview" mat-button>To Review</button>
+  </span>
+  <span fxLayoutAlign="right">
+    <button *ngIf="getRole != 'PUBLIC'" (click)="logOut()" mat-button>Logout</button>
+    <button *ngIf="getRole == 'PUBLIC'" routerLink="/login" mat-button>Login</button>
+    <button *ngIf="getRole == 'PUBLIC'" routerLink="/register" mat-button>Register</button>
+  </span>
+</mat-toolbar>

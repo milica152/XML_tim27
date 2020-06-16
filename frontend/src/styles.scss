@@ -1,12 +1,4 @@
-@import "./assets/styles/form.scss";
-@import "./assets/styles/toolbar.scss";
-@import "./assets/styles/tab-content.scss";
+/* You can add global styles to this file, and also import other style files */
 
-.center-screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 100vh;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #303030; }

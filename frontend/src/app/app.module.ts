@@ -1,32 +1,34 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule } from "@angular/forms";
-import { MaterialModule } from "./material/material.module";
-import { HttpClientModule } from "@angular/common/http";
+import {AppRoutingModule} from './app-routing/app-routing.module';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {DashboardModule} from './dashboard/dashboard.module';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {ToolbarModule} from './toolbar/toolbar.module';
+import {AuthModule} from './auth/auth.module';
+import {TokenInterceptor} from './interceptors/token.interceptor';
+import {UrlInterceptor} from './interceptors/url.interceptor';
 
-import { LoginComponent } from "./user/components/login/login.component";
-import { RegisterComponent } from "./user/components/register/register.component";
-import { AuthorDashboardComponent } from "./user/components/dashboard/author-dashboard/author-dashboard.component";
 @NgModule({
   declarations: [
-    AppComponent,
-    RegisterComponent,
-    LoginComponent,
-    AuthorDashboardComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule,
+    DashboardModule,
     HttpClientModule,
-    FormsModule
+    FlexLayoutModule,
+    ToolbarModule,
+    AuthModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+              {provide: HTTP_INTERCEPTORS, useClass: UrlInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

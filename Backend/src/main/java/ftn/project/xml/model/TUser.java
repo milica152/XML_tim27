@@ -1,16 +1,20 @@
 
 package ftn.project.xml.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.xml.bind.annotation.*;
 
 
 /**
  * <p>Java class for TUser complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="TUser">
  *   &lt;complexContent>
@@ -85,20 +89,20 @@ import javax.xml.bind.annotation.*;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TUser", namespace = "https://github.com/milica152/XML_tim27", propOrder = {
-    "username",
-    "password",
-    "name",
-    "surname",
-    "email",
-    "myPapers",
-    "myReviews",
-    "pendingPapersToReview",
-    "role"
+        "username",
+        "password",
+        "name",
+        "surname",
+        "email",
+        "myPapers",
+        "myReviews",
+        "pendingPapersToReview",
+        "role"
 })
 @XmlRootElement(name = "user", namespace = "https://github.com/milica152/XML_tim27")
 public class TUser {
@@ -125,11 +129,11 @@ public class TUser {
 
     /**
      * Gets the value of the username property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getUsername() {
         return username;
@@ -137,11 +141,11 @@ public class TUser {
 
     /**
      * Sets the value of the username property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setUsername(String value) {
         this.username = value;
@@ -149,11 +153,11 @@ public class TUser {
 
     /**
      * Gets the value of the password property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getPassword() {
         return password;
@@ -161,11 +165,11 @@ public class TUser {
 
     /**
      * Sets the value of the password property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setPassword(String value) {
         this.password = value;
@@ -173,11 +177,11 @@ public class TUser {
 
     /**
      * Gets the value of the name property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getName() {
         return name;
@@ -185,11 +189,11 @@ public class TUser {
 
     /**
      * Sets the value of the name property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setName(String value) {
         this.name = value;
@@ -197,11 +201,11 @@ public class TUser {
 
     /**
      * Gets the value of the surname property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSurname() {
         return surname;
@@ -209,11 +213,11 @@ public class TUser {
 
     /**
      * Sets the value of the surname property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSurname(String value) {
         this.surname = value;
@@ -221,11 +225,11 @@ public class TUser {
 
     /**
      * Gets the value of the email property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getEmail() {
         return email;
@@ -233,11 +237,11 @@ public class TUser {
 
     /**
      * Sets the value of the email property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setEmail(String value) {
         this.email = value;
@@ -245,11 +249,11 @@ public class TUser {
 
     /**
      * Gets the value of the myPapers property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link TUser.MyPapers }
-     *     
+     *
      */
     public TUser.MyPapers getMyPapers() {
         return myPapers;
@@ -257,11 +261,11 @@ public class TUser {
 
     /**
      * Sets the value of the myPapers property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link TUser.MyPapers }
-     *     
+     *
      */
     public void setMyPapers(TUser.MyPapers value) {
         this.myPapers = value;
@@ -269,11 +273,11 @@ public class TUser {
 
     /**
      * Gets the value of the myReviews property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link TUser.MyReviews }
-     *     
+     *
      */
     public TUser.MyReviews getMyReviews() {
         return myReviews;
@@ -281,11 +285,11 @@ public class TUser {
 
     /**
      * Sets the value of the myReviews property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link TUser.MyReviews }
-     *     
+     *
      */
     public void setMyReviews(TUser.MyReviews value) {
         this.myReviews = value;
@@ -293,11 +297,11 @@ public class TUser {
 
     /**
      * Gets the value of the pendingPapersToReview property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link TUser.PendingPapersToReview }
-     *     
+     *
      */
     public TUser.PendingPapersToReview getPendingPapersToReview() {
         return pendingPapersToReview;
@@ -305,11 +309,11 @@ public class TUser {
 
     /**
      * Sets the value of the pendingPapersToReview property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link TUser.PendingPapersToReview }
-     *     
+     *
      */
     public void setPendingPapersToReview(TUser.PendingPapersToReview value) {
         this.pendingPapersToReview = value;
@@ -317,11 +321,11 @@ public class TUser {
 
     /**
      * Gets the value of the role property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link TRole }
-     *     
+     *
      */
     public TRole getRole() {
         return role;
@@ -329,11 +333,11 @@ public class TUser {
 
     /**
      * Sets the value of the role property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link TRole }
-     *     
+     *
      */
     public void setRole(TRole value) {
         this.role = value;
@@ -342,9 +346,9 @@ public class TUser {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -356,12 +360,12 @@ public class TUser {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "myScientificPaperID"
+            "myScientificPaperID"
     })
     public static class MyPapers {
 
@@ -370,25 +374,25 @@ public class TUser {
 
         /**
          * Gets the value of the myScientificPaperID property.
-         * 
+         *
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
          * This is why there is not a <CODE>set</CODE> method for the myScientificPaperID property.
-         * 
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getMyScientificPaperID().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link String }
-         * 
-         * 
+         *
+         *
          */
         public List<String> getMyScientificPaperID() {
             if (myScientificPaperID == null) {
@@ -402,9 +406,9 @@ public class TUser {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -416,12 +420,12 @@ public class TUser {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "myReviewID"
+            "myReviewID"
     })
     public static class MyReviews {
 
@@ -430,25 +434,25 @@ public class TUser {
 
         /**
          * Gets the value of the myReviewID property.
-         * 
+         *
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
          * This is why there is not a <CODE>set</CODE> method for the myReviewID property.
-         * 
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getMyReviewID().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link String }
-         * 
-         * 
+         *
+         *
          */
         public List<String> getMyReviewID() {
             if (myReviewID == null) {
@@ -462,9 +466,9 @@ public class TUser {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -476,12 +480,12 @@ public class TUser {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "paperToReviewID"
+            "paperToReviewID"
     })
     public static class PendingPapersToReview {
 
@@ -490,25 +494,25 @@ public class TUser {
 
         /**
          * Gets the value of the paperToReviewID property.
-         * 
+         *
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
          * This is why there is not a <CODE>set</CODE> method for the paperToReviewID property.
-         * 
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getPaperToReviewID().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link String }
-         * 
-         * 
+         *
+         *
          */
         public List<String> getPaperToReviewID() {
             if (paperToReviewID == null) {

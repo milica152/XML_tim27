@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { ScientificPaperService } from "src/app/user/services/scientificPaper.service";
-import { NewScientificPaper } from "src/app/models/newScientificPaper.model";
+import { NewScientificPaper } from "src/app/shared/models/newScientificPaper.model";
 declare const Xonomy: any;
 
 export interface PeriodicElement {

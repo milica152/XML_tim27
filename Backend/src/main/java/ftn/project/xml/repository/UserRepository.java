@@ -5,6 +5,7 @@ import ftn.project.xml.model.TUser;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.jena.base.Sys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,12 +84,11 @@ public class UserRepository {
 
     public TUser getUserByEmail(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
         String xpathExp = "/users/user[email=\"" + email + "\"]";
-        System.out.println(xpathExp);
         ResourceSet result = getByXPathExpr(xpathExp, conn);
         ResourceIterator i = result.getIterator();
         Resource res  = i.nextResource();
         if(res==null){
-            return new TUser();
+            return null;
         }
         TUser user = null;
         try {
@@ -158,7 +158,6 @@ public class UserRepository {
 
     public ResourceSet getByXPathExpr(String xpathExp, AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         Collection col = null;
-
         // initialize database driver
         dbUtils.initilizeDBserver(conn);
 
