@@ -79,7 +79,7 @@ public class ScientificPaperRepository {
         }
     }
 
-    public ScientificPaper getByTitle(AuthenticationUtilities.ConnectionProperties conn, String paperID) throws XMLDBException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String paperID) throws XMLDBException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         ScientificPaper sp = null;
         dbUtils.initilizeDBserver(conn);
 
@@ -92,20 +92,8 @@ public class ScientificPaperRepository {
 
             res = (XMLResource)col.getResource(papersDocumentID + paperID);
 
-            if(res == null) {
-                System.out.println("[WARNING] Document '" + papersDocumentID+paperID + "' can not be found!");
-            } else {
 
-                JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
-
-                Unmarshaller unmarshaller = context.createUnmarshaller();
-
-                ScientificPaper sPaper = (ScientificPaper) unmarshaller.unmarshal(res.getContentAsDOM());
-                sp = sPaper;
-            }
         } catch (XMLDBException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
             e.printStackTrace();
         } finally {
             //don't forget to clean up!
@@ -126,7 +114,10 @@ public class ScientificPaperRepository {
                 }
             }
         }
-        return sp;
+        if(res == null) {
+            System.out.println("[WARNING] Document '" + papersDocumentID+paperID + "' can not be found!");
+        }
+        return (String) res.getContent();
     }
 
     public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties conn, String author, String title, String keyword) {

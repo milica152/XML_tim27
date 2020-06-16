@@ -28,7 +28,7 @@ public class ScientificPaperController {
 
     @GetMapping("/findByTitle")
     @ResponseBody
-    public ResponseEntity<ScientificPaper> getScientificPaperById(@RequestBody String title) throws Exception {
+    public ResponseEntity<String> getScientificPaperById(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
@@ -43,6 +43,19 @@ public class ScientificPaperController {
     @ResponseBody
     public ResponseEntity<List<MetadataDTO>> getMetadata(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getMetadata(RDFAuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/exportMetadataRDF/{title}")
+    @ResponseBody
+    public ResponseEntity<String> exportMetadataAsRDF(@RequestBody String filePath, @PathVariable String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.exportMetadataToRDF(AuthenticationUtilities.loadProperties(), title, filePath), HttpStatus.OK);
+    }
+
+    @PostMapping("/exportMetadataJSON/{title}")
+    @ResponseBody
+    public ResponseEntity<String> exportMetadataAsJSON(@RequestBody String filePath, @PathVariable String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.exportMetadataToJSON(RDFAuthenticationUtilities.loadProperties(), title, filePath), HttpStatus.OK);
     }
 
 

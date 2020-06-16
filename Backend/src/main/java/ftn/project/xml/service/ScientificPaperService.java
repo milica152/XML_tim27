@@ -4,12 +4,10 @@ import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.repository.ScientificPaperRepository;
-import ftn.project.xml.util.AuthenticationUtilities;
-import ftn.project.xml.util.DOMParser;
+import ftn.project.xml.util.*;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ftn.project.xml.util.MetadataExtractor;
-import ftn.project.xml.util.RDFAuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,6 +42,9 @@ public class ScientificPaperService {
 
     @Autowired
     private MetadataExtractor metadataExtractor;
+
+    @Autowired
+    private Convert convert;
 
     @Value("${scientificPaper.XSLPath}")
     private String xslPath;
@@ -94,11 +95,11 @@ public class ScientificPaperService {
 
             metadataExtractor.extractMetadata(new ByteArrayInputStream(newSciPap.getBytes()), metadataStream);
             String extractedMetadata = new String(metadataStream.toByteArray());
-            System.out.println(extractedMetadata);
+            //System.out.println(extractedMetadata);
 
             // saving to RDF store
             scientificPaperRepository.saveMetadata(extractedMetadata);
-            scientificPaperRepository.save(conn, title, xmlRes);
+            scientificPaperRepository.save(conn, title, newSciPap);
 
             return "ok";
 
@@ -108,7 +109,7 @@ public class ScientificPaperService {
         return "error";
     }
 
-    public ScientificPaper getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         return scientificPaperRepository.getByTitle(conn, s);
     }
 
@@ -146,4 +147,66 @@ public class ScientificPaperService {
         System.out.println("The generated HTML file is:" + outputFile);
 
     }
+
+    public String exportMetadataToRDF(AuthenticationUtilities.ConnectionProperties loadProperties   ,  String title, String filePath) throws IOException {
+        BufferedWriter out = null;
+
+        File f = new File(filePath);
+        if(f.isFile()){
+            return "error";
+        }
+        try {
+            FileWriter fstream = new FileWriter(filePath + "/" + title + ".txt", false); //true tells to append data.
+            out = new BufferedWriter(fstream);
+            ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
+            String sp = getByTitle(loadProperties, title);
+            //System.out.println(sp);
+            metadataExtractor.extractMetadata(new ByteArrayInputStream(sp.getBytes()), metadataStream);
+            String extractedMetadata = new String(metadataStream.toByteArray());
+            //System.out.println(extractedMetadata);
+            out.write(extractedMetadata);
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if(out != null) {
+                out.close();
+            }
+        }
+        return "ok";
+    }
+
+    public String exportMetadataToJSON(RDFAuthenticationUtilities.RDFConnectionProperties loadProperties, String title, String filePath) throws IOException {
+        List<MetadataDTO> metadataDTOS = getMetadata(loadProperties, title);
+        String result = convert.metadataToJSONFormat(metadataDTOS);
+
+        BufferedWriter out = null;
+
+        File f = new File(filePath);
+        if(f.isFile()){
+            return "error";
+        }
+        try {
+            FileWriter fstream = new FileWriter(filePath + "/" + title + ".txt", false); //true tells to append data.
+            out = new BufferedWriter(fstream);
+            out.write(result);
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        } finally {
+            if(out != null) {
+                out.close();
+            }
+        }
+        return "ok";
+    }
+
 }
