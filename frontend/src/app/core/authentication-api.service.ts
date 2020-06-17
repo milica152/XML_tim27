@@ -29,14 +29,14 @@ export class AuthenticationApiService {
     return localStorage.getItem('token');
   }
 
-  getRole(): string{
-    let token = localStorage.getItem('token');
-    let role = "PUBLIC";
-    if(token!=null){
-      let jwtData = token.split('.')[1];
-      let decodedJwtJsonData = window.atob(jwtData);
-      let decodedJwtData = JSON.parse(decodedJwtJsonData);
-      console.log(decodedJwtData)
+  getRole(): string {
+    const token = localStorage.getItem('token');
+    let role = 'PUBLIC';
+    if (token != null) {
+      const jwtData = token.split('.')[1];
+      const decodedJwtJsonData = window.atob(jwtData);
+      const decodedJwtData = JSON.parse(decodedJwtJsonData);
+      console.log(decodedJwtData);
       role = decodedJwtData.role[0].authority;
     }
     return role;

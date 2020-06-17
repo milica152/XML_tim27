@@ -25,7 +25,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     TUser tUser = null;
     User user = null;
-    AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();;
+    AuthenticationUtilities.ConnectionProperties conn = null;
+    try {
+      conn = AuthenticationUtilities.loadProperties();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    ;
     try {
       tUser = userRepository.getUserByEmail(conn, email);
       if(tUser!=null){

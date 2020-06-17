@@ -3,7 +3,9 @@ package ftn.project.xml.service;
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
+import ftn.project.xml.model.TUser;
 import ftn.project.xml.repository.ScientificPaperRepository;
+import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
 import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
@@ -39,6 +41,9 @@ public class ScientificPaperService {
 
     @Autowired
     private ScientificPaperRepository scientificPaperRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private MetadataExtractor metadataExtractor;
@@ -116,6 +121,13 @@ public class ScientificPaperService {
     public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String title, String keyword) {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
     }
+
+    public List<ScientificPaperDTO> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String authorEmail) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        TUser user = userRepository.getUserByEmail(loadProperties, authorEmail);
+        return scientificPaperRepository.search(loadProperties, user.getName(), "", "");
+    }
+
+
 
     public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return scientificPaperRepository.delete(loadProperties, title);
@@ -208,5 +220,7 @@ public class ScientificPaperService {
         }
         return "ok";
     }
+
+
 
 }

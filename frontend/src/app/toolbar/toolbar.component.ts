@@ -23,6 +23,7 @@ export class ToolbarComponent implements OnInit {
     const logoutObserver = {
       next: x => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         this.snackBar.open('You logged out successfully!', 'Dismiss', {
           duration: 3000
         });
