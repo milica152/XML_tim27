@@ -8,6 +8,6 @@
   <button type="submit" mat-raised-button class="searchButton">Search</button>
   <button type="button" mat-raised-button class="searchButton" (click)="resetForm(searchForm)">Reset</button>
 </form>
-<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="0.5%" fxLayoutAlign="center" style="overflow: scroll; height:100%">
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="0.5%" fxLayoutAlign="center">
   <app-paper-preview *ngFor="let paper of this._papers" [paper]="paper"></app-paper-preview>
 </div>

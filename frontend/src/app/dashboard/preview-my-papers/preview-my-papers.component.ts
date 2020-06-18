@@ -25,7 +25,7 @@ export class PreviewMyPapersComponent implements OnInit {
   public getPapers() {
     this.scientificPaperService.getMyPapers().subscribe({
       next: (result) => {
-        this._papers = result.content;
+        this._papers = result;
       },
       error: (message: string) => {
         this.snackBar.open(message, 'Dismiss', {

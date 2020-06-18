@@ -27,6 +27,7 @@ import org.xmldb.api.base.XMLDBException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
+import java.util.ArrayList;
 
 @Service
 public class UserService {
@@ -64,6 +65,10 @@ public class UserService {
             regUser.setName(user.getName());
             regUser.setSurname(user.getSurname());
             regUser.setRole(TRole.AUTHOR);
+            regUser.setProfession(user.getProfession());
+            TUser.MyPapers papers = new TUser.MyPapers();
+            papers.setMyScientificPaperID(new ArrayList<String>());
+            regUser.setMyPapers(papers);
 
             TUser u = userRepository.save(conn, regUser);
             return u;

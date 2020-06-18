@@ -25,7 +25,6 @@ public class TokenUtils {
 		try {
 			Claims claims = this.getClaimsFromToken(token);
 			email = claims.getSubject();
-			System.out.println(email);
 		} catch (Exception e) {
 			email = null;
 		}

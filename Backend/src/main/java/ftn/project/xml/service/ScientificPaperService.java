@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -127,13 +128,11 @@ public class ScientificPaperService {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
     }
 
-    public List<ScientificPaperDTO> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+
+    public List<String> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        TUser tUser = userRepository.getUserByEmail(loadProperties, user.getEmail());
-        return scientificPaperRepository.search(loadProperties, tUser.getName(), "", "");
+        return scientificPaperRepository.getMyPapers(loadProperties, user.getEmail());
     }
-
-
 
     public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return scientificPaperRepository.delete(loadProperties, title);
