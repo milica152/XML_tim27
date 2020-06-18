@@ -18,6 +18,6 @@ export class ScientificPaperService {
 
   getMyPapers(): Observable<any> {
     console.log('uso')
-    return this.httpClient.get('scientificPaper/findMyPapers/');
+    return this.httpClient.get('scientificPaper/findMyPapers?email=' + localStorage.getItem('user'));
   }
 }

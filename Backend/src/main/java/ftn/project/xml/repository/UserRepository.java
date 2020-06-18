@@ -46,6 +46,7 @@ public class UserRepository {
             String xmlFragment = user2XML(user);
 
             // get the collection
+            logger.info("Retrieving the collection: " + usersCollectionPathInDB);
             col = dbUtils.getOrCreateCollection(conn, usersCollectionPathInDB);
             col.setProperty("indent", "yes");
 
@@ -59,11 +60,14 @@ public class UserRepository {
             }
 
             // get an instance of xupdate query service
+            logger.info("Fetching XUpdate service for the collection.");
             XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
             xupdateService.setProperty("indent", "yes");
             String contextXPath = "/users";
 
+            logger.info("Appending fragments as last child of " + contextXPath + " node.");
             long mods = xupdateService.updateResource(usersDocumentID, String.format(APPEND, contextXPath, xmlFragment));
+            logger.info(mods + " modifications processed.");
 
         } finally {
 
@@ -233,7 +237,7 @@ public class UserRepository {
         }
 
         // get the collection
-        System.out.println("[INFO] Retrieving the collection: " + usersCollectionPathInDB);
+        logger.info("Retrieving the collection: " + usersCollectionPathInDB);
         try {
             col = DatabaseManager.getCollection(conn.uri + usersCollectionPathInDB, conn.user, conn.password);
             col.setProperty("indent", "yes");

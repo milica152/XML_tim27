@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { ScientificPaperService } from "src/app/user/services/scientificPaper.service";
 import { NewScientificPaper } from "src/app/shared/models/newScientificPaper.model";
 declare const Xonomy: any;
 
@@ -34,7 +33,7 @@ export class AuthorDashboardComponent implements OnInit {
   displayedColumns: string[] = ["position", "name", "weight", "symbol"];
   dataSource = ELEMENT_DATA;
   newScientificPaper: NewScientificPaper = new NewScientificPaper();
-  constructor(private scientificPaperService: ScientificPaperService) {}
+ // constructor(private scientificPaperService: ScientificPaperService) {}
 
   ngOnInit() {}
 
@@ -52,7 +51,7 @@ export class AuthorDashboardComponent implements OnInit {
     };
     fileReader.readAsText(input.files[0]);
   }
-
+ /*
   publishScientificPaper() {
     console.log(this.newScientificPaper);
     this.scientificPaperService
@@ -71,7 +70,7 @@ export class AuthorDashboardComponent implements OnInit {
           console.log("Done!");
         }
       );
-  }
+  } */
 
   renderXonomy(xml: string) {
     Xonomy.setMode("laic");

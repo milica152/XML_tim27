@@ -37,9 +37,9 @@ import static ftn.project.xml.templates.XUpdateTemplate.TARGET_NAMESPACE;
 
 @Repository
 public class ScientificPaperRepository {
-    private static String papersCollectionPathInDB = "/db/xml/scientificPaper";
-    private static String papersDocumentID = "paper.xml";
-    private static String SPARQL_NAMED_GRAPH_URI = "/sp";
+    private static final String papersCollectionPathInDB = "/db/xml/scientificPaper";
+    private static final String papersDocumentID = "paper.xml";
+    private static final String SPARQL_NAMED_GRAPH_URI = "/sp";
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperRepository.class);
 
@@ -112,7 +112,7 @@ public class ScientificPaperRepository {
             }
         }
         if(res == null) {
-            System.out.println("[WARNING] Document '" + papersDocumentID+paperID + "' can not be found!");
+            logger.warn("Document '" + papersDocumentID+paperID + "' can not be found!");
         }
         return (String) res.getContent();
     }
@@ -124,8 +124,8 @@ public class ScientificPaperRepository {
         try {
             dbUtils.initilizeDBserver(conn);
         } catch (ClassNotFoundException | XMLDBException | InstantiationException | IllegalAccessException e) {
+            logger.error("Problem sa inicijalizovanjem baze");
             e.printStackTrace();
-            System.out.println("Problem sa inicijalizovanjem baze");
         }
         try {
             col = DatabaseManager.getCollection(conn.uri + papersCollectionPathInDB);
@@ -136,8 +136,8 @@ public class ScientificPaperRepository {
             }
 
         } catch (XMLDBException e) {
+            logger.error("Problem prilikom dobavljanj dokumenata.");
             e.printStackTrace();
-            System.out.println("Problem prilikom dobavljanj dokumenata.");
         }
         return sps;
     }
@@ -168,8 +168,8 @@ public class ScientificPaperRepository {
                 }
 
             } catch (XMLDBException e) {
+                logger.error("Problem sa pretragom");
                 e.printStackTrace();
-                System.out.println("Problem sa pretragom");
             }
 
 
@@ -285,7 +285,7 @@ public class ScientificPaperRepository {
             res = col.getResource(papersDocumentID + title);
 
             if(res == null) {
-                System.out.println("[WARNING] Document '" + papersDocumentID+title + "' can not be found!");
+                logger.warn("Document '" + papersDocumentID+title + "' can not be found!");
             } else {
                 col.removeResource(res);
             }
@@ -345,7 +345,7 @@ public class ScientificPaperRepository {
                         metadataDTO.setSubject(null);
                     }
                 } else{
-                    System.out.println("No attribute with that name!");
+                    logger.warn("No attribute with name: " + varName);
                 }
                 //System.out.println(varName + ": " + varValue);
             }

@@ -11,7 +11,14 @@ import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.xmldb.api.base.XMLDBException;
+import sun.misc.Request;
+
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -39,6 +46,13 @@ public class ScientificPaperController {
     @ResponseBody
     public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
         return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/findMyPapers")
+    @ResponseBody
+    public ResponseEntity<List<ScientificPaperDTO>> findUserPapers(@RequestParam("email") String email) throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties(), email), HttpStatus.OK);
     }
 
 
