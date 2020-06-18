@@ -55,6 +55,8 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.exportMetadataToRDF(AuthenticationUtilities.loadProperties(), title, filePath), HttpStatus.OK);
     }
 
+
+
     @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
     @PostMapping("/exportMetadataJSON/{title}")
     @ResponseBody
@@ -75,4 +77,13 @@ public class ScientificPaperController {
         scientificPaperService.transformToHTML(xml);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/withdraw")
+    @ResponseBody
+    public ResponseEntity<String> withdraw(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.withdraw(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
+    }
+
+
+
 }

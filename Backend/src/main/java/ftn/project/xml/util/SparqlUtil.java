@@ -12,6 +12,8 @@ public class SparqlUtil {
 	/* Removes all of the triples from a named graphed */
 	private static final String DROP_GRAPH_TEMPLATE = "DROP GRAPH <%s>";
 
+	private static final String REMOVE_TRIPLET_FROM_GRAPH = "DELETE DATA { GRAPH <%1$s> { %2$s } } ;";
+
 	/**
 	 * A template for creating SPARUL (SPARQL Update) query can be found here:
 	 * https://www.w3.org/TR/sparql11-update/
@@ -52,6 +54,10 @@ public class SparqlUtil {
 	
 	public static String selectData(String graphURI, String sparqlCondition) {
 		return String.format(SELECT_NAMED_GRAPH_TEMPLATE, graphURI, sparqlCondition);
+	}
+
+	public static String deleteData(String graphURI, String ntriples) {
+		return String.format(REMOVE_TRIPLET_FROM_GRAPH, graphURI, ntriples);
 	}
 	
 }

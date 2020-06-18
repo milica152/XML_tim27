@@ -13,9 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import org.xmldb.api.base.XMLDBException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -208,5 +211,31 @@ public class ScientificPaperService {
         }
         return "ok";
     }
+
+    public String withdraw( AuthenticationUtilities.ConnectionProperties loadXMLProperties, String title) throws Exception {
+        String xmlRes = scientificPaperRepository.getByTitle(loadXMLProperties, title);
+        Document d = domParser.buildDocument(xmlRes, schemaPath);
+
+        Node oldStatus = d.getElementsByTagName("status").item(0);
+
+        if(!oldStatus.getTextContent().equalsIgnoreCase("in process")){
+            return "error: scientific paper must be in process to be withdrawn";
+        }
+        scientificPaperRepository.deleteMetadata(xmlRes);
+        oldStatus.setTextContent("withdrawn");
+
+        xmlRes = domParser.DOMToXML(d);
+        //System.out.println(xmlRes);
+
+        ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
+        metadataExtractor.extractMetadata(new ByteArrayInputStream(xmlRes.getBytes()), metadataStream);
+        String extractedMetadata = new String(metadataStream.toByteArray());
+        scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
+        scientificPaperRepository.saveMetadata(extractedMetadata);
+
+        return "ok";
+    }
+
+
 
 }

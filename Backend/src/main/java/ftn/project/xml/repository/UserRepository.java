@@ -38,10 +38,7 @@ public class UserRepository {
     DBUtils dbUtils;
 
     public TUser save(AuthenticationUtilities.ConnectionProperties conn, TUser user) throws Exception {
-        Class<?> cl = Class.forName(conn.driver);
-        Database database = (Database) cl.newInstance();
-        database.setProperty("create-database", "true");
-        DatabaseManager.registerDatabase(database);
+        dbUtils.initilizeDBserver(conn);
         Collection col = null;
 
         try {
@@ -49,23 +46,24 @@ public class UserRepository {
             String xmlFragment = user2XML(user);
 
             // get the collection
-            System.out.println("[INFO] Retrieving the collection: " + usersCollectionPathInDB);
             col = dbUtils.getOrCreateCollection(conn, usersCollectionPathInDB);
             col.setProperty("indent", "yes");
 
             // first to add document
-            String xmlResource = FileUtils.readFileToString(new File("data/test/test_users.xml"), StandardCharsets.UTF_8);
-            dbUtils.storeDocument(usersDocumentID, xmlResource, col);
+            Resource resource = col.getResource(usersDocumentID);
+            System.out.println(resource);
+
+            if(resource == null){
+                String xmlResource = FileUtils.readFileToString(new File("src\\main\\resources\\static\\other\\test_users_emprz.xml"), StandardCharsets.UTF_8);
+                dbUtils.storeDocument(usersDocumentID, xmlResource, col);
+            }
 
             // get an instance of xupdate query service
-            System.out.println("[INFO] Fetching XUpdate service for the collection.");
             XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
             xupdateService.setProperty("indent", "yes");
             String contextXPath = "/users";
 
-            System.out.println("[INFO] Appending fragments as last child of " + contextXPath + " node.");
             long mods = xupdateService.updateResource(usersDocumentID, String.format(APPEND, contextXPath, xmlFragment));
-            System.out.println("[INFO] " + mods + " modifications processed.");
 
         } finally {
 
@@ -84,6 +82,7 @@ public class UserRepository {
 
     public TUser getUserByEmail(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, IllegalAccessException, InstantiationException, XMLDBException {
         String xpathExp = "/users/user[email=\"" + email + "\"]";
+
         ResourceSet result = getByXPathExpr(xpathExp, conn);
         ResourceIterator i = result.getIterator();
         Resource res  = i.nextResource();
