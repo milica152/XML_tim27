@@ -29,7 +29,7 @@ public class ScientificPaperController {
     @Autowired
     private ScientificPaperService scientificPaperService;
 
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyRole('AUTHOR','EDITOR','REVIEWER')")
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes) throws Exception {
@@ -43,6 +43,7 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
     public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
         return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
@@ -50,8 +51,9 @@ public class ScientificPaperController {
 
 
     @GetMapping("/findMyPapers")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
-    public ResponseEntity<List<ScientificPaperDTO>> findUserPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public ResponseEntity<List<String>> findUserPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 

@@ -195,8 +195,8 @@
         <xs:sequence>
             <xs:element name="name" type="xs:string"/>
             <xs:element name="surname" type="xs:string"/>
-            <xs:element minOccurs="0" name="profession" type="xs:string"/>
-            <xs:element minOccurs="0" name="contact" type="xs:string"/>
+            <xs:element minOccurs="1" name="profession" type="xs:string"/>
+            <xs:element minOccurs="1" name="contact" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
     <xs:element name="author">

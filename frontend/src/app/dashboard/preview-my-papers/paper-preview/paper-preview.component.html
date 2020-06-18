@@ -1,20 +1,19 @@
 <mat-card>
   <mat-card-header>
     <mat-icon mat-card-avatar>history_edu</mat-icon>
-    <mat-card-title>{{paper.name}}</mat-card-title>
+    <mat-card-title>{{paper}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <p>"Samo probaa"</p>
-<!--    <app-map [_latitude]="location.latitude" [_longitude]="location.longitude" [_zoom]="9" [_maxZoom]="13"-->
-<!--             [_mapName]="location.name" [_draggable]="false"></app-map>-->
+    <iframe width="100%" height="100%" src="scientificPaperHTML0.html" style="border:none;">
+      <p>iframes are not supported by your browser.</p>
+    </iframe>
   </mat-card-content>
-  <mat-card-actions fxLayout="row" fxLayoutGap="3%">
+  <mat-card-actions fxLayout="row" fxLayoutGap="25%" style="margin-bottom: -10px;margin-left: 37px">
     <button mat-raised-button color="primary" matTooltip="Preview" [routerLink]="['/dashboard/preview/',
-    this.paper.name]">
+    this.paper]">
       <mat-icon>preview</mat-icon>
     </button>
-    <button mat-raised-button color="primary" matTooltip="Withdraw" [routerLink]="['/dashboard/previewMyPapers/',
-    this.location.id]">
+    <button mat-raised-button color="primary" matTooltip="Withdraw" [routerLink]="['/dashboard/previewMyPapers/']">
       <mat-icon>cancel</mat-icon>
     </button>
   </mat-card-actions>

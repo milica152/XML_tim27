@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ScientificPaperService {
-  backendUrl = 'scientificPaper/';
 
   private _headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -13,16 +12,16 @@ export class ScientificPaperService {
     'Access-Control-Allow-Credentials': 'true'
   });
 
-  constructor(public httpClient: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
-  saveScientificPaper(title: string, scientificPaper: string): Observable<any> {
-    return this.httpClient.post(
-      this.backendUrl + 'save/' + title,
-      scientificPaper
-    );
-  }
+  // saveScientificPaper(title: string, scientificPaper: string): Observable<any> {
+  //   return this.httpClient.post(
+  //     'scientificPaper/save/' + title,
+  //     scientificPaper
+  //   );
+  // }
 
   getMyPapers(): Observable<any> {
-    return this.httpClient.get('scientificPaper/findMyPapers', {headers: this._headers, responseType: 'text'});
+    return this._http.get('scientificPaper/findMyPapers', {headers: this._headers});
   }
 }

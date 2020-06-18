@@ -14,18 +14,20 @@ public class User implements UserDetails {
     private String name;
     private String surname;
     private String email;
+    private String profession;
     private TUser.MyPapers myPapers;
     private TUser.MyReviews myReviews;
     private TUser.PendingPapersToReview pendingPapersToReview;
     private List<Authority> authorities;
 
-    public User(String username, String password, String name, String surname, String email, TUser.MyPapers myPapers,
+    public User(String username, String password, String name, String surname, String email, String profession, TUser.MyPapers myPapers,
                 TUser.MyReviews myReviews, TUser.PendingPapersToReview pendingPapersToReview, List<Authority> authorities) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.profession = profession;
         this.myPapers = myPapers;
         this.myReviews = myReviews;
         this.pendingPapersToReview = pendingPapersToReview;
@@ -38,6 +40,7 @@ public class User implements UserDetails {
         this.name = tUser.getName();
         this.surname = tUser.getSurname();
         this.email = tUser.getEmail();
+        this.profession = tUser.getProfession();
         this.myPapers = tUser.getMyPapers();
         this.myReviews = tUser.getMyReviews();
         this.pendingPapersToReview = tUser.getPendingPapersToReview();
@@ -47,6 +50,13 @@ public class User implements UserDetails {
         this.authorities.add(a);
     }
 
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
 
     public void setUsername(String username) {
         this.username = username;

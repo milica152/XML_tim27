@@ -3,6 +3,7 @@ package ftn.project.xml.repository;
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
+import ftn.project.xml.model.TUser;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.*;
 import org.apache.jena.query.*;
@@ -51,6 +52,9 @@ public class ScientificPaperRepository {
 
     @Autowired
     private SparqlUtil sparqlUtil;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
         Collection col = null;
@@ -128,7 +132,7 @@ public class ScientificPaperRepository {
             e.printStackTrace();
         }
         try {
-            col = dbUtils.getOrCreateCollection(conn, conn.uri + papersCollectionPathInDB);
+            col = dbUtils.getOrCreateCollection(conn, papersCollectionPathInDB);
             System.out.println(col);
             col.setProperty(OutputKeys.INDENT, "yes");
             String[] resources = col.listResources();
@@ -358,5 +362,8 @@ public class ScientificPaperRepository {
     }
 
 
-
+    public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        TUser user = userRepository.getUserByEmail(loadProperties, email);
+        return user.getMyPapers().getMyScientificPaperID();
+    }
 }
