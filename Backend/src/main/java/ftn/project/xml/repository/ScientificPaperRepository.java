@@ -4,17 +4,9 @@ import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.service.ScientificPaperService;
-import ftn.project.xml.util.AuthenticationUtilities;
-import ftn.project.xml.util.DBUtils;
-import ftn.project.xml.util.RDFAuthenticationUtilities;
-import ftn.project.xml.util.SparqlUtil;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFNode;
+import ftn.project.xml.util.*;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
@@ -26,12 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
+import org.xmldb.api.base.Resource;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XQueryService;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -48,6 +42,9 @@ public class ScientificPaperRepository {
     private static final String SPARQL_NAMED_GRAPH_URI = "/sp";
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperRepository.class);
+
+    @Autowired
+    private MetadataExtractor metadataExtractor;
 
     @Autowired
     private DBUtils dbUtils;
@@ -254,6 +251,26 @@ public class ScientificPaperRepository {
         processor.execute();
     }
 
+
+    public void deleteMetadata(String xmlRes) throws IOException, TransformerException {
+        ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
+        metadataExtractor.extractMetadata(new ByteArrayInputStream(xmlRes.getBytes()), metadataStream);
+        String extractedMetadata = new String(metadataStream.toByteArray());
+        RDFAuthenticationUtilities.RDFConnectionProperties conn = RDFAuthenticationUtilities.loadProperties();
+        Model model = ModelFactory.createDefaultModel();
+        model.read(new ByteArrayInputStream(extractedMetadata.getBytes()), null);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        model.write(out, SparqlUtil.NTRIPLES);
+
+        String sparqlUpdate = SparqlUtil.deleteData(conn.dataEndpoint + SPARQL_NAMED_GRAPH_URI,
+                new String(out.toByteArray()));
+        UpdateRequest update = UpdateFactory.create(sparqlUpdate);
+
+        UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint);
+        processor.execute();
+    }
+
     public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         dbUtils.initilizeDBserver(conn);
 
@@ -339,5 +356,7 @@ public class ScientificPaperRepository {
         return metadataDTOs;
 
     }
+
+
 
 }

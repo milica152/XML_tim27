@@ -6,6 +6,7 @@ import ftn.project.xml.util.AuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    @PreAuthorize("(hasAuthority('REVIEWER'))")
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<String> saveReview(@RequestBody String reviewXML) throws Exception {
@@ -26,6 +28,7 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.save(conn, reviewXML), HttpStatus.OK);
     }
 
+    @PreAuthorize("(hasAuthority('EDITOR'))")
     @DeleteMapping("/delete")
     @ResponseBody
     public ResponseEntity<String> deleteReview(@RequestBody String title) throws Exception {
