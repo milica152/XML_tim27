@@ -131,7 +131,7 @@ public class ScientificPaperService {
 
     public List<String> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return scientificPaperRepository.getMyPapers(loadProperties, user.getEmail());
+        return null;
     }
 
     public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {

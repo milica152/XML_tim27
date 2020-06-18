@@ -29,7 +29,7 @@ public class ScientificPaperController {
     @Autowired
     private ScientificPaperService scientificPaperService;
 
-    @PreAuthorize("hasAnyRole('AUTHOR','EDITOR','REVIEWER')")
+    //@PreAuthorize("hasAnyRole('AUTHOR','EDITOR','REVIEWER')")
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes) throws Exception {

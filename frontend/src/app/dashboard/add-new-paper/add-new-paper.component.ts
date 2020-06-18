@@ -1,7 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {NewScientificPaper} from '../../shared/models/newScientificPaper.model';
 import {ScientificPaperService} from '../../core/scientificPaper.service';
-import {XonomyApiService} from "../../core/xonomy-api.service";
+import {XonomyApiService} from '../../core/xonomy-api.service';
+import {CoverLetterService} from '../../core/cover-letter.service';
 declare const Xonomy: any;
 
 @Component({
@@ -15,7 +16,9 @@ export class AddNewPaperComponent implements OnInit {
   // @ViewChild("spTitle", { static: false }) spTitle: ElementRef;
   newScientificPaper: NewScientificPaper = new NewScientificPaper();
   newCoverLetter = '';
-  constructor(private scientificPaperService: ScientificPaperService, private xonomyApiService: XonomyApiService) {}
+  constructor(private scientificPaperService: ScientificPaperService,
+              private coverLetterService: CoverLetterService,
+              private xonomyApiService: XonomyApiService) {}
 
   ngOnInit() {}
 
@@ -34,15 +37,14 @@ export class AddNewPaperComponent implements OnInit {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       const fileContent = fileReader.result.toString();
-      this.newCoverLetter = fileReader.result.toString();
-      this.renderXonomyCL(fileContent);
+      this.newCoverLetter = fileContent;
     };
     fileReader.readAsText(input.files[0]);
   }
 
  publishScientificPaper() {
    this.scientificPaperService.saveScientificPaper(
-       this.newScientificPaper.content
+       Xonomy.harvest()
      )
      .subscribe(
        response => {
@@ -52,6 +54,9 @@ export class AddNewPaperComponent implements OnInit {
          console.log(error);
        },
        () => {
+         if (this.newCoverLetter !== '') {
+           this.coverLetterService.saveCoverLetter(this.newCoverLetter);
+         }
          console.log('Done!');
        }
      );
@@ -66,5 +71,4 @@ export class AddNewPaperComponent implements OnInit {
     Xonomy.setMode('laic');
     Xonomy.render(xml, this.editorCL.nativeElement, this.xonomyApiService.coverLetterSpecification);
   }
-
 }

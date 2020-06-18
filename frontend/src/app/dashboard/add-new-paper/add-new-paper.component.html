@@ -68,6 +68,11 @@
       />
     </div>
 
+    <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.xs="column" fxLayoutAlign="center">
+      <textarea id="coverLetterTextarea" name="w3review" rows="50" cols="150" >
+        {{newCoverLetter}}
+      </textarea>
+    </div>
     <div
       #editorCL
       [(ngModel)]="newScientificPaper.content"
