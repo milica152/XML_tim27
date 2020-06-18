@@ -1,0 +1,7 @@
+<table class="stretch">
+  <tr>
+    <td>
+      <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(html)"></div>
+    </td>
+  </tr>
+</table>

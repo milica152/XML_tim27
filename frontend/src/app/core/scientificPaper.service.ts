@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ScientificPaperService {
 
+
   private _headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -23,5 +24,10 @@ export class ScientificPaperService {
 
   getMyPapers(): Observable<any> {
     return this._http.get('scientificPaper/findMyPapers', {headers: this._headers});
+  }
+
+  getPaper(paperName: string) {
+    return this._http.get(`scientificPaper/findByTitleToHTML?title=${paperName}`, {headers: this._headers, responseType: 'text'});
+
   }
 }

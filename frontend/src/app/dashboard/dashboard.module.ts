@@ -21,6 +21,7 @@ import {ToolbarModule} from "../toolbar/toolbar.module";
 import {FlexModule} from "@angular/flex-layout";
 import { PreviewMyPapersComponent } from './preview-my-papers/preview-my-papers.component';
 import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-preview.component';
+import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-preview/paper-full-preview.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-p
     , PaginatorComponent,
     PaginatorComponent,
     PreviewMyPapersComponent,
-    PaperPreviewComponent
+    PaperPreviewComponent,
+    PaperFullPreviewComponent
     ],
     imports: [
         CommonModule,

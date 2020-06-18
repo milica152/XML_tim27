@@ -37,9 +37,17 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/findByTitle")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
-    public ResponseEntity<String> getScientificPaperById(@RequestBody String title) throws Exception {
+    public ResponseEntity<String> getScientificPaperById(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
+    }
+
+    @GetMapping("/findByTitleToHTML")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @ResponseBody
+    public ResponseEntity<String> getScientificPaperByIdHTML(@RequestParam("title") String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.transformToHTML(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
     }
 
     @GetMapping("/search")
@@ -88,6 +96,7 @@ public class ScientificPaperController {
     }
 
     @PutMapping("/transformHTML")
+    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
     @ResponseBody
     public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {
         scientificPaperService.transformToHTML(xml);

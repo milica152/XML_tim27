@@ -133,7 +133,6 @@ public class ScientificPaperRepository {
         }
         try {
             col = dbUtils.getOrCreateCollection(conn, papersCollectionPathInDB);
-            System.out.println(col);
             col.setProperty(OutputKeys.INDENT, "yes");
             String[] resources = col.listResources();
             if(resources.length!=0){
