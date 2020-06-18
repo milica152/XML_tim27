@@ -22,6 +22,9 @@ import {FlexModule} from "@angular/flex-layout";
 import { PreviewMyPapersComponent } from './preview-my-papers/preview-my-papers.component';
 import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-preview.component';
 import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-preview/paper-full-preview.component';
+import { AddNewPaperComponent } from './add-new-paper/add-new-paper.component';
+import {MatTabsModule} from "@angular/material/tabs";
+
 
 
 @NgModule({
@@ -31,6 +34,7 @@ import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-previe
     PreviewMyPapersComponent,
     PaperPreviewComponent,
     PaperFullPreviewComponent
+    AddNewPaperComponent
     ],
     imports: [
         CommonModule,
@@ -52,7 +56,8 @@ import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-previe
         MatFormFieldModule,
         RouterModule,
         ToolbarModule,
-        FlexModule
+        FlexModule,
+        MatTabsModule
     ],
 
 })
