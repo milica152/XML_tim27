@@ -1,0 +1,78 @@
+
+
+
+<mat-tab-group animationDuration="0ms">
+  <mat-tab label="Scientific Paper">
+
+    <div fxLayout="row wrap" *ngIf="newScientificPaper.content == ''" fxLayoutGap="2%" fxLayout.xs="column"
+         fxLayoutAlign="center">
+      <button
+        type="button"
+        mat-raised-button
+        (click)="fileInput.click()"
+        name="uploadNewSP"
+        color="primary"
+      >
+        Choose File
+      </button>
+
+      <input
+        hidden
+        (change)="readXMLFile($event)"
+        #fileInput
+        type="file"
+        id="xmlFile"
+        name="xmlFile"
+      />
+    </div>
+
+    <div fxLayout="row wrap" *ngIf="newScientificPaper.content != ''" fxLayoutGap="2%" fxLayout.xs="column"
+         fxLayoutAlign="center">
+      <button
+        type="button"
+        mat-raised-button
+        (click)="publishScientificPaper()">
+        Publish
+      </button>
+    </div>
+
+    <div
+      #editorSP
+      [(ngModel)]="newScientificPaper.content"
+      name="xonomyContentSP"
+      ngDefaultControl
+    ></div>
+  </mat-tab>
+
+  <mat-tab label="Cover Letter">
+
+    <div fxLayout="row wrap" *ngIf="newCoverLetter == ''" fxLayoutGap="2%" fxLayout.xs="column"
+         fxLayoutAlign="center">
+      <button
+        type="button"
+        mat-raised-button
+        (click)="fileInputCL.click()"
+        name="uploadNewCL"
+        color="primary"
+      >
+        Choose cover letter
+      </button>
+
+      <input
+        hidden
+        (change)="readCoverLetterFile($event)"
+        #fileInputCL
+        type="file"
+        id="coverLetterFile"
+        name="coverLetterFile"
+      />
+    </div>
+
+    <div
+      #editorCL
+      [(ngModel)]="newScientificPaper.content"
+      name="xonomyContentCL"
+      ngDefaultControl
+    ></div>
+  </mat-tab>
+</mat-tab-group>

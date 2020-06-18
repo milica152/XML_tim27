@@ -37,7 +37,7 @@ import java.util.Objects;
 
 @Service
 public class ScientificPaperService {
-    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
+    private static String schemaPath = "Backend\\src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
@@ -115,7 +115,7 @@ public class ScientificPaperService {
             return "ok";
 
         }catch (Exception e){
-            logger.warn("Ivalid document type! Must be ScientificPaper");
+            logger.warn("Ivalid document type! Must be ScientificPaper. Or the paths are wrong.");
         }
         return "error";
     }

@@ -21,6 +21,8 @@ import {ToolbarModule} from "../toolbar/toolbar.module";
 import {FlexModule} from "@angular/flex-layout";
 import { PreviewMyPapersComponent } from './preview-my-papers/preview-my-papers.component';
 import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-preview.component';
+import { AddNewPaperComponent } from './add-new-paper/add-new-paper.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-p
     , PaginatorComponent,
     PaginatorComponent,
     PreviewMyPapersComponent,
-    PaperPreviewComponent
+    PaperPreviewComponent,
+    AddNewPaperComponent
     ],
     imports: [
         CommonModule,
@@ -50,7 +53,8 @@ import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-p
         MatFormFieldModule,
         RouterModule,
         ToolbarModule,
-        FlexModule
+        FlexModule,
+        MatTabsModule
     ],
 
 })
