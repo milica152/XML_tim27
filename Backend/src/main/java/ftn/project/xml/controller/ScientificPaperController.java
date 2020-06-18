@@ -85,5 +85,17 @@ public class ScientificPaperController {
     }
 
 
+    @PostMapping("/accept")
+    @ResponseBody
+    public ResponseEntity<String> accept(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.accept(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/reject")
+    @ResponseBody
+    public ResponseEntity<String> reject(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.reject(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
+    }
 
 }

@@ -255,7 +255,6 @@ public class ScientificPaperRepository {
         ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
         metadataExtractor.extractMetadata(new ByteArrayInputStream(xmlRes.getBytes()), metadataStream);
         String extractedMetadata = new String(metadataStream.toByteArray());
-        System.out.println(extractedMetadata);
         RDFAuthenticationUtilities.RDFConnectionProperties conn = RDFAuthenticationUtilities.loadProperties();
         Model model = ModelFactory.createDefaultModel();
         model.read(new ByteArrayInputStream(extractedMetadata.getBytes()), null);
@@ -265,7 +264,6 @@ public class ScientificPaperRepository {
 
         String sparqlUpdate = SparqlUtil.deleteData(conn.dataEndpoint + SPARQL_NAMED_GRAPH_URI,
                 new String(out.toByteArray()));
-        System.out.println(out.toString());
         UpdateRequest update = UpdateFactory.create(sparqlUpdate);
 
         UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint);
@@ -359,42 +357,5 @@ public class ScientificPaperRepository {
     }
 
 
-
-    /*
-    public void updateMedatada(String title, String pred, String obj,RDFAuthenticationUtilities.RDFConnectionProperties conn ) {
-        // Creates a default model
-        Model model = ModelFactory.createDefaultModel();
-        //model.setNsPrefix("pred", PREDICATE_NAMESPACE);
-
-        // Loading the changes from an RDF/XML
-        //model.read(rdfFilePath);
-
-        // Making the changes manually
-        org.apache.jena.rdf.model.Resource resource = model.createResource(title);
-
-        Property property1 = model.createProperty("https://github.com/milica152/XML_tim27", pred);
-        Literal literal1 = model.createLiteral(obj);
-
-        // Adding the statements to the model
-        Statement statement1 = model.createStatement(resource, property1, literal1);
-        model.add(statement1);
-
-        // Issuing the SPARQL update...
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        model.write(out, SparqlUtil.NTRIPLES);
-
-        // Updating the named graph with the triples from RDF model
-        String sparqlUpdate = SparqlUtil.insertData(conn.dataEndpoint + SPARQL_NAMED_GRAPH_URI, new String(out.toByteArray()));
-        System.out.println(sparqlUpdate);
-
-        // UpdateRequest represents a unit of execution
-        UpdateRequest update = UpdateFactory.create(sparqlUpdate);
-
-        // UpdateProcessor sends update request to a remote SPARQL update service.
-        UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint);
-        processor.execute();
-
-        model.close();
-    }*/
 
 }
