@@ -1,5 +1,5 @@
 import { Input, Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationApiService} from "../../../core/authentication-api.service";
 import {LoginUser} from "../../../shared/models/login-user.model";
 import {MatSnackBar} from "@angular/material";
@@ -16,23 +16,24 @@ export class LoginComponent implements OnInit {
               private router: Router) {
   }
 
-  ngOnInit() {
-  }
-
   ngForm = new FormGroup({
     email: new FormControl('', [Validators.required,
-      Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")]),
+      Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$')]),
     password: new FormControl('', [Validators.required])
   });
 
+  ngOnInit() {
+  }
+
   onSubmit() {
     const loginObserver = {
-      next: x =>{
+      next: x => {
         localStorage.setItem('token', x);
-        this.snackBar.open("Welcome!", 'Dismiss', {
+        this.snackBar.open('Welcome!', 'Dismiss', {
           duration: 3000
         });
-        this.router.navigate(['/dashboard/papers/preview']);
+        localStorage.setItem('user', this.ngForm.controls['email'].value)
+        this.router.navigate(['/dashboard/previewAllPapers']);
       },
       error: (err: any) => {
         console.log(err);
