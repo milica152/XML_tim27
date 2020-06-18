@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 export class ScientificPaperService {
   backendUrl = 'scientificPaper/';
 
+
   private _headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -24,5 +25,10 @@ export class ScientificPaperService {
 
   getMyPapers(): Observable<any> {
     return this.httpClient.get('scientificPaper/findMyPapers', {headers: this._headers, responseType: 'text'});
+  }
+
+  getPaper(paperName: string) {
+    return this._http.get(`scientificPaper/findByTitleToHTML?title=${paperName}`, {headers: this._headers, responseType: 'text'});
+
   }
 }

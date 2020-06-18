@@ -21,8 +21,10 @@ import {ToolbarModule} from "../toolbar/toolbar.module";
 import {FlexModule} from "@angular/flex-layout";
 import { PreviewMyPapersComponent } from './preview-my-papers/preview-my-papers.component';
 import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-preview.component';
+import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-preview/paper-full-preview.component';
 import { AddNewPaperComponent } from './add-new-paper/add-new-paper.component';
 import {MatTabsModule} from "@angular/material/tabs";
+
 
 
 @NgModule({
@@ -31,6 +33,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     PaginatorComponent,
     PreviewMyPapersComponent,
     PaperPreviewComponent,
+    PaperFullPreviewComponent
     AddNewPaperComponent
     ],
     imports: [

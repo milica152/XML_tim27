@@ -128,8 +128,8 @@ public class ScientificPaperRepository {
             e.printStackTrace();
         }
         try {
-            col = dbUtils.getOrCreateCollection(conn, conn.uri + papersCollectionPathInDB);
-            System.out.println(col);
+            col = dbUtils.getOrCreateCollection(conn, papersCollectionPathInDB);
+
             col.setProperty(OutputKeys.INDENT, "yes");
             String[] resources = col.listResources();
             if(resources.length!=0){

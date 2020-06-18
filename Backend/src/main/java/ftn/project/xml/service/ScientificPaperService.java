@@ -8,6 +8,7 @@ import ftn.project.xml.model.User;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
+import org.apache.commons.io.IOUtils;
 import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,7 +143,7 @@ public class ScientificPaperService {
         return scientificPaperRepository.getMetadata(properties, title);
     }
 
-    public void transformToHTML(String xml) throws TransformerException {
+    public String transformToHTML(String xml) throws TransformerException, IOException {
         //TODO: dodaj proveru koji tip korisnika zeli da uradi transformaciju (da se ukloni autor ako treba itd)
 
         TransformerFactory factory = TransformerFactory.newInstance();
@@ -161,7 +162,9 @@ public class ScientificPaperService {
         StreamResult out = new StreamResult(new File(outputFile));
         assert transformer != null;
         transformer.transform(in, out);
-        System.out.println("The generated HTML file is:" + outputFile);
+        BufferedReader br = new BufferedReader(new FileReader(outputFile));
+        String html = IOUtils.toString(br);
+        return html;
 
     }
 

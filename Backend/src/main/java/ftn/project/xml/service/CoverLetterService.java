@@ -4,6 +4,7 @@ import ftn.project.xml.model.CoverLetter;
 import ftn.project.xml.repository.CoverLetterRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DOMParser;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,7 @@ import org.xmldb.api.base.XMLDBException;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.File;
-import java.io.StringReader;
+import java.io.*;
 import java.util.Objects;
 
 @Service
@@ -58,7 +58,7 @@ public class CoverLetterService {
         return coverLetterRepository.getByDocumentId(conn, id);
     }
 
-    public void transformToHTML(String xml) throws TransformerException {
+    public String transformToHTML(String xml) throws TransformerException, IOException {
         //TODO: dodaj proveru koji tip korisnika zeli da uradi transformaciju (da se ukloni autor ako treba itd)
 
         TransformerFactory factory = TransformerFactory.newInstance();
@@ -77,7 +77,10 @@ public class CoverLetterService {
         StreamResult out = new StreamResult(new File(outputFile));
         assert transformer != null;
         transformer.transform(in, out);
-        System.out.println("The generated HTML file is:" + outputFile);
+        BufferedReader br = new BufferedReader(new FileReader(outputFile));
+        String html = IOUtils.toString(br);
+        return html;
+
 
     }
 
