@@ -20,13 +20,15 @@ import {RouterModule} from '@angular/router';
 import {ToolbarModule} from "../toolbar/toolbar.module";
 import {FlexModule} from "@angular/flex-layout";
 import { PreviewMyPapersComponent } from './preview-my-papers/preview-my-papers.component';
+import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-preview.component';
 
 
 @NgModule({
   declarations: [DashboardComponent
     , PaginatorComponent,
     PaginatorComponent,
-    PreviewMyPapersComponent
+    PreviewMyPapersComponent,
+    PaperPreviewComponent
     ],
     imports: [
         CommonModule,

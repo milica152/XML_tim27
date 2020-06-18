@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ScientificPaperService {
   backendUrl = 'scientificPaper/';
+
+  private _headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true'
+  });
 
   constructor(public httpClient: HttpClient) {}
 
@@ -17,7 +23,6 @@ export class ScientificPaperService {
   }
 
   getMyPapers(): Observable<any> {
-    console.log('uso')
-    return this.httpClient.get('scientificPaper/findMyPapers?email=' + localStorage.getItem('user'));
+    return this.httpClient.get('scientificPaper/findMyPapers', {headers: this._headers, responseType: 'text'});
   }
 }

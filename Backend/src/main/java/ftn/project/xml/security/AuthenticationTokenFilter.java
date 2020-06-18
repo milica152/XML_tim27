@@ -29,10 +29,12 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String authToken = httpRequest.getHeader("X-Auth-Token");
 		String email = tokenUtils.getEmailFromToken(authToken);
+		System.out.println(email);
 		if (email != null
 				&& SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = this.userDetailsService
 					.loadUserByUsername(email);
+			System.out.println(tokenUtils.validateToken(authToken, userDetails));
 			if (tokenUtils.validateToken(authToken, userDetails)) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());

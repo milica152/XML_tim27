@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ScientificPaperService } from 'src/app/services/scientificPaper.service';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { ScientificPaperService } from 'src/app/core/scientificPaper.service';
+import { MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-preview-my-papers',
@@ -7,23 +8,55 @@ import { ScientificPaperService } from 'src/app/services/scientificPaper.service
   styleUrls: ['./preview-my-papers.component.scss']
 })
 export class PreviewMyPapersComponent implements OnInit {
+  private _papers: any[] = [];
+  private searchParameter = '';
 
-  message: string = 'ovo je ok';
-
-  constructor(private scientificPaperService: ScientificPaperService) { }
+  constructor(private scientificPaperService: ScientificPaperService, private snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
-    this.scientificPaperService.getMyPapers().subscribe(
-      response => {
-        console.log(response);
-      });
+    this.getPapers();
   }
 
-  testClick() {
-    this.scientificPaperService.getMyPapers().subscribe(
-      response => {
-        console.log(response);
-      });
+  get papers(): any[] {
+    return this._papers;
   }
 
+  public getPapers() {
+    this.scientificPaperService.getMyPapers().subscribe({
+      next: (result) => {
+        this._papers = result.content;
+      },
+      error: (message: string) => {
+        this.snackBar.open(message, 'Dismiss', {
+          duration: 3000
+        });
+      }
+    });
+  }
+
+  // private searchPapers() {
+  //   this.scientificPaperService.searchPapers(this.searchParameter).subscribe(
+  //     {
+  //       next: (result: Page) => {
+  //         this._papers = result.content;
+  //       },
+  //       error: (message: string) => {
+  //         this.snackBar.open(message, 'Dismiss', {
+  //           duration: 3000
+  //         });
+  //       }
+  //     }
+  //   );
+  // }
+
+  private onSubmit() {
+    // this.searchPapers();
+  }
+
+  private resetForm(form) {
+    form.reset();
+    this.searchParameter = '';
+    this.getPapers();
+  }
 }

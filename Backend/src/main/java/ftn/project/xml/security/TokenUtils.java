@@ -25,6 +25,7 @@ public class TokenUtils {
 		try {
 			Claims claims = this.getClaimsFromToken(token);
 			email = claims.getSubject();
+			System.out.println(email);
 		} catch (Exception e) {
 			email = null;
 		}
@@ -71,7 +72,7 @@ public class TokenUtils {
 		claims.put("role", userDetails.getAuthorities());
 		return Jwts.builder().setClaims(claims)
 				.setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+				.signWith(SignatureAlgorithm.HS512, this.secret).compact();
 	}
 
 

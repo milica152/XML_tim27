@@ -1,0 +1,21 @@
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>history_edu</mat-icon>
+    <mat-card-title>{{paper.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>"Samo probaa"</p>
+<!--    <app-map [_latitude]="location.latitude" [_longitude]="location.longitude" [_zoom]="9" [_maxZoom]="13"-->
+<!--             [_mapName]="location.name" [_draggable]="false"></app-map>-->
+  </mat-card-content>
+  <mat-card-actions fxLayout="row" fxLayoutGap="3%">
+    <button mat-raised-button color="primary" matTooltip="Preview" [routerLink]="['/dashboard/preview/',
+    this.paper.name]">
+      <mat-icon>preview</mat-icon>
+    </button>
+    <button mat-raised-button color="primary" matTooltip="Withdraw" [routerLink]="['/dashboard/previewMyPapers/',
+    this.location.id]">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -12,5 +12,6 @@
     <button *ngIf="getRole != 'PUBLIC'" (click)="logOut()" mat-button>Logout</button>
     <button *ngIf="getRole == 'PUBLIC'" routerLink="/login" mat-button>Login</button>
     <button *ngIf="getRole == 'PUBLIC'" routerLink="/register" mat-button>Register</button>
+    
   </span>
 </mat-toolbar>

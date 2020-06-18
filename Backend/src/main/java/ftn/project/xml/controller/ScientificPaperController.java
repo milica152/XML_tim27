@@ -20,7 +20,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@CrossOrigin(allowedHeaders = "http://localhost:4200/")
+@CrossOrigin()
 @RequestMapping(value = "/scientificPaper")
 public class ScientificPaperController {
 
@@ -48,8 +48,8 @@ public class ScientificPaperController {
 
     @GetMapping("/findMyPapers")
     @ResponseBody
-    public ResponseEntity<List<ScientificPaperDTO>> findUserPapers(@RequestParam("email") String email) throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
-        return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties(), email), HttpStatus.OK);
+    public ResponseEntity<List<ScientificPaperDTO>> findUserPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
 

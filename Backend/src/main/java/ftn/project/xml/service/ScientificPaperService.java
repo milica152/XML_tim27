@@ -4,6 +4,7 @@ import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -122,9 +124,10 @@ public class ScientificPaperService {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
     }
 
-    public List<ScientificPaperDTO> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String authorEmail) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
-        TUser user = userRepository.getUserByEmail(loadProperties, authorEmail);
-        return scientificPaperRepository.search(loadProperties, user.getName(), "", "");
+    public List<ScientificPaperDTO> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TUser tUser = userRepository.getUserByEmail(loadProperties, user.getEmail());
+        return scientificPaperRepository.search(loadProperties, tUser.getName(), "", "");
     }
 
 
