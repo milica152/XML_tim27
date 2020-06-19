@@ -72,7 +72,7 @@ public class ScientificPaperService {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             NodeList nl = d.getElementsByTagName("title");
             String title = nl.item(0).getTextContent();
-            logger.info("New Scientific paper published under the title: " + title);
+
 
             //System.out.println(title);
             // pokreni bussiness process
@@ -112,6 +112,7 @@ public class ScientificPaperService {
             // saving to RDF store
             scientificPaperRepository.saveMetadata(extractedMetadata);
             scientificPaperRepository.save(conn, title, newSciPap);
+            logger.info("New Scientific paper published under the title: " + title);
 
             return "ok";
 

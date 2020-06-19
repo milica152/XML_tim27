@@ -17,18 +17,15 @@ export class ScientificPaperService {
   constructor(public httpClient: HttpClient) {}
 
   saveScientificPaper(scientificPaper: string): Observable<any> {
-    return this.httpClient.post(
-      this.backendUrl + 'save/',
-      scientificPaper
-    );
+    return this.httpClient.post(this.backendUrl + 'save/', scientificPaper, {headers:this._headers});
   }
 
   getMyPapers(): Observable<any> {
-    return this.httpClient.get('scientificPaper/findMyPapers', {headers: this._headers, responseType: 'text'});
+    return this.httpClient.get('scientificPaper/findMyPapers', {headers: this._headers});
   }
 
   getPaper(paperName: string) {
-    return this._http.get(`scientificPaper/findByTitleToHTML?title=${paperName}`, {headers: this._headers, responseType: 'text'});
+    return this.httpClient.get(`scientificPaper/findByTitleToHTML?title=${paperName}`, {headers: this._headers, responseType: 'text'});
 
   }
 }

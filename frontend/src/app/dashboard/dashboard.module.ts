@@ -33,7 +33,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     PaginatorComponent,
     PreviewMyPapersComponent,
     PaperPreviewComponent,
-    PaperFullPreviewComponent
+    PaperFullPreviewComponent,
     AddNewPaperComponent
     ],
     imports: [
