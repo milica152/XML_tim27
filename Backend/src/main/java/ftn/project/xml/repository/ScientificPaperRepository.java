@@ -13,6 +13,9 @@ import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
 import org.apache.jena.update.UpdateRequest;
 import org.exist.xmldb.EXistResource;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +25,8 @@ import org.xmldb.api.base.*;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XQueryService;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+
+import org.jsoup.nodes.Document;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
@@ -121,66 +123,34 @@ public class ScientificPaperRepository {
         return (String) res.getContent();
     }
 
-    public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties conn, String author, String title, String keyword) {
-        List<ScientificPaperDTO> sps = new ArrayList<>();
-        Collection col = null;
-
-        try {
-            dbUtils.initilizeDBserver(conn);
-        } catch (ClassNotFoundException | XMLDBException | InstantiationException | IllegalAccessException e) {
-            logger.error("Problem sa inicijalizovanjem baze");
-            e.printStackTrace();
+    public List<String> search(AuthenticationUtilities.ConnectionProperties conn, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        List<String> sps;
+        List<String> found = new ArrayList<>();
+        if(author == null || author.isEmpty()){
+            sps = getAllPapers(conn);
         }
-        try {
-            col = dbUtils.getOrCreateCollection(conn, papersCollectionPathInDB);
+        else{
+            sps = getMyPapers(conn, author);
+        }
 
-            col.setProperty(OutputKeys.INDENT, "yes");
-            String[] resources = col.listResources();
-            if(resources.length!=0){
-                sps = doSearch(col, conn, resources, author, title, keyword);
+        for(String paperId: sps){
+            String paper = getByTitle(conn, paperId);
+            Document doc = Jsoup.parse(paper);
+            Elements selector = doc.select("concreteImage");
+            for (Element element : selector) {
+                element.remove();
             }
-
-        } catch (XMLDBException e) {
-            logger.error("Problem prilikom dobavljanj dokumenata.");
-            e.printStackTrace();
+            selector = doc.select("metadata");
+            for (Element element : selector) {
+                element.remove();
+            }
+            if(doc.text().contains(text)){
+                found.add(paperId);
+            }
         }
-        return sps;
+        return found;
     }
 
-    private List<ScientificPaperDTO> doSearch(Collection col, AuthenticationUtilities.ConnectionProperties conn, String[] resources, String author, String title, String keyword) throws XMLDBException {
-        List<ScientificPaperDTO> result = new ArrayList<>();
-        String xqueryExp = "";
-
-        XQueryService xqueryService = (XQueryService) col.getService("XQueryService", "1.0");
-        xqueryService.setProperty("indent", "yes");
-        xqueryService.setNamespace("", TARGET_NAMESPACE);
-        for(String res : resources){
-            System.out.println(res);
-            try {
-                xqueryExp = "doc(\"" + res + "\")//scientificPaper/title[contains(.,\"" + title.trim() + "\")]/text()";
-                ResourceSet resultSet = xqueryService.query(xqueryExp);
-                if(resultSet.getSize()>0){
-                    xqueryExp = "doc(\"" + res + "\")//scientificPaper/authors/author/name[contains(.,\"" + author.trim() + "\")]/text() | //scientificPaper/authors/author/surname[contains(.,\"" + author.trim() + "\")]/text()";
-                    resultSet = xqueryService.query(xqueryExp);
-                    if(resultSet.getSize()>0) {
-                        xqueryExp = "doc(\"" + res + "\")//scientificPaper/metadata/keywords/keyword[contains(.,\"" + keyword.trim() + "\")]/text()";
-                        resultSet = xqueryService.query(xqueryExp);
-                        if(resultSet.getSize()>0) {
-                            ScientificPaperDTO r = getTitleAuthorsAndKeywords(res, xqueryService);
-                            result.add(r);
-                        }
-                    }
-                }
-
-            } catch (XMLDBException e) {
-                logger.error("Problem sa pretragom");
-                e.printStackTrace();
-            }
-
-
-        }
-        return result;
-    }
 
     private ScientificPaperDTO getTitleAuthorsAndKeywords(String res, XQueryService xQueryService) throws XMLDBException {
         ScientificPaperDTO r = new ScientificPaperDTO();
@@ -397,5 +367,12 @@ public class ScientificPaperRepository {
         }
         return papers;
 
+    }
+
+    public String getStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paperId) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String paper = getByTitle(loadProperties, paperId);
+        Document doc = Jsoup.parse(paper);
+        Elements selector = doc.select("status");
+        return selector.text();
     }
 }

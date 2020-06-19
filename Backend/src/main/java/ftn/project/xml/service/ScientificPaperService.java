@@ -126,10 +126,15 @@ public class ScientificPaperService {
         return scientificPaperRepository.getByTitle(conn, s);
     }
 
-    public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String title, String keyword) {
-        return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
-    }
+    public List<String> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        if(author.equals("my")){
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return scientificPaperRepository.search(loadProperties,  user.getEmail(),  text);
+        }else{
+            return scientificPaperRepository.search(loadProperties,  null,  text);
+        }
 
+    }
 
     public List<String> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -301,5 +306,9 @@ public class ScientificPaperService {
         return scientificPaperRepository.getAllPapers(loadProperties);
 
 
+    }
+
+    public String getStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paper) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        return scientificPaperRepository.getStatus(loadProperties, paper);
     }
 }
