@@ -18,9 +18,6 @@ export class PaperFullPreviewComponent implements OnInit {
   ngOnInit() {
       this.getPaper(this.activatedRoute.snapshot.params.paperName);
 
-    // this.html = this.sanitizer.bypassSecurityTrustHtml((await this.scientificPaperService.getPaper
-    // (this.activatedRoute.snapshot.params.paperName) as any).data);
-
   }
 
   getPaper(paperName: string) {
