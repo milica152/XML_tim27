@@ -363,7 +363,39 @@ public class ScientificPaperRepository {
 
     public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         TUser user = userRepository.getUserByEmail(loadProperties, email);
+        List<String> myPapers = new ArrayList<>();
+//        for (String paper: user.getMyPapers().getMyScientificPaperID()){
+//            if(getByTitle(paper))
+//        }
         return user.getMyPapers().getMyScientificPaperID();
     }
 
+    public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
+        List<String> papers = new ArrayList<>();
+        Collection col = null;
+
+        try {
+            dbUtils.initilizeDBserver(loadProperties);
+        } catch (ClassNotFoundException | XMLDBException | InstantiationException | IllegalAccessException e) {
+            logger.error("Problem sa inicijalizovanjem baze");
+            e.printStackTrace();
+        }
+        try {
+            col = dbUtils.getOrCreateCollection(loadProperties, papersCollectionPathInDB);
+
+            col.setProperty(OutputKeys.INDENT, "yes");
+            String[] resources = col.listResources();
+            if(resources.length!=0){
+                for(String p: resources){
+                    papers.add(p.substring(9));
+                }
+            }
+
+        } catch (XMLDBException e) {
+            logger.error("Problem prilikom dobavljanj dokumenata.");
+            e.printStackTrace();
+        }
+        return papers;
+
+    }
 }

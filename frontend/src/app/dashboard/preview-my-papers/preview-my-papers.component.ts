@@ -1,6 +1,7 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { ScientificPaperService } from 'src/app/core/scientificPaper.service';
 import { MatSnackBar} from '@angular/material';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 
 @Component({
   selector: 'app-preview-my-papers',
@@ -10,19 +11,51 @@ import { MatSnackBar} from '@angular/material';
 export class PreviewMyPapersComponent implements OnInit {
   private _papers: any[] = [];
   private searchParameter = '';
+  private _content: string;
 
-  constructor(private scientificPaperService: ScientificPaperService, private snackBar: MatSnackBar) {
+  get content(): string {
+    return this._content;
+  }
+
+  set content(value: string) {
+    this._content = value;
+  }
+
+  constructor(private scientificPaperService: ScientificPaperService, private snackBar: MatSnackBar,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.getPapers();
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this._content = params.get('content');
+    });
+    if(this._content === 'previewMyPapers'){
+      this.getMyPapers();
+    }else{
+      this.getAllPapers();
+    }
+
   }
 
   get papers(): any[] {
     return this._papers;
   }
 
-  public getPapers() {
+  getAllPapers() {
+    this.scientificPaperService.getAllPapers().subscribe({
+      next: (result) => {
+        this._papers = result;
+      },
+      error: (message: string) => {
+        this.snackBar.open(message, 'Dismiss', {
+          duration: 3000
+        });
+      }
+    });
+  }
+
+
+  public getMyPapers() {
     this.scientificPaperService.getMyPapers().subscribe({
       next: (result) => {
         this._papers = result;
@@ -57,6 +90,12 @@ export class PreviewMyPapersComponent implements OnInit {
   private resetForm(form) {
     form.reset();
     this.searchParameter = '';
-    this.getPapers();
+    if(this._content === 'previewMyPapers'){
+      this.getMyPapers();
+    }
+    else{
+      this.getAllPapers();
+    }
+
   }
 }

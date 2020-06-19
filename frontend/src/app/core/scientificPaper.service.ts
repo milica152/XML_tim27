@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ScientificPaperService {
+    
   backendUrl = 'scientificPaper/';
 
 
@@ -22,6 +23,10 @@ export class ScientificPaperService {
 
   getMyPapers(): Observable<any> {
     return this.httpClient.get('scientificPaper/findMyPapers', {headers: this._headers});
+  }
+
+  getAllPapers() : Observable<any>  {
+    return this.httpClient.get('scientificPaper/findAllPapers', {headers: this._headers});
   }
 
   getPaper(paperName: string) {

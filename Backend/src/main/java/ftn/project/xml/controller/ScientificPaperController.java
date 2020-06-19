@@ -37,21 +37,18 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/findByTitle")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
     public ResponseEntity<String> getScientificPaperById(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
     @GetMapping("/findByTitleToHTML")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
     public ResponseEntity<String> getScientificPaperByIdHTML(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.transformToHTML(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
     public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
         return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
@@ -59,10 +56,17 @@ public class ScientificPaperController {
 
 
     @GetMapping("/findMyPapers")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity<List<String>> findUserPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
+    }
+
+    @GetMapping("/findAllPapers")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @ResponseBody
+    public ResponseEntity<List<String>> getAllPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
 
