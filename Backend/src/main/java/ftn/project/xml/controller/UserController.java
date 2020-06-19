@@ -79,6 +79,26 @@ public class UserController {
     }
 
 
+
+    @PreAuthorize("(hasAuthority('REVIEWER'))")
+    @PostMapping("/getMyReviews")
+    @ResponseBody
+    public ResponseEntity<TUser.MyReviews> getMyReviews() throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        return new ResponseEntity<>(userService.getMyReviews(conn), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
+    @PostMapping("/")
+    @ResponseBody
+    public ResponseEntity<TUser.PendingPapersToReview> getMyPendingReviews() throws Exception {
+        conn = AuthenticationUtilities.loadProperties();
+        return new ResponseEntity<>(userService.getMyPendingReviews(conn), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("(hasAuthority('EDITOR'))")
     @PostMapping("/delete")
     @ResponseBody
     public ResponseEntity<String> delete(@RequestBody String email) throws Exception {

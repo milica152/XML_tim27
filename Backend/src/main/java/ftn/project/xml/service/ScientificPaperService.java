@@ -290,4 +290,12 @@ public class ScientificPaperService {
 
         return "ok";
     }
+
+
+    public String getStatus(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException, IOException, SAXException, ParserConfigurationException {
+        String doc = getByTitle(conn, title);
+        Document d = domParser.buildDocument(doc, schemaPath);
+        NodeList statusList = d.getElementsByTagName("status");
+        return statusList.item(0).getTextContent();
+    }
 }

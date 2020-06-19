@@ -92,24 +92,33 @@ public class ScientificPaperController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @PostMapping("/withdraw")
     @ResponseBody
     public ResponseEntity<String> withdraw(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.withdraw(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
     }
 
-
+    @PreAuthorize("(hasAuthority('EDITOR'))")
     @PostMapping("/accept")
     @ResponseBody
     public ResponseEntity<String> accept(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.accept(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
     }
 
-
+    @PreAuthorize("(hasAuthority('EDITOR'))")
     @PostMapping("/reject")
     @ResponseBody
     public ResponseEntity<String> reject(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.reject(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/getStatus")
+    @ResponseBody
+    public ResponseEntity<String> getStatus(@RequestBody String title) throws Exception {
+        AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();
+        return new ResponseEntity<>(scientificPaperService.getStatus(conn, title), HttpStatus.OK);
     }
 
 }
