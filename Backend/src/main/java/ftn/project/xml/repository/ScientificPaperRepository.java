@@ -20,12 +20,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XQueryService;
-
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.ParserConfigurationException;
 import org.jsoup.nodes.Document;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
@@ -43,6 +50,7 @@ public class ScientificPaperRepository {
     private static final String papersCollectionPathInDB = "/db/xml/scientificPaper";
     private static final String papersDocumentID = "paper.xml";
     private static final String SPARQL_NAMED_GRAPH_URI = "/sp";
+    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperRepository.class);
 
@@ -56,9 +64,12 @@ public class ScientificPaperRepository {
     private SparqlUtil sparqlUtil;
 
     @Autowired
+    public DOMParser domParser;
+
+    @Autowired
     private UserRepository userRepository;
 
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
+  public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
         Collection col = null;
         dbUtils.initilizeDBserver(conn);
 
@@ -151,7 +162,14 @@ public class ScientificPaperRepository {
         return found;
     }
 
-
+    public String removeAuthors(String oldResource) throws IOException, SAXException, ParserConfigurationException, TransformerException {
+        Document d = domParser.buildDocument(oldResource, schemaPath);
+        NodeList authorsList =  d.getDocumentElement().getElementsByTagName("authors");
+        Node authors = authorsList.item(0);
+        d.getDocumentElement().removeChild(authors);
+        return domParser.DOMToXML(d);
+    }
+  
     private ScientificPaperDTO getTitleAuthorsAndKeywords(String res, XQueryService xQueryService) throws XMLDBException {
         ScientificPaperDTO r = new ScientificPaperDTO();
 
@@ -332,11 +350,13 @@ public class ScientificPaperRepository {
     }
 
     public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+
         TUser user = userRepository.getUserByEmail(loadProperties, email);
         List<String> myPapers = new ArrayList<>();
 //        for (String paper: user.getMyPapers().getMyScientificPaperID()){
 //            if(getByTitle(paper))
 //        }
+
         return user.getMyPapers().getMyScientificPaperID();
     }
 

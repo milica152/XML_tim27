@@ -302,13 +302,22 @@ public class ScientificPaperService {
         return "ok";
     }
 
+
+    public String getStatus(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException, IOException, SAXException, ParserConfigurationException {
+        String doc = getByTitle(conn, title);
+        Document d = domParser.buildDocument(doc, schemaPath);
+        NodeList statusList = d.getElementsByTagName("status");
+        return statusList.item(0).getTextContent();
+    }
+
+    public String getByTitleWithoutAuthors(AuthenticationUtilities.ConnectionProperties loadProperties, String title) throws SAXException, TransformerException, ParserConfigurationException, IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String result = scientificPaperRepository.getByTitle(loadProperties, title);
+        result = scientificPaperRepository.removeAuthors(result);
+        return result;
+
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
         return scientificPaperRepository.getAllPapers(loadProperties);
 
 
-    }
-
-    public String getStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paper) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return scientificPaperRepository.getStatus(loadProperties, paper);
     }
 }

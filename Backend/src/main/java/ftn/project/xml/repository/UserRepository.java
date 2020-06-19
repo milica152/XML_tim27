@@ -166,7 +166,7 @@ public class UserRepository {
 
         try {
             // get the collection
-            col = DatabaseManager.getCollection(conn.uri + usersCollectionPathInDB);
+            col = dbUtils.getOrCreateCollection(conn, conn.uri + usersCollectionPathInDB);
 
             // get an instance of xpath query service
             XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
@@ -276,4 +276,13 @@ public class UserRepository {
         return "ok";
     }
 
+    public TUser.MyReviews getMyReviews(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        TUser user = getUserByEmail(conn, email);
+        return user.getMyReviews();
+    }
+
+    public TUser.PendingPapersToReview getMyPendingReviews(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        TUser user = getUserByEmail(conn, email);
+        return user.getPendingPapersToReview();
+    }
 }

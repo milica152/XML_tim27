@@ -1,11 +1,11 @@
 package ftn.project.xml.service;
 
-import com.fasterxml.jackson.databind.deser.std.CollectionDeserializer;
 import ftn.project.xml.dto.UserLoginDTO;
 import ftn.project.xml.dto.UserRegisterDTO;
 import ftn.project.xml.exceptions.EntityAlreadyExistsException;
 import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.security.TokenUtils;
 import ftn.project.xml.util.AuthenticationUtilities;
@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,6 +66,7 @@ public class UserService {
             regUser.setName(user.getName());
             regUser.setSurname(user.getSurname());
             regUser.setRole(TRole.AUTHOR);
+
             regUser.setProfession(user.getProfession());
             TUser.MyPapers papers = new TUser.MyPapers();
             papers.setMyScientificPaperID(new ArrayList<String>());
@@ -75,8 +77,7 @@ public class UserService {
         }
     }
 
-    public String login(AuthenticationUtilities.ConnectionProperties conn, UserLoginDTO userLoginDTO) throws ClassNotFoundException,
-            InstantiationException, XMLDBException, IllegalAccessException, UsernameNotFoundException, BadCredentialsException{
+    public String login(AuthenticationUtilities.ConnectionProperties conn, UserLoginDTO userLoginDTO) throws UsernameNotFoundException, BadCredentialsException{
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.getEmail(), userLoginDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
@@ -98,5 +99,15 @@ public class UserService {
 
     public String delete(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return userRepository.delete(conn, email);
+    }
+
+    public TUser.MyReviews getMyReviews(AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.getMyReviews(conn, user.getEmail());
+    }
+
+    public TUser.PendingPapersToReview getMyPendingReviews(AuthenticationUtilities.ConnectionProperties conn) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.getMyPendingReviews(conn, user.getEmail());
     }
 }
