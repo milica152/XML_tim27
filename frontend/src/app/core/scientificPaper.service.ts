@@ -18,7 +18,11 @@ export class ScientificPaperService {
   constructor(public httpClient: HttpClient) {}
 
   saveScientificPaper(scientificPaper: string): Observable<any> {
-    return this.httpClient.post(this.backendUrl + 'save/', scientificPaper, {headers:this._headers});
+    return this.httpClient.post(this.backendUrl + 'save/', scientificPaper, {headers:this._headers, responseType: 'text'});
+  }
+
+  deleteScientificPaper(scientificPaper: string): Observable<any> {
+    return this.httpClient.delete(this.backendUrl + `delete?title=${scientificPaper}`, {headers:this._headers, responseType: 'text'});
   }
 
   getMyPapers(): Observable<any> {

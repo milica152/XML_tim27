@@ -262,7 +262,7 @@ public class ScientificPaperRepository {
 
     public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         dbUtils.initilizeDBserver(conn);
-
+        title = title.replaceAll("\\s","");
         Collection col = null;
         Resource res = null;
 
@@ -281,7 +281,6 @@ public class ScientificPaperRepository {
             e.printStackTrace();
         } finally {
             //don't forget to clean up!
-
             if(res != null) {
                 try {
                     ((EXistResource)res).freeResources();
@@ -298,7 +297,7 @@ public class ScientificPaperRepository {
                 }
             }
         }
-        return "ok";
+        return "Scientific Paper deleted!";
     }
 
     public ArrayList<MetadataDTO> getMetadata(RDFAuthenticationUtilities.RDFConnectionProperties conn, String title) {
@@ -374,6 +373,7 @@ public class ScientificPaperRepository {
             String[] resources = col.listResources();
             if(resources.length!=0){
                 for(String p: resources){
+                    System.out.println(p);
                     papers.add(p.substring(9));
                 }
             }

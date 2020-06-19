@@ -2,7 +2,7 @@
 <coverLetter xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/coverLetter.xsd" xmlns:sp="https://github.com/milica152/XML_tim27" >
-    <paperTitle>title</paperTitle>
+    <paperTitle></paperTitle>
     <date>2021-01-27</date>
     <author sp:id="mq/dasc">
         <name>XcmIKsYGVz4PBhXMFH2y1n</name>

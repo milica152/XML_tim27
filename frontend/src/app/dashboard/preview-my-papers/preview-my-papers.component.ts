@@ -84,6 +84,7 @@ export class PreviewMyPapersComponent implements OnInit {
   public getMyPapers() {
     this.scientificPaperService.getMyPapers().subscribe({
       next: (result) => {
+        console.log(result);
         this._papers = [];
         for(var paper of result) {
           var bool = false;

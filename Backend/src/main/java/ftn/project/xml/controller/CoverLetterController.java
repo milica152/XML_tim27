@@ -20,9 +20,9 @@ public class CoverLetterController {
     @PreAuthorize("(hasAuthority('AUTHOR'))")
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity<String> save(@RequestBody String reviewXML) throws Exception {
+    public ResponseEntity<String> save(@RequestBody String reviewXML, @RequestParam("title") String title) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>(coverLetterService.save(conn, reviewXML), HttpStatus.OK);
+        return new ResponseEntity<>(coverLetterService.save(conn, reviewXML, title), HttpStatus.OK);
     }
 
     @PreAuthorize("(hasAuthority('EDITOR'))")

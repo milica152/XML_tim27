@@ -72,8 +72,7 @@ public class ScientificPaperService {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             NodeList nl = d.getElementsByTagName("title");
             String title = nl.item(0).getTextContent();
-
-
+            title = title.replaceAll("\\s","");
             //System.out.println(title);
             // pokreni bussiness process
 
@@ -114,12 +113,12 @@ public class ScientificPaperService {
             scientificPaperRepository.save(conn, title, newSciPap);
             logger.info("New Scientific paper published under the title: " + title);
 
-            return "ok";
+            return "Scientific Paper published!";
 
         }catch (Exception e){
             logger.warn("Ivalid document type! Must be ScientificPaper. Or the paths are wrong.");
         }
-        return "error";
+        return "Error saving scientific paper!";
     }
 
     public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
