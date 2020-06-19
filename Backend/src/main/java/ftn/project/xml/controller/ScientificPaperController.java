@@ -50,8 +50,8 @@ public class ScientificPaperController {
 
     @GetMapping("/search")
     @ResponseBody
-    public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
-        return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
+    public ResponseEntity<List<String>> search(@RequestParam("author") String author, @RequestParam("text") String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title), HttpStatus.OK);
     }
 
 
@@ -65,8 +65,15 @@ public class ScientificPaperController {
     @GetMapping("/findAllPapers")
     @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
-    public ResponseEntity<List<String>> getAllPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public ResponseEntity<List<String>> getAllPapers() throws IOException {
         return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
+    }
+
+    @GetMapping("/getStatus")
+    @PreAuthorize("hasAuthority('AUTHOR')")
+    @ResponseBody
+    public ResponseEntity<String> getStatus(@RequestParam("paper") String paper) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        return new ResponseEntity<>(scientificPaperService.getStatus(AuthenticationUtilities.loadProperties(), paper), HttpStatus.OK);
     }
 
 
@@ -108,16 +115,16 @@ public class ScientificPaperController {
     }
 
     @PostMapping("/withdraw")
-    @ResponseBody
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     public ResponseEntity<String> withdraw(@RequestBody String title) throws Exception {
-        return new ResponseEntity<>(scientificPaperService.withdraw(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
+        return new ResponseEntity<>(scientificPaperService.withdraw(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
 
     @PostMapping("/accept")
     @ResponseBody
     public ResponseEntity<String> accept(@RequestBody String title) throws Exception {
-        return new ResponseEntity<>(scientificPaperService.accept(AuthenticationUtilities.loadProperties(),  title), HttpStatus.OK);
+        return new ResponseEntity<>(scientificPaperService.accept(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
 

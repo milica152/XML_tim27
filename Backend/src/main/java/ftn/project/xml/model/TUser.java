@@ -425,6 +425,7 @@ public class TUser {
             if (myScientificPaperID == null) {
                 myScientificPaperID = new ArrayList<String>();
             }
+            System.out.println(myScientificPaperID);
             return this.myScientificPaperID;
         }
 
