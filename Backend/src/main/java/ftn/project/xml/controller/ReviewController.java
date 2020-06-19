@@ -42,6 +42,7 @@ public class ReviewController {
         conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(reviewService.getByDocumentId(conn, title), HttpStatus.OK);
     }
+
     @PostMapping("/findAllBySPTitle")
     @ResponseBody
     public ResponseEntity<List<String>> findAllBySPTitle(@RequestBody String title) throws Exception {

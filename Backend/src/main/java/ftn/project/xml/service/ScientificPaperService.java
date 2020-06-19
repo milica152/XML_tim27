@@ -298,4 +298,11 @@ public class ScientificPaperService {
         NodeList statusList = d.getElementsByTagName("status");
         return statusList.item(0).getTextContent();
     }
+
+    public String getByTitleWithoutAuthors(AuthenticationUtilities.ConnectionProperties loadProperties, String title) throws SAXException, TransformerException, ParserConfigurationException, IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String result = scientificPaperRepository.getByTitle(loadProperties, title);
+        result = scientificPaperRepository.removeAuthors(result);
+        return result;
+
+    }
 }

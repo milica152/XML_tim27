@@ -149,14 +149,6 @@ public class ReviewRepository {
         return "ok";
     }
 
-    public String removeAuthors(String oldResource) throws IOException, SAXException, ParserConfigurationException, TransformerException {
-        Document d = domParser.buildDocument(oldResource, schemaPath);
-        NodeList authorsList =  d.getDocumentElement().getElementsByTagName("authors");
-        Node authors = authorsList.item(0);
-        d.getDocumentElement().removeChild(authors);
-        return domParser.DOMToXML(d);
-    }
-
     public ArrayList<String> findAllBySPTitle(AuthenticationUtilities.ConnectionProperties conn, String title) throws SAXException, TransformerException, ParserConfigurationException, IOException {
         ArrayList<String> result = new ArrayList<>();
         Collection col = null;
@@ -172,7 +164,6 @@ public class ReviewRepository {
             col.setProperty(OutputKeys.INDENT, "yes");
             String[] resources = col.listResources();
             if(resources.length!=0){
-                System.out.println(resources);
                 result = doSearch(col, conn, resources, title);
             }
 
@@ -181,13 +172,7 @@ public class ReviewRepository {
             e.printStackTrace();
         }
 
-        ArrayList<String> newResult = new ArrayList<>();
-        for(String oldRes : result ){
-            String newRes = removeAuthors(oldRes);
-            newResult.add(newRes);
-        }
-
-        return newResult;   // lista celih review-a u xml formatu bez autora
+        return result;
     }
 
     private ArrayList<String> doSearch(Collection col, AuthenticationUtilities.ConnectionProperties conn, String[] resources, String title) throws XMLDBException {

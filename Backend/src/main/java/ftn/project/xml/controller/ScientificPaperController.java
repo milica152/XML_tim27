@@ -42,6 +42,15 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
+
+
+    @PostMapping("/findByTitleWithoutAuthors")
+    @ResponseBody
+    public ResponseEntity<String> findByTitleWithoutAuthors(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.getByTitleWithoutAuthors(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
+    }
+
+
     @GetMapping("/search")
     @ResponseBody
     public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
@@ -120,5 +129,7 @@ public class ScientificPaperController {
         AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(scientificPaperService.getStatus(conn, title), HttpStatus.OK);
     }
+
+
 
 }
