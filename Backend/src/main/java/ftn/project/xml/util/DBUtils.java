@@ -34,7 +34,6 @@ public class DBUtils {
                 for(int i = 0; i <= pathSegmentOffset; i++) {
                     path.append("/" + pathSegments[i]);
                 }
-
                 Collection startCol = DatabaseManager.getCollection(conn.uri + path, conn.user, conn.password);
 
                 if (startCol == null) {

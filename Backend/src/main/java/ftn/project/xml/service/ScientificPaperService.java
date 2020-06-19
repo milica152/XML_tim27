@@ -4,15 +4,19 @@ import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
+import org.apache.commons.io.IOUtils;
 import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,7 +38,7 @@ import java.util.Objects;
 
 @Service
 public class ScientificPaperService {
-    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
+    private static String schemaPath = "Backend\\src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
@@ -68,7 +72,7 @@ public class ScientificPaperService {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             NodeList nl = d.getElementsByTagName("title");
             String title = nl.item(0).getTextContent();
-            logger.info("New Scientific paper published under the title: " + title);
+
 
             //System.out.println(title);
             // pokreni bussiness process
@@ -108,11 +112,12 @@ public class ScientificPaperService {
             // saving to RDF store
             scientificPaperRepository.saveMetadata(extractedMetadata);
             scientificPaperRepository.save(conn, title, newSciPap);
+            logger.info("New Scientific paper published under the title: " + title);
 
             return "ok";
 
         }catch (Exception e){
-            logger.warn("Ivalid document type! Must be ScientificPaper");
+            logger.warn("Ivalid document type! Must be ScientificPaper. Or the paths are wrong.");
         }
         return "error";
     }
@@ -125,12 +130,11 @@ public class ScientificPaperService {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
     }
 
-    public List<ScientificPaperDTO> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String authorEmail) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
-        TUser user = userRepository.getUserByEmail(loadProperties, authorEmail);
-        return scientificPaperRepository.search(loadProperties, user.getName(), "", "");
+
+    public List<String> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return scientificPaperRepository.getMyPapers(loadProperties, user.getEmail());
     }
-
-
 
     public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return scientificPaperRepository.delete(loadProperties, title);
@@ -140,7 +144,7 @@ public class ScientificPaperService {
         return scientificPaperRepository.getMetadata(properties, title);
     }
 
-    public void transformToHTML(String xml) throws TransformerException {
+    public String transformToHTML(String xml) throws TransformerException, IOException {
         //TODO: dodaj proveru koji tip korisnika zeli da uradi transformaciju (da se ukloni autor ako treba itd)
 
         TransformerFactory factory = TransformerFactory.newInstance();
@@ -159,7 +163,9 @@ public class ScientificPaperService {
         StreamResult out = new StreamResult(new File(outputFile));
         assert transformer != null;
         transformer.transform(in, out);
-        System.out.println("The generated HTML file is:" + outputFile);
+        BufferedReader br = new BufferedReader(new FileReader(outputFile));
+        String html = IOUtils.toString(br);
+        return html;
 
     }
 

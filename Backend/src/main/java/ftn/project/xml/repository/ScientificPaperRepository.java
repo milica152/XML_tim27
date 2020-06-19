@@ -3,6 +3,7 @@ package ftn.project.xml.repository;
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
+import ftn.project.xml.model.TUser;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.*;
 import org.apache.jena.query.*;
@@ -61,8 +62,10 @@ public class ScientificPaperRepository {
     @Autowired
     public DOMParser domParser;
 
+    @Autowired
+    private UserRepository userRepository;
 
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
+  public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
         Collection col = null;
         dbUtils.initilizeDBserver(conn);
 
@@ -139,6 +142,7 @@ public class ScientificPaperRepository {
         }
         try {
             col = dbUtils.getOrCreateCollection(conn, conn.uri + papersCollectionPathInDB);
+
             col.setProperty(OutputKeys.INDENT, "yes");
             String[] resources = col.listResources();
             if(resources.length!=0){
@@ -374,6 +378,11 @@ public class ScientificPaperRepository {
         }
         return metadataDTOs;
 
+    }
+
+    public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        TUser user = .getUserByEmail(loadProperties, email);
+        return user.getMyPapers().getMyScientificPaperID();
     }
 
 }

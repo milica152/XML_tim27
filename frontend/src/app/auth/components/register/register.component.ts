@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
     username: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     surname: new FormControl('', [Validators.required]),
+    profession: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required,
       Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")]),
     password: new FormControl('', Validators.compose([
@@ -45,11 +46,12 @@ export class RegisterComponent implements OnInit {
           duration: 3000
         });
       }
+      
     };
     const registerUser: RegisterUser = new RegisterUser(
       this.ngForm.controls['username'].value, this.ngForm.controls['password'].value,
       this.ngForm.controls['name'].value, this.ngForm.controls['surname'].value,
-      this.ngForm.controls['email'].value
+      this.ngForm.controls['email'].value, this.ngForm.controls['profession'].value
     );
 
     this.authService.register(registerUser).subscribe(registerObserver);

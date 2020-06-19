@@ -43,6 +43,14 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.getByDocumentId(conn, title), HttpStatus.OK);
     }
 
+    @GetMapping("/findByTitleToHTML")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @ResponseBody
+    public ResponseEntity<String> geReviewByIdHTML(@RequestParam("title") String title) throws Exception {
+        return new ResponseEntity<>(reviewService.transformToHTML(reviewService.getByDocumentId(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
+    }
+
+
     @PostMapping("/findAllBySPTitle")
     @ResponseBody
     public ResponseEntity<List<String>> findAllBySPTitle(@RequestBody String title) throws Exception {

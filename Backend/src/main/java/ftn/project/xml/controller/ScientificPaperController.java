@@ -22,14 +22,14 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@CrossOrigin(allowedHeaders = "http://localhost:4200/")
+@CrossOrigin()
 @RequestMapping(value = "/scientificPaper")
 public class ScientificPaperController {
 
     @Autowired
     private ScientificPaperService scientificPaperService;
 
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes) throws Exception {
@@ -37,8 +37,9 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/findByTitle")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
-    public ResponseEntity<String> getScientificPaperById(@RequestBody String title) throws Exception {
+    public ResponseEntity<String> getScientificPaperById(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
@@ -51,7 +52,15 @@ public class ScientificPaperController {
     }
 
 
+    @GetMapping("/findByTitleToHTML")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @ResponseBody
+    public ResponseEntity<String> getScientificPaperByIdHTML(@RequestParam("title") String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.transformToHTML(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
+    }
+
     @GetMapping("/search")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
     public ResponseEntity<List<ScientificPaperDTO>> search(@RequestParam("author") String author, @RequestParam("title") String title, @RequestParam("keyword") String keyword) throws Exception {
         return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title, keyword), HttpStatus.OK);
@@ -59,9 +68,10 @@ public class ScientificPaperController {
 
 
     @GetMapping("/findMyPapers")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @ResponseBody
-    public ResponseEntity<List<ScientificPaperDTO>> findUserPapers(@RequestParam("email") String email) throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
-        return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties(), email), HttpStatus.OK);
+    public ResponseEntity<List<String>> findUserPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
 
@@ -95,6 +105,7 @@ public class ScientificPaperController {
     }
 
     @PutMapping("/transformHTML")
+    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
     @ResponseBody
     public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {
         scientificPaperService.transformToHTML(xml);

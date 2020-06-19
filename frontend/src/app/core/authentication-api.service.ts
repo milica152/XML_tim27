@@ -36,7 +36,6 @@ export class AuthenticationApiService {
       const jwtData = token.split('.')[1];
       const decodedJwtJsonData = window.atob(jwtData);
       const decodedJwtData = JSON.parse(decodedJwtJsonData);
-      console.log(decodedJwtData);
       role = decodedJwtData.role[0].authority;
     }
     return role;

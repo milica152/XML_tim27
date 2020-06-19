@@ -3,11 +3,12 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/C:/Users/mica/Desktop/xml/milica/XML_tim27/schemas/users.xsd">
     <user>
-        <username>IVDsqSxkX</username>
-        <password>qM0uc</password>
-        <name>RcrQgAQI8Olz2PlglIqlXm-85IWmAW4p_dL.uowukvV885im7</name>
-        <surname>Zk7PnRp1BXdap2FhT91gBk7</surname>
-        <email>y@e</email>
+        <username>anci</username>
+        <password>$2a$10$W1yQAyeD/Oab5BB155vfSe2kxivlkkG47EKyqHkaHnzbP5VOBp8bK</password>
+        <name>Ana</name>
+        <surname>Pjevic</surname>
+        <email>ana1@gmail.com</email>
+        <profession>Doktor</profession>
         <myPapers>
             <myScientificPaperID>dDhtcyKV1dfCV0xMXqg9EnnTV</myScientificPaperID>
             <myScientificPaperID>G0V</myScientificPaperID>
@@ -28,6 +29,7 @@
         <name>bu8ItF-SzHkOZvwAkLFdt_K75o377Yb</name>
         <surname>rSXWPkOlM.VWAKOKta0</surname>
         <email>c@h</email>
+        <profession>DrMr</profession>
         <myPapers>
             <myScientificPaperID>IkOJ3MmMvnUXaFLu6r9siKtSV</myScientificPaperID>
             <myScientificPaperID>Wbe4tcgTb4ONQ</myScientificPaperID>
