@@ -17,7 +17,7 @@ export class ScientificPaperService {
 
   saveScientificPaper(scientificPaper: string): Observable<any> {
     return this.httpClient.post(
-      this.backendUrl + 'save/', scientificPaper);
+      this.backendUrl + 'save/', scientificPaper, {responseType : 'text'});
   }
 
   getMyPapers(): Observable<any> {

@@ -17,7 +17,7 @@ public class CoverLetterController {
     @Autowired
     private CoverLetterService coverLetterService;
 
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    //@PreAuthorize("(hasAuthority('AUTHOR'))")
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<String> save(@RequestBody String reviewXML) throws Exception {

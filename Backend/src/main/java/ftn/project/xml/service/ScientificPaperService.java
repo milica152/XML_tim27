@@ -109,7 +109,7 @@ public class ScientificPaperService {
             //System.out.println(extractedMetadata);
 
             // saving to RDF store
-            scientificPaperRepository.saveMetadata(extractedMetadata);
+            //scientificPaperRepository.saveMetadata(extractedMetadata);
             scientificPaperRepository.save(conn, title, newSciPap);
 
             return "ok";

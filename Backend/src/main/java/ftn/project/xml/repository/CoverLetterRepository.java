@@ -1,9 +1,12 @@
 package ftn.project.xml.repository;
 
 import ftn.project.xml.model.CoverLetter;
+import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import org.exist.xmldb.EXistResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
@@ -27,6 +30,8 @@ public class CoverLetterRepository {
     @Autowired
     private DBUtils dbUtils;
 
+    Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
+
     public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, String reviewID) throws Exception {
         Collection col = null;
         dbUtils.initilizeDBserver(conn);
@@ -35,6 +40,7 @@ public class CoverLetterRepository {
             col = dbUtils.getOrCreateCollection(conn, cLettersCollectionPathInDB);
             col.setProperty("indent", "yes");
             dbUtils.storeDocument(cLetterDocumentID + reviewID, xmlRes, col);
+            logger.info("Cover letter stored sucessfuly! Review ID: " + reviewID);
             return xmlRes;
 
         } finally {

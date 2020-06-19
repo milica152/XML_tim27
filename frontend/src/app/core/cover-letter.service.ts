@@ -10,7 +10,9 @@ export class CoverLetterService {
   constructor(public httpClient: HttpClient) {}
 
   saveCoverLetter(coverLetter: string): Observable<any> {
+    console.log(coverLetter);
     return this.httpClient.post(
-      this.backendUrl + 'add/', coverLetter);
+      this.backendUrl + 'add/', coverLetter, {responseType : 'text'});
   }
+
 }

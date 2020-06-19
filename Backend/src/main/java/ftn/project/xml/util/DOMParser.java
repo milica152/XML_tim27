@@ -37,6 +37,7 @@ public class DOMParser  implements ErrorHandler {
         InputStream targetStream = new ByteArrayInputStream(xmlResource.getBytes());
         document = builder.parse(targetStream);
 
+
         Schema schema = null;
         try {
             String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
@@ -48,9 +49,10 @@ public class DOMParser  implements ErrorHandler {
         Validator validator = schema.newValidator();
         validator.setErrorHandler(this);
 
+
         validator.validate(new DOMSource(document));
         if (document != null)
-            System.out.println("[INFO] File parsed with no errors.");
+            logger.info("File parsed with no errors.");
         return document;
     }
 
@@ -63,7 +65,7 @@ public class DOMParser  implements ErrorHandler {
 
     @Override
     public void fatalError(SAXParseException err) throws SAXException {
-        logger.error("Error with parsing.");
+        logger.error("Fatal Error with parsing.");
         logger.trace(err.toString());
         throw err;
     }

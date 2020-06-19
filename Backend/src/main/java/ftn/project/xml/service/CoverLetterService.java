@@ -4,6 +4,8 @@ import ftn.project.xml.model.CoverLetter;
 import ftn.project.xml.repository.CoverLetterRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DOMParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,10 @@ public class CoverLetterService {
 
     @Autowired
     private CoverLetterRepository coverLetterRepository;
-    private static String schemaPath = "src\\main\\resources\\static\\schemas\\coverLetter.xsd";
+
+    Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
+
+    private static String schemaPath = "Backend\\src\\main\\resources\\static\\schemas\\coverLetter.xsd";
 
     @Value("${coverLetter.XSLPath}")
     private String xslPath;
@@ -52,6 +57,7 @@ public class CoverLetterService {
                 return "error";
         }
         return coverLetterRepository.save(conn, reviewXML, paperTitle);
+
     }
 
     public String getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {

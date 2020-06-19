@@ -4,7 +4,7 @@
 <mat-tab-group animationDuration="0ms">
   <mat-tab label="Scientific Paper">
 
-    <div fxLayout="row wrap" *ngIf="newScientificPaper.content == ''" fxLayoutGap="2%" fxLayout.xs="column"
+    <div fxLayout="row wrap" *ngIf="newScientificPaper == null" fxLayoutGap="2%" fxLayout.xs="column"
          fxLayoutAlign="center">
       <button
         type="button"
@@ -26,7 +26,7 @@
       />
     </div>
 
-    <div fxLayout="row wrap" *ngIf="newScientificPaper.content != ''" fxLayoutGap="2%" fxLayout.xs="column"
+    <div fxLayout="row wrap" *ngIf="newScientificPaper != null" fxLayoutGap="2%" fxLayout.xs="column"
          fxLayoutAlign="center">
       <button
         type="button"
@@ -38,7 +38,7 @@
 
     <div
       #editorSP
-      [(ngModel)]="newScientificPaper.content"
+      [(ngModel)]="newScientificPaper"
       name="xonomyContentSP"
       ngDefaultControl
     ></div>
@@ -75,7 +75,7 @@
     </div>
     <div
       #editorCL
-      [(ngModel)]="newScientificPaper.content"
+      [(ngModel)]="newScientificPaper"
       name="xonomyContentCL"
       ngDefaultControl
     ></div>
