@@ -296,4 +296,10 @@ public class ScientificPaperService {
 
         return "ok";
     }
+
+    public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
+        return scientificPaperRepository.getAllPapers(loadProperties);
+
+
+    }
 }
