@@ -29,10 +29,10 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.snackBar.open("All your data will be lost", 'Dismiss', {
-      duration: 20000,
-    });
     if(this.paperPublished == true && this.coverLetterPublished == false) {
+      this.snackBar.open("All your data will be lost", 'Dismiss', {
+        duration: 20000,
+      });
       this.scientificPaperService.deleteScientificPaper(
         this.paperTitle
       ).subscribe(
@@ -112,7 +112,7 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
 
   publishCoverLetter() {
     this.coverLettersService.saveCoverLetter(
-      this.newCoverLetter, this.paperTitle
+      this.newCoverLetter, this.paperTitle.replace(/\s/g, "")
     ).subscribe(
         response => {
           this.coverLetterPublished = true;
