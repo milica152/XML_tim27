@@ -1,10 +1,7 @@
-
-
-
-<mat-tab-group animationDuration="0ms">
+<mat-tab-group (selectedTabChange)="onTabChanged($event)" animationDuration="0ms">
   <mat-tab label="Scientific Paper">
 
-    <div fxLayout="row wrap" *ngIf="newScientificPaper.content == ''" fxLayoutGap="2%" fxLayout.xs="column"
+    <div fxLayout="row wrap" *ngIf="newScientificPaperTemp == '' && paperPublished == false" fxLayoutGap="2%" fxLayout.xs="column"
          fxLayoutAlign="center">
       <button
         type="button"
@@ -26,7 +23,7 @@
       />
     </div>
 
-    <div fxLayout="row wrap" *ngIf="newScientificPaper.content != ''" fxLayoutGap="2%" fxLayout.xs="column"
+    <div fxLayout="row wrap" *ngIf="newScientificPaperTemp != ''" fxLayoutGap="2%" fxLayout.xs="column"
          fxLayoutAlign="center">
       <button
         type="button"
@@ -37,8 +34,9 @@
     </div>
 
     <div
+      id = "SPdiv"
       #editorSP
-      [(ngModel)]="newScientificPaper.content"
+      [(ngModel)]="newScientificPaper"
       name="xonomyContentSP"
       ngDefaultControl
     ></div>
@@ -46,7 +44,7 @@
 
   <mat-tab label="Cover Letter">
 
-    <div fxLayout="row wrap" *ngIf="newCoverLetter == ''" fxLayoutGap="2%" fxLayout.xs="column"
+    <div fxLayout="row wrap" *ngIf="newCoverLetter == '' && paperTitle!=''" fxLayoutGap="2%" fxLayout.xs="column"
          fxLayoutAlign="center">
       <button
         type="button"
@@ -68,9 +66,20 @@
       />
     </div>
 
+    <div fxLayout="row wrap" *ngIf="newCoverLetter != ''" fxLayoutGap="2%" fxLayout.xs="column"
+         fxLayoutAlign="center">
+      <button
+        type="button"
+        mat-raised-button
+        (click)="publishCoverLetter()">
+        Attach
+      </button>
+    </div>
+
     <div
+      id = "CLdiv"
       #editorCL
-      [(ngModel)]="newScientificPaper.content"
+      [(ngModel)]="newCoverLetter"
       name="xonomyContentCL"
       ngDefaultControl
     ></div>

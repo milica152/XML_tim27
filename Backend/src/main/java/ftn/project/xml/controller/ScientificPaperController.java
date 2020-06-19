@@ -72,7 +72,7 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/findAllPapers")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER','PUBLIC')")
     @ResponseBody
     public ResponseEntity<List<String>> getAllPapers() throws IOException {
         return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
@@ -100,10 +100,10 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.exportMetadataToJSON(RDFAuthenticationUtilities.loadProperties(), title, filePath), HttpStatus.OK);
     }
 
-    @PreAuthorize("(hasAuthority('EDITOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @DeleteMapping("/delete")
     @ResponseBody
-    public ResponseEntity<String> delete(@RequestBody String title) throws Exception {
+    public ResponseEntity<String> delete(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.delete(title, AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
