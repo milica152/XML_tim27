@@ -78,14 +78,6 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
-    @GetMapping("/getStatus")
-    @PreAuthorize("hasAuthority('AUTHOR')")
-    @ResponseBody
-    public ResponseEntity<String> getStatus(@RequestParam("paper") String paper) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return new ResponseEntity<>(scientificPaperService.getStatus(AuthenticationUtilities.loadProperties(), paper), HttpStatus.OK);
-    }
-
-
     @GetMapping("/metadata")
     @ResponseBody
     public ResponseEntity<List<MetadataDTO>> getMetadata(@RequestBody String title) throws Exception {
@@ -123,7 +115,6 @@ public class ScientificPaperController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @PostMapping("/withdraw")
     @PreAuthorize("(hasAuthority('AUTHOR'))")
     public ResponseEntity<String> withdraw(@RequestBody String title) throws Exception {
@@ -145,11 +136,12 @@ public class ScientificPaperController {
     }
 
 
-    @PostMapping("/getStatus")
+    @GetMapping("/getStatus")
     @ResponseBody
-    public ResponseEntity<String> getStatus(@RequestBody String title) throws Exception {
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    public ResponseEntity<String> getStatus(@RequestParam("paper") String paper) throws Exception {
         AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>(scientificPaperService.getStatus(conn, title), HttpStatus.OK);
+        return new ResponseEntity<>(scientificPaperService.getStatus(conn, paper), HttpStatus.OK);
     }
 
 

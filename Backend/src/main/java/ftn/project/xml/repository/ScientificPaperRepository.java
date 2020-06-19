@@ -29,11 +29,7 @@ import org.xmldb.api.base.*;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XQueryService;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.ParserConfigurationException;
-import org.jsoup.nodes.Document;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
@@ -69,7 +65,7 @@ public class ScientificPaperRepository {
     @Autowired
     private UserRepository userRepository;
 
-  public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
+    public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
         Collection col = null;
         dbUtils.initilizeDBserver(conn);
 
@@ -146,7 +142,7 @@ public class ScientificPaperRepository {
 
         for(String paperId: sps){
             String paper = getByTitle(conn, paperId);
-            Document doc = Jsoup.parse(paper);
+            org.jsoup.nodes.Document doc = Jsoup.parse(paper);
             Elements selector = doc.select("concreteImage");
             for (Element element : selector) {
                 element.remove();
@@ -155,7 +151,7 @@ public class ScientificPaperRepository {
             for (Element element : selector) {
                 element.remove();
             }
-            if(doc.text().contains(text)){
+            if((doc.text()).toLowerCase().contains(text.toLowerCase())){
                 found.add(paperId);
             }
         }
@@ -169,7 +165,8 @@ public class ScientificPaperRepository {
         d.getDocumentElement().removeChild(authors);
         return domParser.DOMToXML(d);
     }
-  
+
+
     private ScientificPaperDTO getTitleAuthorsAndKeywords(String res, XQueryService xQueryService) throws XMLDBException {
         ScientificPaperDTO r = new ScientificPaperDTO();
 
@@ -391,7 +388,7 @@ public class ScientificPaperRepository {
 
     public String getStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paperId) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String paper = getByTitle(loadProperties, paperId);
-        Document doc = Jsoup.parse(paper);
+        org.jsoup.nodes.Document doc = Jsoup.parse(paper);
         Elements selector = doc.select("status");
         return selector.text();
     }

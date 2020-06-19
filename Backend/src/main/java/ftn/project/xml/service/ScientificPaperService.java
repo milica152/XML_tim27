@@ -314,6 +314,7 @@ public class ScientificPaperService {
         String result = scientificPaperRepository.getByTitle(loadProperties, title);
         result = scientificPaperRepository.removeAuthors(result);
         return result;
+    }
 
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
         return scientificPaperRepository.getAllPapers(loadProperties);
