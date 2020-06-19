@@ -31,7 +31,9 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -80,8 +82,35 @@ public class ScientificPaperService {
             NodeList metadata = d.getElementsByTagName("metadata");
 
             // list of authors and keywords
-            NodeList authors = d.getElementsByTagName("authors");
+            NodeList authors = d.getElementsByTagName("contact");
             NodeList keywords = d.getElementsByTagName("keywords");
+            ArrayList<TUser> usersAuthors = new ArrayList<>();
+            for(int i=0; i<authors.getLength();i++){
+                String email = authors.item(i).getTextContent();
+                TUser user1 = userRepository.getUserByEmail(conn, email);
+                usersAuthors.add(user1);
+
+            }
+
+            if (usersAuthors.contains(null)) {
+                return "Some of authors don't exist!";
+            }
+            User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            boolean found = false;
+            for(TUser u: usersAuthors){
+                if(u.getEmail().equals(logged.getEmail())){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                return "You must be one of the authors of the paper!";
+            }
+
+            for(TUser u: usersAuthors){
+                u.getMyPapers().getMyScientificPaperID().add(title);
+                userRepository.save(conn, u);
+            }
 
             // date published
             Element datePublished = d.createElement("datePublished");
