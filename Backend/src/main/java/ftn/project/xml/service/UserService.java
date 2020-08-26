@@ -3,9 +3,11 @@ package ftn.project.xml.service;
 import ftn.project.xml.dto.UserLoginDTO;
 import ftn.project.xml.dto.UserRegisterDTO;
 import ftn.project.xml.exceptions.EntityAlreadyExistsException;
+import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.model.User;
+import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.security.TokenUtils;
 import ftn.project.xml.util.AuthenticationUtilities;
@@ -28,6 +30,7 @@ import org.xmldb.api.base.XMLDBException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
+import java.util.ArrayList;
 
 @Service
 public class UserService {
@@ -44,6 +47,8 @@ public class UserService {
     private TokenUtils tokenUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ScientificPaperRepository scientificPaperRepository;
 
     @Autowired
     DBUtils dbUtils;
@@ -103,4 +108,33 @@ public class UserService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.getMyPendingReviews(conn, user.getEmail());
     }
+
+    public String deletePendingSP(AuthenticationUtilities.ConnectionProperties conn, String title) throws Exception {
+        //User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TUser loggedTUser = userRepository.getUserByEmail(conn, "milica@gmail.com");
+        TUser.PendingPapersToReview myPapers = loggedTUser.getPendingPapersToReview();
+        for(String spID : myPapers.getPaperToReviewID()){
+            if(spID.equalsIgnoreCase(title)){
+                myPapers.getPaperToReviewID().remove(spID);
+                break;
+            }
+        }
+        loggedTUser.setPendingPapersToReview(myPapers);
+        userRepository.remove(conn, loggedTUser);
+        userRepository.save(conn, loggedTUser);
+        return "ok";
+    }
+
+    public String findReviewerForSP(AuthenticationUtilities.ConnectionProperties conn, String title) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String sp = scientificPaperRepository.getByTitle(conn, title);
+        return "";
+    }
+
+    public void pickReviewers(AuthenticationUtilities.ConnectionProperties conn, ArrayList<String> emails, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        for(String reviewer : emails){
+            userRepository.addPendingPaper(title,conn, reviewer);
+        }
+    }
+
+
 }

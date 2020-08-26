@@ -2,23 +2,17 @@ package ftn.project.xml.controller;
 
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
-import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.RDFAuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.xmldb.api.base.XMLDBException;
-import sun.misc.Request;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -43,7 +37,6 @@ public class ScientificPaperController {
     }
 
 
-
     @PostMapping("/findByTitleWithoutAuthors")
     @ResponseBody
     public ResponseEntity<String> findByTitleWithoutAuthors(@RequestBody String title) throws Exception {
@@ -60,7 +53,7 @@ public class ScientificPaperController {
 
     @GetMapping("/findMyPapers")
     @ResponseBody
-    public ResponseEntity<List<ScientificPaperDTO>> findUserPapers(@RequestParam("email") String email) throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public ResponseEntity<List<String>> findUserPapers(@RequestParam("email") String email) throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties(), email), HttpStatus.OK);
     }
 
@@ -129,7 +122,5 @@ public class ScientificPaperController {
         AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(scientificPaperService.getStatus(conn, title), HttpStatus.OK);
     }
-
-
 
 }

@@ -3,7 +3,6 @@ package ftn.project.xml.repository;
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
-import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.*;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
@@ -25,9 +24,6 @@ import org.xmldb.api.base.*;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XQueryService;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
@@ -160,7 +156,6 @@ public class ScientificPaperRepository {
         xqueryService.setProperty("indent", "yes");
         xqueryService.setNamespace("", TARGET_NAMESPACE);
         for(String res : resources){
-            System.out.println(res);
             try {
                 xqueryExp = "doc(\"" + res + "\")//scientificPaper/title[contains(.,\"" + title.trim() + "\")]/text()";
                 ResourceSet resultSet = xqueryService.query(xqueryExp);

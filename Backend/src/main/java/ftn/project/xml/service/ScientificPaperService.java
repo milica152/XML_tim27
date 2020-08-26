@@ -2,12 +2,10 @@ package ftn.project.xml.service;
 
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
-import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +23,8 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -77,8 +74,9 @@ public class ScientificPaperService {
             NodeList metadata = d.getElementsByTagName("metadata");
 
             // list of authors and keywords
-            NodeList authors = d.getElementsByTagName("authors");
             NodeList keywords = d.getElementsByTagName("keywords");
+            NodeList authors = d.getElementsByTagName("authors");
+
 
             // date published
             Element datePublished = d.createElement("datePublished");
@@ -125,11 +123,17 @@ public class ScientificPaperService {
         return scientificPaperRepository.search(loadProperties,  author,  title,  keyword);
     }
 
-    public List<ScientificPaperDTO> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String authorEmail) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public List<String> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String authorEmail) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         TUser user = userRepository.getUserByEmail(loadProperties, authorEmail);
-        return scientificPaperRepository.search(loadProperties, user.getName(), "", "");
+        if(user == null){
+            return null;
+        }
+        if(!(user.getMyPapers() == null)){
+            return user.getMyPapers().getMyScientificPaperID();
+        }else{
+            return new ArrayList<>();
+        }
     }
-
 
 
     public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -259,7 +263,6 @@ public class ScientificPaperService {
         oldStatus.setTextContent("accepted");
 
         xmlRes = domParser.DOMToXML(d);
-        //System.out.println(xmlRes);
 
         ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
         metadataExtractor.extractMetadata(new ByteArrayInputStream(xmlRes.getBytes()), metadataStream);
@@ -303,6 +306,5 @@ public class ScientificPaperService {
         String result = scientificPaperRepository.getByTitle(loadProperties, title);
         result = scientificPaperRepository.removeAuthors(result);
         return result;
-
     }
 }
