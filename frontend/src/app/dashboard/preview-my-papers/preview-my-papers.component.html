@@ -1,3 +1,13 @@
-<p>preview-my-papers works!</p>
-
-<button mat-button (click)="testClick()">Action</button>
+<form #searchForm="ngForm" (ngSubmit)="onSubmit()" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.xs="column"
+      fxLayoutAlign="center">
+  <mat-form-field appearance="outline">
+    <mat-label>Search</mat-label>
+    <mat-icon color="primary" matPrefix>search</mat-icon>
+    <input [(ngModel)]="this.searchParameter" id="search" matInput type="text" name="searchParameter">
+  </mat-form-field>
+  <button type="submit" mat-raised-button class="searchButton">Search</button>
+  <button type="button" mat-raised-button class="searchButton" (click)="resetForm(searchForm)">Reset</button>
+</form>
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <app-paper-preview *ngFor="let paper of this._papers" [paper]="paper"></app-paper-preview>
+</div>

@@ -15,7 +15,7 @@ import java.io.OutputStream;
 @Component
 public class MetadataExtractor {
 
-    private static final String XSLT_FILE = "src/main/resources/static/schemas/grddl.xsl";
+    private static final String XSLT_FILE = "Backend/src/main/resources/static/schemas/grddl.xsl";
 
     /**
      * Generates RDF/XML based on RDFa metadata from an XML containing

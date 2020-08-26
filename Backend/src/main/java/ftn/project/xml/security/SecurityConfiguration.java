@@ -67,7 +67,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/**").permitAll()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/scientificPaper/search").permitAll()
+                .antMatchers("/scientificPaper/findByTitle").permitAll()
+                .antMatchers("/scientificPaper/findByTitleToHTML").permitAll()
+                .antMatchers("/scientificPaper/findAllPapers").permitAll()
+
                 .anyRequest().authenticated()
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))).clearAuthentication(true)

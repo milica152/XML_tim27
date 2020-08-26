@@ -22,7 +22,6 @@
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:minLength value="4"/>
-                        <xs:maxLength value="20"/>
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
@@ -37,10 +36,11 @@
             <xs:element name="email">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:pattern value=".@."/>
+                        <xs:pattern value="^[_A-Za-z0-9-+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
+            <xs:element name="profession" type="xs:string"/>
             <xs:element name="myPapers">
                 <xs:complexType>
                     <xs:sequence>

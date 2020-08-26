@@ -40,6 +40,13 @@ public class CoverLetterController {
         return new ResponseEntity<>(coverLetterService.getByDocumentId(conn, title), HttpStatus.OK);
     }
 
+    @GetMapping("/getByDocumentIdToHTML")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @ResponseBody
+    public ResponseEntity<String> getByDocumentIdHTML(@RequestParam("title") String title) throws Exception {
+        return new ResponseEntity<>(coverLetterService.transformToHTML(coverLetterService.getByDocumentId(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
+    }
+
     @PutMapping("/transformHTML")
     @ResponseBody
     public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {

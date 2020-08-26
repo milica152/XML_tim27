@@ -99,6 +99,7 @@ import javax.xml.bind.annotation.*;
         "name",
         "surname",
         "email",
+        "profession",
         "myPapers",
         "myReviews",
         "pendingPapersToReview",
@@ -117,6 +118,8 @@ public class TUser {
     protected String surname;
     @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
     protected String email;
+    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    protected String profession;
     @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
     protected TUser.MyPapers myPapers;
     @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
@@ -245,6 +248,30 @@ public class TUser {
      */
     public void setEmail(String value) {
         this.email = value;
+    }
+
+    /**
+     * Gets the value of the profession property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getProfession() {
+        return profession;
+    }
+
+    /**
+     * Sets the value of the profession property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setProfession(String value) {
+        this.profession = value;
     }
 
     /**
@@ -398,7 +425,12 @@ public class TUser {
             if (myScientificPaperID == null) {
                 myScientificPaperID = new ArrayList<String>();
             }
+            System.out.println(myScientificPaperID);
             return this.myScientificPaperID;
+        }
+
+        public void setMyScientificPaperID(List<String> listOfPapers) {
+            this.myScientificPaperID = listOfPapers;
         }
 
     }
