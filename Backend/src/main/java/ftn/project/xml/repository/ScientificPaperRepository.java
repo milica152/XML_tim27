@@ -1,8 +1,9 @@
 package ftn.project.xml.repository;
-
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
+import ftn.project.xml.model.TUser;
+import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.*;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
@@ -11,6 +12,9 @@ import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
 import org.apache.jena.update.UpdateRequest;
 import org.exist.xmldb.EXistResource;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +61,8 @@ public class ScientificPaperRepository {
     @Autowired
     public DOMParser domParser;
 
+    @Autowired
+    public UserRepository userRepository;
 
     public String save(AuthenticationUtilities.ConnectionProperties conn, String paperID, String xmlRes) throws Exception {
         Collection col = null;
@@ -123,65 +129,74 @@ public class ScientificPaperRepository {
         return (String) res.getContent();
     }
 
-    public List<ScientificPaperDTO> search(AuthenticationUtilities.ConnectionProperties conn, String author, String title, String keyword) {
-        List<ScientificPaperDTO> sps = new ArrayList<>();
+    public List<String> search(AuthenticationUtilities.ConnectionProperties conn, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        List<String> sps;
+        List<String> found = new ArrayList<>();
+        if(author == null || author.isEmpty()){
+            sps = getAllPapers(conn);
+        }
+        else{
+            sps = getMyPapers(conn, author);
+        }
+
+        for(String paperId: sps){
+            String paper = getByTitle(conn, paperId);
+            org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+            Elements selector = doc.select("concreteImage");
+            for (Element element : selector) {
+                element.remove();
+            }
+            selector = doc.select("metadata");
+            for (Element element : selector) {
+                element.remove();
+            }
+            if((doc.text()).toLowerCase().contains(text.toLowerCase())){
+                found.add(paperId);
+            }
+        }
+        return found;
+    }
+
+    public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+
+        TUser user = userRepository.getUserByEmail(loadProperties, email);
+        List<String> myPapers = new ArrayList<>();
+//        for (String paper: user.getMyPapers().getMyScientificPaperID()){
+//            if(getByTitle(paper))
+//        }
+
+        return user.getMyPapers().getMyScientificPaperID();
+    }
+
+    public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
+        List<String> papers = new ArrayList<>();
         Collection col = null;
 
         try {
-            dbUtils.initilizeDBserver(conn);
+            dbUtils.initilizeDBserver(loadProperties);
         } catch (ClassNotFoundException | XMLDBException | InstantiationException | IllegalAccessException e) {
             logger.error("Problem sa inicijalizovanjem baze");
             e.printStackTrace();
         }
         try {
-            col = dbUtils.getOrCreateCollection(conn, conn.uri + papersCollectionPathInDB);
+            col = dbUtils.getOrCreateCollection(loadProperties, papersCollectionPathInDB);
+
             col.setProperty(OutputKeys.INDENT, "yes");
             String[] resources = col.listResources();
             if(resources.length!=0){
-                sps = doSearch(col, conn, resources, author, title, keyword);
+                for(String p: resources){
+                    System.out.println(p);
+                    papers.add(p.substring(9));
+                }
             }
 
         } catch (XMLDBException e) {
             logger.error("Problem prilikom dobavljanj dokumenata.");
             e.printStackTrace();
         }
-        return sps;
+        return papers;
+
     }
-
-    private List<ScientificPaperDTO> doSearch(Collection col, AuthenticationUtilities.ConnectionProperties conn, String[] resources, String author, String title, String keyword) throws XMLDBException {
-        List<ScientificPaperDTO> result = new ArrayList<>();
-        String xqueryExp = "";
-
-        XQueryService xqueryService = (XQueryService) col.getService("XQueryService", "1.0");
-        xqueryService.setProperty("indent", "yes");
-        xqueryService.setNamespace("", TARGET_NAMESPACE);
-        for(String res : resources){
-            try {
-                xqueryExp = "doc(\"" + res + "\")//scientificPaper/title[contains(.,\"" + title.trim() + "\")]/text()";
-                ResourceSet resultSet = xqueryService.query(xqueryExp);
-                if(resultSet.getSize()>0){
-                    xqueryExp = "doc(\"" + res + "\")//scientificPaper/authors/author/name[contains(.,\"" + author.trim() + "\")]/text() | //scientificPaper/authors/author/surname[contains(.,\"" + author.trim() + "\")]/text()";
-                    resultSet = xqueryService.query(xqueryExp);
-                    if(resultSet.getSize()>0) {
-                        xqueryExp = "doc(\"" + res + "\")//scientificPaper/metadata/keywords/keyword[contains(.,\"" + keyword.trim() + "\")]/text()";
-                        resultSet = xqueryService.query(xqueryExp);
-                        if(resultSet.getSize()>0) {
-                            ScientificPaperDTO r = getTitleAuthorsAndKeywords(res, xqueryService);
-                            result.add(r);
-                        }
-                    }
-                }
-
-            } catch (XMLDBException e) {
-                logger.error("Problem sa pretragom");
-                e.printStackTrace();
-            }
-
-
-        }
-        return result;
-    }
-
 
     public String removeAuthors(String oldResource) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         Document d = domParser.buildDocument(oldResource, schemaPath);
@@ -369,6 +384,13 @@ public class ScientificPaperRepository {
         }
         return metadataDTOs;
 
+    }
+
+    public String getStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paperId) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String paper = getByTitle(loadProperties, paperId);
+        org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+        Elements selector = doc.select("status");
+        return selector.text();
     }
 
 }
