@@ -58,6 +58,13 @@ public class ScientificPaperController {
     }
 
 
+    @GetMapping("/findAllPapers")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER','PUBLIC')")
+    @ResponseBody
+    public ResponseEntity<List<String>> getAllPapers() throws IOException {
+        return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
+    }
+
     @GetMapping("/metadata")
     @ResponseBody
     public ResponseEntity<List<MetadataDTO>> getMetadata(@RequestBody String title) throws Exception {
@@ -80,10 +87,10 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.exportMetadataToJSON(RDFAuthenticationUtilities.loadProperties(), title, filePath), HttpStatus.OK);
     }
 
-    @PreAuthorize("(hasAuthority('EDITOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @DeleteMapping("/delete")
     @ResponseBody
-    public ResponseEntity<String> delete(@RequestBody String title) throws Exception {
+    public ResponseEntity<String> delete(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.delete(title, AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
@@ -94,7 +101,6 @@ public class ScientificPaperController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @PostMapping("/withdraw")
     @ResponseBody
     public ResponseEntity<String> withdraw(@RequestBody String title) throws Exception {
@@ -116,11 +122,12 @@ public class ScientificPaperController {
     }
 
 
-    @PostMapping("/getStatus")
+    @GetMapping("/getStatus")
     @ResponseBody
-    public ResponseEntity<String> getStatus(@RequestBody String title) throws Exception {
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    public ResponseEntity<String> getStatus(@RequestParam("paper") String paper) throws Exception {
         AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>(scientificPaperService.getStatus(conn, title), HttpStatus.OK);
+        return new ResponseEntity<>(scientificPaperService.getStatus(conn, paper), HttpStatus.OK);
     }
 
 }

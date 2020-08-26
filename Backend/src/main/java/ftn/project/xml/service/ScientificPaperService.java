@@ -23,6 +23,8 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,6 +69,7 @@ public class ScientificPaperService {
             String title = nl.item(0).getTextContent();
             logger.info("New Scientific paper published under the title: " + title);
 
+            //title = title.replaceAll("\\s","");
             //System.out.println(title);
             // pokreni bussiness process
 
@@ -74,9 +77,35 @@ public class ScientificPaperService {
             NodeList metadata = d.getElementsByTagName("metadata");
 
             // list of authors and keywords
+            NodeList authors = d.getElementsByTagName("contact");
             NodeList keywords = d.getElementsByTagName("keywords");
-            NodeList authors = d.getElementsByTagName("authors");
+            ArrayList<TUser> usersAuthors = new ArrayList<>();
+            for(int i=0; i<authors.getLength();i++){
+                String email = authors.item(i).getTextContent();
+                TUser user1 = userRepository.getUserByEmail(conn, email);
+                usersAuthors.add(user1);
 
+            }
+
+            if (usersAuthors.contains(null)) {
+                return "Some of authors don't exist!";
+            }
+            User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            boolean found = false;
+            for(TUser u: usersAuthors){
+                if(u.getEmail().equals(logged.getEmail())){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                return "You must be one of the authors of the paper!";
+            }
+
+            for(TUser u: usersAuthors){
+                u.getMyPapers().getMyScientificPaperID().add(title);
+                userRepository.save(conn, u);
+            }
 
             // date published
             Element datePublished = d.createElement("datePublished");
@@ -96,7 +125,7 @@ public class ScientificPaperService {
             metadata.item(0).insertBefore(datePublished, keywords.item(0));
             metadata.item(0).insertBefore(status, datePublished);
 
-            ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
+            ByteOutputStream metadataStream = new ByteArrayOutputStream();
             String newSciPap = domParser.DOMToXML(d);
 
             metadataExtractor.extractMetadata(new ByteArrayInputStream(newSciPap.getBytes()), metadataStream);
@@ -107,12 +136,12 @@ public class ScientificPaperService {
             scientificPaperRepository.saveMetadata(extractedMetadata);
             scientificPaperRepository.save(conn, title, newSciPap);
 
-            return "ok";
+            return "Scientific Paper published!";
 
         }catch (Exception e){
             logger.warn("Ivalid document type! Must be ScientificPaper");
         }
-        return "error";
+        return "Error saving scientific paper!";
     }
 
     public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -306,5 +335,11 @@ public class ScientificPaperService {
         String result = scientificPaperRepository.getByTitle(loadProperties, title);
         result = scientificPaperRepository.removeAuthors(result);
         return result;
+
+    }
+
+    public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
+        return scientificPaperRepository.getAllPapers(loadProperties);
+
     }
 }

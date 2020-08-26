@@ -41,7 +41,6 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @PreAuthorize("!(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
     public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception  {
 
         conn = AuthenticationUtilities.loadProperties();

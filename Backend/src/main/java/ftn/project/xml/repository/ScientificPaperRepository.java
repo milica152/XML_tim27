@@ -287,7 +287,7 @@ public class ScientificPaperRepository {
 
     public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         dbUtils.initilizeDBserver(conn);
-
+        title = title.replaceAll("\\s","");
         Collection col = null;
         Resource res = null;
 
@@ -306,7 +306,6 @@ public class ScientificPaperRepository {
             e.printStackTrace();
         } finally {
             //don't forget to clean up!
-
             if(res != null) {
                 try {
                     ((EXistResource)res).freeResources();
@@ -323,7 +322,7 @@ public class ScientificPaperRepository {
                 }
             }
         }
-        return "ok";
+        return "Scientific Paper deleted!";
     }
 
     public ArrayList<MetadataDTO> getMetadata(RDFAuthenticationUtilities.RDFConnectionProperties conn, String title) {
@@ -371,4 +370,51 @@ public class ScientificPaperRepository {
 
     }
 
+    public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+
+        TUser user = userRepository.getUserByEmail(loadProperties, email);
+        List<String> myPapers = new ArrayList<>();
+//        for (String paper: user.getMyPapers().getMyScientificPaperID()){
+//            if(getByTitle(paper))
+//        }
+
+        return user.getMyPapers().getMyScientificPaperID();
+    }
+
+    public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
+        List<String> papers = new ArrayList<>();
+        Collection col = null;
+
+        try {
+            dbUtils.initilizeDBserver(loadProperties);
+        } catch (ClassNotFoundException | XMLDBException | InstantiationException | IllegalAccessException e) {
+            logger.error("Problem sa inicijalizovanjem baze");
+            e.printStackTrace();
+        }
+        try {
+            col = dbUtils.getOrCreateCollection(loadProperties, papersCollectionPathInDB);
+
+            col.setProperty(OutputKeys.INDENT, "yes");
+            String[] resources = col.listResources();
+            if(resources.length!=0){
+                for(String p: resources){
+                    System.out.println(p);
+                    papers.add(p.substring(9));
+                }
+            }
+
+        } catch (XMLDBException e) {
+            logger.error("Problem prilikom dobavljanj dokumenata.");
+            e.printStackTrace();
+        }
+        return papers;
+
+    }
+
+    public String getStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paperId) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String paper = getByTitle(loadProperties, paperId);
+        org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+        Elements selector = doc.select("status");
+        return selector.text();
+    }
 }

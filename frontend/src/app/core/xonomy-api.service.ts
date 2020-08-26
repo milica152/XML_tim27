@@ -28,11 +28,13 @@ export class XonomyApiService {
           hideIf: function (jsElement) {
             return jsElement.hasAttribute("typeof");
           }
-        }, {
+        }
+        , {
           caption: "Add <sp:metadata>",
           action: Xonomy.newElementChild,
           actionParameter: "<sp:metadata xmlns:sp=\"https://github.com/milica152/XML_tim27\"></sp:metadata>"
-        }, {
+        }
+        , {
           caption: "Add <sp:abstract>",
           action: Xonomy.newElementChild,
           actionParameter: "<sp:abstract xmlns:sp=\"https://github.com/milica152/XML_tim27\"></sp:abstract>"
@@ -54,7 +56,8 @@ export class XonomyApiService {
             }]
           }
         }
-      },
+      }
+      ,
       "sp:metadata": {
         mustBeBefore: ["sp:abstract", "sp:chapter", "sp:references"],
         menu: [{
@@ -73,7 +76,8 @@ export class XonomyApiService {
           caption: "Delete element",
           action: Xonomy.deleteElement
         }]
-      },
+      }
+      ,
       "sp:title": {
         mustBeBefore: ["sp:authors", "sp:keywords", "sp:paragraph"],
         oneliner: true,

@@ -2,6 +2,7 @@ package ftn.project.xml.service;
 
 import ftn.project.xml.model.CoverLetter;
 import ftn.project.xml.repository.CoverLetterRepository;
+import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DOMParser;
 import org.apache.commons.io.IOUtils;
@@ -27,7 +28,7 @@ public class CoverLetterService {
 
     @Autowired
     private CoverLetterRepository coverLetterRepository;
-    private static String schemaPath = "src\\main\\resources\\static\\schemas\\coverLetter.xsd";
+    private static String schemaPath = "Backend\\src\\main\\resources\\static\\schemas\\coverLetter.xsd";
 
     @Value("${coverLetter.XSLPath}")
     private String xslPath;
@@ -35,23 +36,24 @@ public class CoverLetterService {
     @Value("${coverLetter.XHTMLPath}")
     private String htmlPath;
 
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML) throws Exception {
-        String paperTitle = null;
-        Document d = null;
+    @Autowired
+    private ScientificPaperRepository scientificPaperRepository;
 
-        try{
-            d = domParser.buildDocument(reviewXML, schemaPath);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public String save(AuthenticationUtilities.ConnectionProperties conn, String reviewXML, String title) throws Exception {
 
-            if(d != null){
-                NodeList nl = d.getElementsByTagName("paperTitle");
-                paperTitle = nl.item(0).getTextContent();
+        if(!(title==null || title.isEmpty())){
+            String paper = scientificPaperRepository.getByTitle(conn, title);
+            if(paper==null || paper.isEmpty()){
+                return "You must add scientific paper first!";
             }else{
-                return "error";
+                coverLetterRepository.save(conn, reviewXML, title);
+            }
+
+        }else{
+            return "You must add scientific paper first!";
         }
-        return coverLetterRepository.save(conn, reviewXML, paperTitle);
+        return "Cover letter added!";
+
     }
 
     public String getByDocumentId(AuthenticationUtilities.ConnectionProperties conn, String id) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {

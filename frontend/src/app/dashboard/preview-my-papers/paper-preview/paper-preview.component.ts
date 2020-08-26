@@ -32,9 +32,13 @@ export class PaperPreviewComponent implements OnInit {
     this.scientificPaperService.getStatusOfPaper(paper).subscribe({
       next: (result:string) => {
         if(result === 'in process'){
-          document.getElementById(paper).removeAttribute("disabled")
+          if(document.getElementById(paper)!= null){
+            document.getElementById(paper).removeAttribute("disabled")
+          }
         }else{
-          document.getElementById(paper).setAttribute("disabled", 'true')
+          if(document.getElementById(paper)!=null){
+            document.getElementById(paper).setAttribute("disabled", 'true')
+          }
         }
       },
       error: (message: string) => {
