@@ -2,6 +2,7 @@
 <coverLetter xmlns="https://github.com/milica152/XML_tim27"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/coverLetter.xsd" xmlns:sp="https://github.com/milica152/XML_tim27">
+    <paperTitle></paperTitle>
     <date>2022-01-13</date>
     <author sp:id="t/fn/lu/t">
         <name>MZK3BLeCRyCNcDL8Umfqd3o7</name>

@@ -72,6 +72,13 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
+    @GetMapping("/findAllPapers")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER','PUBLIC')")
+    @ResponseBody
+    public ResponseEntity<List<String>> getAllPapers() throws IOException {
+        return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
+    }
+
     @GetMapping("/metadata")
     @ResponseBody
     public ResponseEntity<List<MetadataDTO>> getMetadata(@RequestBody String title) throws Exception {

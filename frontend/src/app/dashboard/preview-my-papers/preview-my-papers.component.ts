@@ -52,7 +52,7 @@ export class PreviewMyPapersComponent implements OnInit {
       }
     });
     return null;
-    }
+  }
 
   get papers(): any[] {
     return this._papers;
@@ -61,6 +61,7 @@ export class PreviewMyPapersComponent implements OnInit {
   getAllPapers() {
     this.scientificPaperService.getAllPapers().subscribe({
       next: (result) => {
+        this._papers = [];
         for(var paper of result){
           var bool = false;
           if(this.getStatusOfPaper(paper) !== 'in process'){
@@ -84,6 +85,7 @@ export class PreviewMyPapersComponent implements OnInit {
     this.scientificPaperService.getMyPapers().subscribe({
       next: (result) => {
         console.log(result);
+        this._papers = [];
         for(var paper of result) {
           var bool = false;
           if (this.getStatusOfPaper(paper) !== 'in process') {
@@ -105,7 +107,15 @@ export class PreviewMyPapersComponent implements OnInit {
     this.scientificPaperService.searchPapers(type, this.searchParameter).subscribe(
       {
         next: (result) => {
-          this._papers = result;
+          this._papers=[];
+          for(var paper of result) {
+            var bool = false;
+            if (this.getStatusOfPaper(paper) !== 'in process') {
+              bool = true;
+            }
+            var paperModel = new PaperPreviewModel(paper, this.getStatusOfPaper(paper), bool);
+            this._papers.push(paperModel);
+          }
         },
         error: (message: string) => {
           this.snackBar.open(message, 'Dismiss', {

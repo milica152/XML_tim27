@@ -8,4 +8,5 @@ export class PaperPreviewModel {
     this.status = status;
     this.enabled = enabled;
   }
+  
 }
