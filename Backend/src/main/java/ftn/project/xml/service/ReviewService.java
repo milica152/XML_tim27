@@ -64,11 +64,13 @@ public class ReviewService {
         if(d != null){
             NodeList nl = d.getElementsByTagName("title");
             title = nl.item(0).getTextContent();
+            nl.item(0).setTextContent(generateReviewID(conn, title));
         }else{
             return "error";
         }
+        String newXMLRes = domParser.DOMToXML(d);
         String generatedID = generateReviewID(conn, title);
-        return reviewRepository.save(conn, reviewXML, generatedID);
+        return reviewRepository.save(conn, newXMLRes, generatedID);
     }
 
     private String generateReviewID(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -78,18 +80,18 @@ public class ReviewService {
 
         dbUtils.initilizeDBserver(conn);
         Collection col = null;
-        col = DatabaseManager.getCollection(conn.uri + reviewsCollectionPathInDB);
+        col = dbUtils.getOrCreateCollection(conn, reviewsCollectionPathInDB);
         col.setProperty(OutputKeys.INDENT, "yes");
         String[] resources = col.listResources();
          while(!stop){
              int counter = 0;
              for(String res : resources){
-                 if(!res.equalsIgnoreCase(reviewDocumentID + title + i)){
+                 if(!res.equalsIgnoreCase(reviewDocumentID + title.replaceAll(" ","%20") + "%20Review%20" +  i)){
                      counter++;
                  }
              }
              if(counter == resources.length){
-                 id = title + i;
+                 id = title+ " Review "  + i;
                  stop = true;
              }
 

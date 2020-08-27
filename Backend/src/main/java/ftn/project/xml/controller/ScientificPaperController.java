@@ -2,34 +2,28 @@ package ftn.project.xml.controller;
 
 import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
-import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.RDFAuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.xmldb.api.base.XMLDBException;
-import sun.misc.Request;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin(allowedHeaders = "http://localhost:4200/")
 @RequestMapping(value = "/scientificPaper")
 public class ScientificPaperController {
 
     @Autowired
     private ScientificPaperService scientificPaperService;
 
-    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
+    @PreAuthorize("(hasAuthority('AUTHOR'))")
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes) throws Exception {
@@ -69,6 +63,13 @@ public class ScientificPaperController {
     @ResponseBody
     public ResponseEntity<List<String>> findUserPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
+    }
+
+    @GetMapping("/findAllPapers")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER','PUBLIC')")
+    @ResponseBody
+    public ResponseEntity<List<String>> getAllPapers() throws IOException {
+        return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
     @GetMapping("/findAllPapers")
@@ -143,7 +144,5 @@ public class ScientificPaperController {
         AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(scientificPaperService.getStatus(conn, paper), HttpStatus.OK);
     }
-
-
 
 }

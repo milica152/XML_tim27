@@ -1,37 +1,29 @@
 package ftn.project.xml.service;
 
 import ftn.project.xml.dto.MetadataDTO;
-import ftn.project.xml.dto.ScientificPaperDTO;
-import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.model.User;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
-import org.apache.commons.io.IOUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xmldb.api.base.XMLDBException;
-
+import org.apache.commons.io.IOUtils;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +32,7 @@ import java.util.Objects;
 
 @Service
 public class ScientificPaperService {
-    private static String schemaPath = "Backend\\src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
+    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
@@ -69,91 +61,90 @@ public class ScientificPaperService {
     public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes) throws Exception {
         try{
             DOMParser parser = new DOMParser();
-            Document d = parser.buildDocument(xmlRes, schemaPath);
+        Document d = parser.buildDocument(xmlRes, schemaPath);
 
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            NodeList nl = d.getElementsByTagName("title");
-            String title = nl.item(0).getTextContent();
-            title = title.replaceAll("\\s","");
-            //System.out.println(title);
-            // pokreni bussiness process
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        NodeList nl = d.getElementsByTagName("title");
+        String title = nl.item(0).getTextContent();
+        title = title.replaceAll("\\s","");
+        // pokreni bussiness process
 
-            // popuni sp metapodacima
-            NodeList metadata = d.getElementsByTagName("metadata");
+        // popuni sp metapodacima
+        NodeList metadata = d.getElementsByTagName("metadata");
 
-            // list of authors and keywords
-            NodeList authors = d.getElementsByTagName("contact");
-            NodeList keywords = d.getElementsByTagName("keywords");
-            ArrayList<TUser> usersAuthors = new ArrayList<>();
-            for(int i=0; i<authors.getLength();i++){
-                String email = authors.item(i).getTextContent();
-                TUser user1 = userRepository.getUserByEmail(conn, email);
-                usersAuthors.add(user1);
+        // list of authors and keywords
+        NodeList authors = d.getElementsByTagName("contact");
+        NodeList keywords = d.getElementsByTagName("keywords");
+        ArrayList<TUser> usersAuthors = new ArrayList<>();
+        for(int i=0; i<authors.getLength();i++){
+            String email = authors.item(i).getTextContent();
+            TUser user1 = userRepository.getUserByEmail(conn, email);
+            usersAuthors.add(user1);
 
+        }
+
+        if (usersAuthors.contains(null)) {
+            return "Some of authors don't exist!";
+        }
+        User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean found = false;
+        for(TUser u: usersAuthors){
+            if(u.getEmail().equals(logged.getEmail())){
+                found = true;
+                break;
             }
+        }
+        if(!found){
+            return "You must be one of the authors of the paper!";
+        }
 
-            if (usersAuthors.contains(null)) {
-                return "Some of authors don't exist!";
-            }
-            User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            boolean found = false;
-            for(TUser u: usersAuthors){
-                if(u.getEmail().equals(logged.getEmail())){
-                    found = true;
-                    break;
-                }
-            }
-            if(!found){
-                return "You must be one of the authors of the paper!";
-            }
+        for(TUser u: usersAuthors){
+            u.getMyPapers().getMyScientificPaperID().add(title);
+            userRepository.save(conn, u);
+        }
+        // date published
+        Element datePublished = d.createElement("datePublished");
+        datePublished.setTextContent(df.format(new Date()));
+        datePublished.setAttribute("property", "published");    // dodati rdf podatak na property
 
-            for(TUser u: usersAuthors){
-                u.getMyPapers().getMyScientificPaperID().add(title);
-                userRepository.save(conn, u);
-            }
+        // status
+        Element status = d.createElement("status");
+        status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
+        status.setTextContent("in process");
 
-            // date published
-            Element datePublished = d.createElement("datePublished");
-            datePublished.setTextContent(df.format(new Date()));
-            datePublished.setAttribute("property", "published");    // dodati rdf podatak na property
-
-            // status
-            Element status = d.createElement("status");
-            status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
-            status.setTextContent("in process");
-
-            // about
-            Element about = d.createElement("about");
-            d.getDocumentElement().setAttribute("about", title);
+        // about
+        Element about = d.createElement("about");
+        d.getDocumentElement().setAttribute("about", title);
 
 
-            metadata.item(0).insertBefore(datePublished, keywords.item(0));
-            metadata.item(0).insertBefore(status, datePublished);
+        metadata.item(0).insertBefore(datePublished, keywords.item(0));
+        metadata.item(0).insertBefore(status, datePublished);
 
-            ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
-            String newSciPap = domParser.DOMToXML(d);
+        ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
+        String newSciPap = domParser.DOMToXML(d);
 
-            metadataExtractor.extractMetadata(new ByteArrayInputStream(newSciPap.getBytes()), metadataStream);
-            String extractedMetadata = new String(metadataStream.toByteArray());
+        metadataExtractor.extractMetadata(new ByteArrayInputStream(newSciPap.getBytes()), metadataStream);
+        String extractedMetadata = new String(metadataStream.toByteArray());
+
             //System.out.println(extractedMetadata);
 
-            // saving to RDF store
-            scientificPaperRepository.saveMetadata(extractedMetadata);
+        // saving to RDF store
+        scientificPaperRepository.saveMetadata(extractedMetadata);
+
             scientificPaperRepository.save(conn, title, newSciPap);
-            logger.info("New Scientific paper published under the title: " + title);
+        logger.info("New Scientific paper published under the title: " + title);
 
-            return "Scientific Paper published!";
+        return "Scientific Paper published!";
 
-        }catch (Exception e){
-            logger.warn("Ivalid document type! Must be ScientificPaper. Or the paths are wrong.");
-        }
+    }catch (Exception e){
+        logger.warn("Ivalid document type! Must be ScientificPaper. Or the paths are wrong.");
+    }
         return "Error saving scientific paper!";
     }
 
     public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         return scientificPaperRepository.getByTitle(conn, s);
     }
-
     public List<String> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         if(author.equals("my")){
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -176,6 +167,7 @@ public class ScientificPaperService {
     public List<MetadataDTO> getMetadata(RDFAuthenticationUtilities.RDFConnectionProperties properties, String title) {
         return scientificPaperRepository.getMetadata(properties, title);
     }
+
 
     public String transformToHTML(String xml) throws TransformerException, IOException {
         //TODO: dodaj proveru koji tip korisnika zeli da uradi transformaciju (da se ukloni autor ako treba itd)
@@ -298,7 +290,6 @@ public class ScientificPaperService {
         oldStatus.setTextContent("accepted");
 
         xmlRes = domParser.DOMToXML(d);
-        //System.out.println(xmlRes);
 
         ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
         metadataExtractor.extractMetadata(new ByteArrayInputStream(xmlRes.getBytes()), metadataStream);
@@ -346,7 +337,5 @@ public class ScientificPaperService {
 
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
         return scientificPaperRepository.getAllPapers(loadProperties);
-
-
     }
 }

@@ -21,7 +21,7 @@ public class AuthenticationUtilities {
             super();
 
             user = props.getProperty("conn.user").trim();
-            password = props.getProperty("conn.password").trim();
+            //password = props.getProperty("conn.password").trim();
 
             host = props.getProperty("conn.host").trim();
             port = Integer.parseInt(props.getProperty("conn.port"));

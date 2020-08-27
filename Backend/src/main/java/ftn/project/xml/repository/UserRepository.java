@@ -28,7 +28,7 @@ import static ftn.project.xml.templates.XUpdateTemplate.*;
 
 @Repository
 public class UserRepository {
-    private static String usersCollectionPathInDB = "/db/xml/users";   //path kolekcije
+    private static String usersCollectionPathInDB = "/db/xml/users";
     private static String usersDocumentID = "users.xml";
 
 
@@ -217,6 +217,60 @@ public class UserRepository {
         return result;
     }
 
+    public String remove(AuthenticationUtilities.ConnectionProperties conn, TUser user) throws XMLDBException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+//        String contextXPath = "/users";
+//        XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+//        xupdateService.setProperty("indent", "yes");
+//        long mods = xupdateService.updateResource(usersDocumentID, String.format(APPEND, contextXPath, xmlFragment));
+        dbUtils.initilizeDBserver(conn);
+        Collection col = null;
+
+        try {
+            // usera pretvori u xml frag.
+            String xmlFragment = user2XML(user);
+
+            // get the collection
+            logger.info("Retrieving the collection: " + usersCollectionPathInDB);
+            col = dbUtils.getOrCreateCollection(conn, usersCollectionPathInDB);
+            col.setProperty("indent", "yes");
+
+            // first to add document
+            Resource resource = col.getResource(usersDocumentID);
+            System.out.println(resource);
+
+            if(resource == null){
+                String xmlResource = FileUtils.readFileToString(new File("src\\main\\resources\\static\\other\\test_users_emprz.xml"), StandardCharsets.UTF_8);
+                dbUtils.storeDocument(usersDocumentID, xmlResource, col);
+            }
+
+            // get an instance of xupdate query service
+            logger.info("Fetching XUpdate service for the collection.");
+            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+            String contextXPath = "/users/user[0]";
+
+            logger.info("Appending fragments as last child of " + contextXPath + " node.");
+            long mods = xupdateService.updateResource(usersDocumentID, String.format(REMOVE, contextXPath));
+            logger.info(mods + " modifications processed.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            // don't forget to cleanup
+            if (col != null) {
+                try {
+                    col.close();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                    return "error";
+                }
+            }
+        }
+        return "ok";
+    }
+
+
     public String delete(AuthenticationUtilities.ConnectionProperties conn, String email){
         Collection col = null;
 
@@ -239,7 +293,7 @@ public class UserRepository {
         // get the collection
         logger.info("Retrieving the collection: " + usersCollectionPathInDB);
         try {
-            col = DatabaseManager.getCollection(conn.uri + usersCollectionPathInDB, conn.user, conn.password);
+            col = dbUtils.getOrCreateCollection(conn, conn.uri + usersCollectionPathInDB);
             col.setProperty("indent", "yes");
         } catch (XMLDBException e) {
             e.printStackTrace();
@@ -284,5 +338,46 @@ public class UserRepository {
     public TUser.PendingPapersToReview getMyPendingReviews(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         TUser user = getUserByEmail(conn, email);
         return user.getPendingPapersToReview();
+    }
+
+    public void addPendingPaper(String title, AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        dbUtils.initilizeDBserver(conn);
+        Collection col = null;
+
+        try {
+            // usera pretvori u xml frag.
+            String xmlFragment = "<paperToReviewID>" + title + "</paperToReviewID>";
+
+            // get the collection
+            logger.info("Retrieving the collection: " + usersCollectionPathInDB);
+            col = dbUtils.getOrCreateCollection(conn, usersCollectionPathInDB);
+            col.setProperty("indent", "yes");
+
+            // first to add document
+            //Resource resource = col.getResource(usersDocumentID);
+            //System.out.println(resource);
+
+            // get an instance of xupdate query service
+            logger.info("Fetching XUpdate service for the collection.");
+            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+            String contextXPath = "/users/user[email=\"" + email + "\"]/pendingPapersToReview/paperToReviewID[0]";
+
+            System.out.println(contextXPath);
+
+            long mods = xupdateService.updateResource(usersDocumentID, String.format(INSERT_AFTER, contextXPath, xmlFragment));
+            logger.info(mods + " modifications processed.");
+
+        } finally {
+
+            // don't forget to cleanup
+            if (col != null) {
+                try {
+                    col.close();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+        }
     }
 }

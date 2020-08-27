@@ -77,7 +77,7 @@ public class ReviewRepository {
         XMLResource res = null;
 
         try {
-            col = DatabaseManager.getCollection(conn.uri + reviewsCollectionPathInDB);
+            col = dbUtils.getOrCreateCollection(conn, reviewsCollectionPathInDB);
             col.setProperty(OutputKeys.INDENT, "yes");
 
             res = (XMLResource)col.getResource(reviewDocumentID + id);
@@ -184,7 +184,7 @@ public class ReviewRepository {
         xqueryService.setNamespace("", TARGET_NAMESPACE);
         for (String res : resources) {
             try {
-                xqueryExp = "doc(\"" + res + "\")//review[title[. = \"" + title.trim() + "\"]]";
+                xqueryExp = "doc(\"" + res + "\")//review[title[starts-with(., \"" + title.trim() + " Review\")]]";
                 ResourceSet resultSet = xqueryService.query(xqueryExp);
                 ResourceIterator i = resultSet.getIterator();
                 Resource resource = null;
