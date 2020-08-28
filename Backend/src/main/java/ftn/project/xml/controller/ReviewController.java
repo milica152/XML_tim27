@@ -1,6 +1,5 @@
 package ftn.project.xml.controller;
 
-import ftn.project.xml.model.Review;
 import ftn.project.xml.service.ReviewService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import org.springframework.beans.factory.annotation.Autowired;

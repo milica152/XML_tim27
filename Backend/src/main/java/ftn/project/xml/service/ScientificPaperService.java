@@ -34,7 +34,6 @@ import java.util.Objects;
 public class ScientificPaperService {
     private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
-
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
 
     @Autowired

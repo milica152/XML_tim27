@@ -23,7 +23,7 @@ public class ScientificPaperController {
     @Autowired
     private ScientificPaperService scientificPaperService;
 
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes) throws Exception {
@@ -63,13 +63,6 @@ public class ScientificPaperController {
     @ResponseBody
     public ResponseEntity<List<String>> findUserPapers() throws IOException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return new ResponseEntity<>(scientificPaperService.findMyPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
-    }
-
-    @GetMapping("/findAllPapers")
-    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER','PUBLIC')")
-    @ResponseBody
-    public ResponseEntity<List<String>> getAllPapers() throws IOException {
-        return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
     @GetMapping("/findAllPapers")
