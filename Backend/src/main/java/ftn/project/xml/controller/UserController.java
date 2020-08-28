@@ -41,8 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception  {
-
+    public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
         try {
             return new ResponseEntity<>(userService.login(conn, userLoginDTO), HttpStatus.OK);
@@ -70,15 +69,12 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByEmailAndPassword(conn, email), HttpStatus.OK);
     }
 
-
     @GetMapping("/getEditor")
     @ResponseBody
     public ResponseEntity<TUser> getEditor() throws Exception {
         conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(userService.getEditor(conn), HttpStatus.OK);
     }
-
-
 
     @PreAuthorize("hasAnyAuthority('EDITOR','REVIEWER')")
     @GetMapping("/getMyReviews")
@@ -96,7 +92,6 @@ public class UserController {
         conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(userService.getMyPendingReviews(conn), HttpStatus.OK);
     }
-
 
     @PreAuthorize("(hasAuthority('EDITOR'))")
     @PostMapping("/delete")
@@ -116,11 +111,10 @@ public class UserController {
         return new ResponseEntity<>(userService.deletePendingSP(conn, title), HttpStatus.OK);
     }
 
-
     @PreAuthorize("(hasAuthority('EDITOR'))")
     @PostMapping("/findReviewerForSP")
     @ResponseBody
-    public ResponseEntity<String> findReviewerForSP(@RequestBody String title) throws Exception {
+    public ResponseEntity<String> findReviewerForSP(@RequestBody String title) throws Exception {   // treba da vrati vise reviewera
         conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(userService.findReviewerForSP(conn, title), HttpStatus.OK);
     }
@@ -133,7 +127,4 @@ public class UserController {
         userService.pickReviewers(conn, emails, title);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
 }
