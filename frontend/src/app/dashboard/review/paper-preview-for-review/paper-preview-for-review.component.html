@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-header style = "justify-content: center; margin-top: 8px">
+    <mat-icon mat-card-avatar >history_edu</mat-icon>
+    <mat-card-title>{{paper.title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions fxLayout="row" fxLayoutGap="7%" style="margin-bottom: -10px;margin-left: 3px;justify-content: center">
+    <button mat-raised-button color="primary" matTooltip="Preview" [routerLink]="['/dashboard/preview/',
+    this.paper.title]">
+      <mat-icon>preview</mat-icon>
+    </button>
+    <button mat-raised-button color="primary" matTooltip="Reject Review" (click)="reject_review(this.paper.title)">
+      <mat-icon>cancel</mat-icon>
+    </button>
+    <button mat-raised-button color="primary" matTooltip="Create Review" (click)="accept_review(this.paper.title)">
+      <mat-icon>check</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -3,6 +3,7 @@
     <a mat-button routerLink="/dashboard/previewAllPapers">Home</a>
     <button *ngIf="getRole != 'PUBLIC'" routerLink="/dashboard/previewMyPapers" mat-button>My Papers</button>
     <button *ngIf="getRole != 'PUBLIC'" routerLink="/dashboard/addPaper" mat-button>Add Paper</button>
+    <button *ngIf="getRole != 'PUBLIC'" routerLink="/dashboard/requestedRevisions" mat-button>Requested Revisions</button>
     <button *ngIf="getRole == 'EDITOR'" routerLink="/dashboard/assignReviewers" mat-button>Assign Reviewers</button>
     <button *ngIf="getRole == 'EDITOR'" routerLink="/dashboard/previewReviewedPapers" mat-button>Reviewed</button>
     <button *ngIf="getRole == 'EDITOR'" routerLink="/dashboard/previewRevisedPapers" mat-button>Revised</button>

@@ -32,7 +32,7 @@ import java.util.Objects;
 
 @Service
 public class ScientificPaperService {
-    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
+    private static String schemaPath = "backend\\src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);

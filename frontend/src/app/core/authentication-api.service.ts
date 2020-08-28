@@ -37,11 +37,13 @@ export class AuthenticationApiService {
       const decodedJwtJsonData = window.atob(jwtData);
       const decodedJwtData = JSON.parse(decodedJwtJsonData);
       role = decodedJwtData.role[0].authority;
+      console.log(role);
     }
     return role;
   }
 
   logout(): Observable<any> {
+      localStorage.clear();
     return this._http.get(`logout`, {headers: this._headers, responseType: 'text'});
   }
 

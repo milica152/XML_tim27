@@ -46,7 +46,7 @@ public class User implements UserDetails {
         this.pendingPapersToReview = tUser.getPendingPapersToReview();
         this.authorities = new ArrayList<Authority>();
         Authority a = new Authority();
-        a.setType(TRole.AUTHOR);
+        a.setType(tUser.getRole());
         this.authorities.add(a);
     }
 
