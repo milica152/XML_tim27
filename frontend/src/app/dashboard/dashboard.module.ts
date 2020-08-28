@@ -24,6 +24,8 @@ import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-p
 import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-preview/paper-full-preview.component';
 import { AddNewPaperComponent } from './add-new-paper/add-new-paper.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import { ReviewComponent } from './review/review.component';
+import { PaperPreviewForReviewComponent } from './review/paper-preview-for-review/paper-preview-for-review.component';
 
 
 
@@ -34,7 +36,9 @@ import {MatTabsModule} from "@angular/material/tabs";
     PreviewMyPapersComponent,
     PaperPreviewComponent,
     PaperFullPreviewComponent,
-    AddNewPaperComponent
+    AddNewPaperComponent,
+    ReviewComponent,
+    PaperPreviewForReviewComponent
     ],
     imports: [
         CommonModule,

@@ -19,4 +19,7 @@ export class UserService {
   loginUser(userData: LoginUser): Observable<any> {
     return this.httpClient.post(this.backendUrl + "login", userData);
   }
+  getMyReviews(): Observable<any>{
+    return this.httpClient.get("user/getMyReviews");
+  }
 }

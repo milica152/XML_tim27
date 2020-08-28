@@ -45,7 +45,7 @@ public class ScientificPaperRepository {
     private static final String papersCollectionPathInDB = "/db/xml/scientificPaper";
     private static final String papersDocumentID = "paper.xml";
     private static final String SPARQL_NAMED_GRAPH_URI = "/sp";
-    private static String schemaPath = "src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
+    private static String schemaPath = "Backend\\src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
     Logger logger = LoggerFactory.getLogger(ScientificPaperRepository.class);
 
