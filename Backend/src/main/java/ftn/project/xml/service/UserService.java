@@ -29,6 +29,7 @@ import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -101,7 +102,7 @@ public class UserService {
         return userRepository.getEditor(conn);
     }
 
-    public String delete(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String email) throws Exception {
         return userRepository.delete(conn, email);
     }
 
@@ -116,29 +117,36 @@ public class UserService {
     }
 
     public String deletePendingSP(AuthenticationUtilities.ConnectionProperties conn, String title) throws Exception {
-        //User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        TUser loggedTUser = userRepository.getUserByEmail(conn, "milica@gmail.com");
-        TUser.PendingPapersToReview myPapers = loggedTUser.getPendingPapersToReview();
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TUser user = userRepository.getUserByEmail(conn, loggedUser.getEmail());
+        TUser.PendingPapersToReview myPapers = user.getPendingPapersToReview();
         for(String spID : myPapers.getPaperToReviewID()){
             if(spID.equalsIgnoreCase(title)){
                 myPapers.getPaperToReviewID().remove(spID);
                 break;
             }
         }
-        loggedTUser.setPendingPapersToReview(myPapers);
-        userRepository.remove(conn, loggedTUser);
-        userRepository.save(conn, loggedTUser);
+
+        user.setPendingPapersToReview(myPapers);
+        userRepository.delete(conn, user.getEmail());
+        userRepository.save(conn, user);
         return "ok";
     }
 
     public String findReviewerForSP(AuthenticationUtilities.ConnectionProperties conn, String title) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String sp = scientificPaperRepository.getByTitle(conn, title);
+        // TODO - nedovrseno
         return "";
     }
 
-    public void pickReviewers(AuthenticationUtilities.ConnectionProperties conn, ArrayList<String> emails, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public void pickReviewers(AuthenticationUtilities.ConnectionProperties conn, ArrayList<String> emails, String title) throws Exception {
         for(String reviewer : emails){
-            userRepository.addPendingPaper(title,conn, reviewer);
+            TUser user = userRepository.getUserByEmail(conn, reviewer);
+            TUser.PendingPapersToReview myPapers = user.getPendingPapersToReview();
+            myPapers.getPaperToReviewID().add(title);
+            user.setPendingPapersToReview(myPapers);
+            userRepository.delete(conn, reviewer);
+            userRepository.save(conn, user);
         }
     }
 

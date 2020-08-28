@@ -1,5 +1,6 @@
 package ftn.project.xml.model;
 
+import org.apache.catalina.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -46,7 +47,7 @@ public class User implements UserDetails {
         this.pendingPapersToReview = tUser.getPendingPapersToReview();
         this.authorities = new ArrayList<Authority>();
         Authority a = new Authority();
-        a.setType(TRole.AUTHOR);
+        a.setType(tUser.getRole());
         this.authorities.add(a);
     }
 
