@@ -2,6 +2,7 @@ package ftn.project.xml.repository;
 
 import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
 import ftn.project.xml.model.Users;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
@@ -9,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XMLResource;
@@ -292,5 +294,17 @@ public class UserRepository {
     public TUser.PendingPapersToReview getMyPendingReviews(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         TUser user = getUserByEmail(conn, email);
         return user.getPendingPapersToReview();
+    }
+
+    public String addMyReview(String title, AuthenticationUtilities.ConnectionProperties conn) throws Exception {
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        TUser user = getUserByEmail(conn, loggedUser.getEmail());
+        TUser.MyReviews myReviews = user.getMyReviews();
+        myReviews.getMyReviewID().add(title);
+        user.setMyReviews(myReviews);
+        delete(conn, loggedUser.getEmail());
+        save(conn, user);
+        return "ok";
     }
 }
