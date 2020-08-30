@@ -271,4 +271,20 @@ public class ObjectFactory {
         return new TUser.PendingPapersToReview();
     }
 
+    /**
+     * Create an instance of {@link BusinessProcess }
+     *
+     */
+    public BusinessProcess createBusinessProcess() {
+        return new BusinessProcess();
+    }
+
+    /**
+     * Create an instance of {@link ReviewsGradeType }
+     *
+     */
+    public ReviewsGradeType createReviewsGradeType() {
+        return new ReviewsGradeType();
+    }
+
 }
