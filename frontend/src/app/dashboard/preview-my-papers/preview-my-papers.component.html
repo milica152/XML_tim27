@@ -1,4 +1,4 @@
-<form #searchForm="ngForm" (ngSubmit)="onSubmit()" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.xs="column"
+<form *ngIf="basic" #searchForm="ngForm" (ngSubmit)="onSubmit()" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.xs="column"
       fxLayoutAlign="center">
   <mat-form-field appearance="outline">
     <mat-label>Search</mat-label>
@@ -12,14 +12,40 @@
 
 <form *ngIf="advanced" #searchForm="ngForm" (ngSubmit)="onSubmitAdvanced()" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.xs="column"
       fxLayoutAlign="center">
-  <mat-form-field appearance="outline">
-    <mat-label>Search</mat-label>
-    <mat-icon color="primary" matPrefix>search</mat-icon>
-    <input [(ngModel)]="this.searchParameterAdvanced" id="advancedSearch" matInput type="text" name="searchParameterAdvanced">
-  </mat-form-field>
+  <div fxLayout="column">
+    <mat-form-field appearance="outline">
+        <mat-label>Abstract Content</mat-label>
+      <input [(ngModel)]="this.abstractContent" id="abstractContent" matInput type="text" name="abstractContent">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Headline</mat-label>
+      <input [(ngModel)]="this.headline" id="headline" matInput type="text" name="headline">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date Published</mat-label>
+      <input [(ngModel)]="this.datePublished" id="datePublished" matInput type="date" name="datePublished">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Referenced Document ID</mat-label>
+      <input [(ngModel)]="this.referencedDocId" id="referencedDocId" matInput type="text" name="referencedDocId">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Authors Name</mat-label>
+      <input [(ngModel)]="this.authorsName" id="authorsName" matInput type="text" name="authorsName">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Keywords</mat-label>
+      <input [(ngModel)]="this.keywords" id="keywords" matInput type="text" name="keywords">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date Accepted</mat-label>
+      <input [(ngModel)]="this.dateAccepted" id="dateAccepted" matInput type="date" name="dateAccepted">
+    </mat-form-field>
   <button type="submit" mat-raised-button class="searchButton">Search</button>
   <button type="button" mat-raised-button class="searchButton" (click)="resetForm(searchForm)">Reset</button>
   <button type="button" mat-raised-button class="searchButton" (click)="basicSearch()">Basic</button>
+  </div>
+
 </form>
 
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="0.5%" fxLayoutAlign="center">
