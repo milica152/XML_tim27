@@ -296,15 +296,23 @@ public class UserRepository {
         return user.getPendingPapersToReview();
     }
 
-    public String addMyReview(String title, AuthenticationUtilities.ConnectionProperties conn) throws Exception {
+    public void addMyReview(String title, AuthenticationUtilities.ConnectionProperties conn) throws Exception {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         TUser user = getUserByEmail(conn, loggedUser.getEmail());
         TUser.MyReviews myReviews = user.getMyReviews();
         myReviews.getMyReviewID().add(title);
         user.setMyReviews(myReviews);
         delete(conn, loggedUser.getEmail());
         save(conn, user);
-        return "ok";
+    }
+
+    public void addMyScientificPaper(String title, AuthenticationUtilities.ConnectionProperties conn) throws Exception {
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TUser user = getUserByEmail(conn, loggedUser.getEmail());
+        TUser.MyPapers myPapers = user.getMyPapers();
+        myPapers.getMyScientificPaperID().add(title);
+        user.setMyPapers(myPapers);
+        delete(conn, loggedUser.getEmail());
+        save(conn, user);
     }
 }

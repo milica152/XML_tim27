@@ -130,7 +130,8 @@ public class ScientificPaperService {
         // saving to RDF store
         scientificPaperRepository.saveMetadata(extractedMetadata);
 
-            scientificPaperRepository.save(conn, title, newSciPap);
+        scientificPaperRepository.save(conn, title, newSciPap);
+        userRepository.addMyScientificPaper(title, conn);
         logger.info("New Scientific paper published under the title: " + title);
 
         return "Scientific Paper published!";
