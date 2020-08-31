@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -31,7 +30,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    @PreAuthorize("!(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
+//    @PreAuthorize("!(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
     public ResponseEntity<Object> saveUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO, HttpServletRequest request) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
         try{
@@ -78,8 +77,8 @@ public class UserController {
         return new ResponseEntity<>(userService.getEditor(conn), HttpStatus.OK);
     }
 
-    @PreAuthorize("(hasAuthority('REVIEWER'))")
-    @PostMapping("/getMyReviews")
+    @PreAuthorize("hasAnyAuthority('EDITOR','REVIEWER')")
+    @GetMapping("/getMyReviews")
     @ResponseBody
     public ResponseEntity<TUser.MyReviews> getMyReviews() throws Exception {
         conn = AuthenticationUtilities.loadProperties();
@@ -87,8 +86,8 @@ public class UserController {
     }
 
 
-    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
-    @PostMapping("/getMyPendingReviews")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
+    @GetMapping("/getMyPendingReviews")
     @ResponseBody
     public ResponseEntity<TUser.PendingPapersToReview> getMyPendingReviews() throws Exception {
         conn = AuthenticationUtilities.loadProperties();
@@ -103,7 +102,9 @@ public class UserController {
         return new ResponseEntity<>(userService.delete(conn, email), HttpStatus.OK);
     }
 
-    @PreAuthorize("(hasAuthority('REVIEWER'))")
+
+
+    @PreAuthorize("hasAnyAuthority('EDITOR','REVIEWER')")
     @PostMapping("/deletePendingSP")
     @ResponseBody
     public ResponseEntity<String> deletePendingSP(@RequestBody String title) throws Exception {

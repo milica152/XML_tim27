@@ -10,19 +10,19 @@
             <keyword>kapetan kuka</keyword>
         </keywords>
     </metadata>
-    <title>Petar Pan</title>
+    <title>Petar Pan Novi</title>
     <authors>
         <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="guq/rcul/ki">
             <name>Ana</name>
             <surname>Pjevic</surname>
-            <profession>Doktor</profession>
-            <contact>mmarovic@gmail.com</contact>
+            <profession>Student</profession>
+            <contact>ana@gmail.com</contact>
         </author>
         <author xmlns:sp="https://github.com/milica152/XML_tim27" sp:id="jjt/gpuak/f">
-            <name>Jovan</name>
-            <surname>Jovanovic</surname>
-            <profession>Doktor</profession>
-            <contact>jjovanovic@gmail.com</contact>
+            <name>Sena</name>
+            <surname>Sensi</surname>
+            <profession>Vet</profession>
+            <contact>sena@gmail.com</contact>
         </author>
     </authors>
     <abstract>

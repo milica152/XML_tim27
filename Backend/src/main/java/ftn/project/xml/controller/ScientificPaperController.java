@@ -31,6 +31,7 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/findByTitle")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity<String> getScientificPaperById(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
@@ -39,6 +40,7 @@ public class ScientificPaperController {
 
 
     @PostMapping("/findByTitleWithoutAuthors")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity<String> findByTitleWithoutAuthors(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getByTitleWithoutAuthors(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
@@ -46,6 +48,7 @@ public class ScientificPaperController {
 
 
     @GetMapping("/findByTitleToHTML")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity<String> getScientificPaperByIdHTML(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.transformToHTML(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
@@ -53,6 +56,7 @@ public class ScientificPaperController {
 
     @GetMapping("/search")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     public ResponseEntity<List<String>> search(@RequestParam("author") String author, @RequestParam("text") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.search(AuthenticationUtilities.loadProperties(), author, title), HttpStatus.OK);
     }
@@ -66,19 +70,20 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/findAllPapers")
-    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER','PUBLIC')")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity<List<String>> getAllPapers() throws IOException {
         return new ResponseEntity<>(scientificPaperService.getAllPapers(AuthenticationUtilities.loadProperties()), HttpStatus.OK);
     }
 
     @GetMapping("/metadata")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity<List<MetadataDTO>> getMetadata(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getMetadata(RDFAuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
-    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @PostMapping("/exportMetadataRDF/{title}")
     @ResponseBody
     public ResponseEntity<String> exportMetadataAsRDF(@RequestBody String filePath, @PathVariable String title) throws Exception {
@@ -87,7 +92,7 @@ public class ScientificPaperController {
 
 
 
-    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @PostMapping("/exportMetadataJSON/{title}")
     @ResponseBody
     public ResponseEntity<String> exportMetadataAsJSON(@RequestBody String filePath, @PathVariable String title) throws Exception {
@@ -102,7 +107,7 @@ public class ScientificPaperController {
     }
 
     @PutMapping("/transformHTML")
-    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity transformToHtml(@RequestBody String xml) throws Exception {
         scientificPaperService.transformToHTML(xml);
@@ -110,7 +115,7 @@ public class ScientificPaperController {
     }
 
     @PostMapping("/withdraw")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     public ResponseEntity<String> withdraw(@RequestBody String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.withdraw(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
@@ -132,7 +137,7 @@ public class ScientificPaperController {
 
     @GetMapping("/getStatus")
     @ResponseBody
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     public ResponseEntity<String> getStatus(@RequestParam("paper") String paper) throws Exception {
         AuthenticationUtilities.ConnectionProperties conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(scientificPaperService.getStatus(conn, paper), HttpStatus.OK);
