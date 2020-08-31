@@ -7,13 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -65,11 +61,11 @@ public class Chapter
 {
 
     @XmlElements({
-        @XmlElement(name = "image", namespace = "https://github.com/milica152/XML_tim27", type = Image.class),
-        @XmlElement(name = "list", namespace = "https://github.com/milica152/XML_tim27", type = ftn.project.xml.model.List.class),
-        @XmlElement(name = "table", namespace = "https://github.com/milica152/XML_tim27", type = Table.class),
-        @XmlElement(name = "codeBlock", namespace = "https://github.com/milica152/XML_tim27", type = Chapter.CodeBlock.class),
-        @XmlElement(name = "referencePointer", namespace = "https://github.com/milica152/XML_tim27", type = Chapter.ReferencePointer.class)
+        @XmlElement(name = "image", type = Image.class),
+        @XmlElement(name = "list", type = ftn.project.xml.model.List.class),
+        @XmlElement(name = "table", type = Table.class),
+        @XmlElement(name = "codeBlock", type = Chapter.CodeBlock.class),
+        @XmlElement(name = "referencePointer", type = Chapter.ReferencePointer.class)
     })
     protected java.util.List<Object> imageOrListOrTable;
 
@@ -133,9 +129,6 @@ public class Chapter
         @XmlValue
         protected String value;
         @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
-        @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-        @XmlID
-        @XmlSchemaType(name = "ID")
         protected String id;
 
         /**
@@ -215,9 +208,6 @@ public class Chapter
         @XmlValue
         protected String value;
         @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
-        @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-        @XmlID
-        @XmlSchemaType(name = "ID")
         protected String id;
 
         /**

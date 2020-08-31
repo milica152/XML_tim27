@@ -20,6 +20,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.OutputKeys;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -95,6 +96,7 @@ public class UserRepository {
         }
         TUser user = null;
         try {
+
             user = XML2User(res.getContent().toString());
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -314,5 +316,32 @@ public class UserRepository {
         user.setMyPapers(myPapers);
         delete(conn, loggedUser.getEmail());
         save(conn, user);
+    }
+
+    public Users getAll(AuthenticationUtilities.ConnectionProperties conn) {
+        Users allUsers = new Users();
+        Collection col = null;
+        try {
+            dbUtils.initilizeDBserver(conn);
+        } catch (ClassNotFoundException | XMLDBException | InstantiationException | IllegalAccessException e) {
+            logger.error("Problem sa inicijalizovanjem baze");
+            e.printStackTrace();
+        }
+        try {
+            col = dbUtils.getOrCreateCollection(conn, usersCollectionPathInDB);
+
+            col.setProperty(OutputKeys.INDENT, "yes");
+            String[] resources = col.listResources();
+            if(resources.length!=0){
+                allUsers = XML2Users(col.getResource(resources[0]).getContent().toString());
+            }
+
+        } catch (XMLDBException e) {
+            logger.error("Problem prilikom dobavljanj dokumenata.");
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return allUsers;
     }
 }

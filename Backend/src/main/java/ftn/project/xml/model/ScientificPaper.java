@@ -2,18 +2,20 @@
 package ftn.project.xml.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -26,7 +28,71 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{https://github.com/milica152/XML_tim27}title"/>
+ *         &lt;element name="metadata">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="status" minOccurs="0">
+ *                     &lt;complexType>
+ *                       &lt;simpleContent>
+ *                         &lt;extension base="&lt;https://github.com/milica152/XML_tim27>TStatusS">
+ *                           &lt;anyAttribute processContents='skip' namespace=''/>
+ *                         &lt;/extension>
+ *                       &lt;/simpleContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
+ *                   &lt;element name="datePublished" minOccurs="0">
+ *                     &lt;complexType>
+ *                       &lt;simpleContent>
+ *                         &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>date">
+ *                           &lt;anyAttribute processContents='skip' namespace=''/>
+ *                         &lt;/extension>
+ *                       &lt;/simpleContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
+ *                   &lt;element name="dateAccepted" minOccurs="0">
+ *                     &lt;complexType>
+ *                       &lt;simpleContent>
+ *                         &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>date">
+ *                           &lt;anyAttribute processContents='skip' namespace=''/>
+ *                         &lt;/extension>
+ *                       &lt;/simpleContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
+ *                   &lt;element name="keywords">
+ *                     &lt;complexType>
+ *                       &lt;complexContent>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                           &lt;sequence>
+ *                             &lt;element name="keyword" maxOccurs="unbounded">
+ *                               &lt;complexType>
+ *                                 &lt;simpleContent>
+ *                                   &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
+ *                                     &lt;anyAttribute processContents='skip' namespace=''/>
+ *                                   &lt;/extension>
+ *                                 &lt;/simpleContent>
+ *                               &lt;/complexType>
+ *                             &lt;/element>
+ *                           &lt;/sequence>
+ *                         &lt;/restriction>
+ *                       &lt;/complexContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
+ *         &lt;element name="title">
+ *           &lt;complexType>
+ *             &lt;simpleContent>
+ *               &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
+ *                 &lt;anyAttribute processContents='skip' namespace=''/>
+ *               &lt;/extension>
+ *             &lt;/simpleContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *         &lt;element name="authors">
  *           &lt;complexType>
  *             &lt;complexContent>
@@ -43,18 +109,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="plainChapter" type="{https://github.com/milica152/XML_tim27}TChapter" maxOccurs="unbounded"/>
- *                   &lt;element name="keywords">
- *                     &lt;complexType>
- *                       &lt;complexContent>
- *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                           &lt;sequence>
- *                             &lt;element name="keyword" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                           &lt;/sequence>
- *                         &lt;/restriction>
- *                       &lt;/complexContent>
- *                     &lt;/complexType>
- *                   &lt;/element>
+ *                   &lt;element ref="{https://github.com/milica152/XML_tim27}paragraph" maxOccurs="unbounded"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -83,15 +138,16 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *                           &lt;sequence>
  *                             &lt;element name="url" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                             &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                             &lt;element name="year" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                             &lt;element name="authorName">
+ *                               &lt;simpleType>
+ *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                 &lt;/restriction>
+ *                               &lt;/simpleType>
+ *                             &lt;/element>
  *                           &lt;/sequence>
  *                           &lt;attribute ref="{https://github.com/milica152/XML_tim27}id"/>
- *                           &lt;attribute name="year" type="{http://www.w3.org/2001/XMLSchema}date" />
- *                           &lt;attribute name="authorName">
- *                             &lt;simpleType>
- *                               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                               &lt;/restriction>
- *                             &lt;/simpleType>
- *                           &lt;/attribute>
+ *                           &lt;anyAttribute processContents='skip' namespace=''/>
  *                         &lt;/restriction>
  *                       &lt;/complexContent>
  *                     &lt;/complexType>
@@ -102,8 +158,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *           &lt;/complexType>
  *         &lt;/element>
  *       &lt;/sequence>
- *       &lt;attribute name="datePublished" type="{http://www.w3.org/2001/XMLSchema}date" />
  *       &lt;attribute name="institution" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;anyAttribute processContents='skip' namespace=''/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -113,6 +169,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
+    "metadata",
     "title",
     "authors",
     "_abstract",
@@ -122,31 +179,56 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlRootElement(name = "scientificPaper", namespace = "https://github.com/milica152/XML_tim27")
 public class ScientificPaper {
 
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
-    protected Title title;
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true, name = "metadata", namespace = "https://github.com/milica152/XML_tim27")
+    protected ScientificPaper.Metadata metadata;
+    @XmlElement(required = true, namespace = "https://github.com/milica152/XML_tim27")
+    protected ScientificPaper.Title title;
+    @XmlElement(required = true,namespace = "https://github.com/milica152/XML_tim27")
     protected ScientificPaper.Authors authors;
-    @XmlElement(name = "abstract", namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(name = "abstract", required = true, namespace = "https://github.com/milica152/XML_tim27")
     protected ScientificPaper.Abstract _abstract;
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true, namespace = "https://github.com/milica152/XML_tim27")
     protected ScientificPaper.Chapters chapters;
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true, namespace = "https://github.com/milica152/XML_tim27")
     protected ScientificPaper.References references;
-    @XmlAttribute(name = "datePublished")
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datePublished;
-    @XmlAttribute(name = "institution")
+    @XmlAttribute(name = "institution", namespace = "https://github.com/milica152/XML_tim27")
     protected String institution;
+    @XmlAnyAttribute
+    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+
+    /**
+     * Gets the value of the metadata property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ScientificPaper.Metadata }
+     *     
+     */
+    public ScientificPaper.Metadata getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * Sets the value of the metadata property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ScientificPaper.Metadata }
+     *     
+     */
+    public void setMetadata(ScientificPaper.Metadata value) {
+        this.metadata = value;
+    }
 
     /**
      * Gets the value of the title property.
      * 
      * @return
      *     possible object is
-     *     {@link Title }
+     *     {@link ScientificPaper.Title }
      *     
      */
-    public Title getTitle() {
+    public ScientificPaper.Title getTitle() {
         return title;
     }
 
@@ -155,10 +237,10 @@ public class ScientificPaper {
      * 
      * @param value
      *     allowed object is
-     *     {@link Title }
+     *     {@link ScientificPaper.Title }
      *     
      */
-    public void setTitle(Title value) {
+    public void setTitle(ScientificPaper.Title value) {
         this.title = value;
     }
 
@@ -259,30 +341,6 @@ public class ScientificPaper {
     }
 
     /**
-     * Gets the value of the datePublished property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getDatePublished() {
-        return datePublished;
-    }
-
-    /**
-     * Sets the value of the datePublished property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setDatePublished(XMLGregorianCalendar value) {
-        this.datePublished = value;
-    }
-
-    /**
      * Gets the value of the institution property.
      * 
      * @return
@@ -306,6 +364,24 @@ public class ScientificPaper {
         this.institution = value;
     }
 
+    /**
+     * Gets a map that contains attributes that aren't bound to any typed property on this class.
+     * 
+     * <p>
+     * the map is keyed by the name of the attribute and 
+     * the value is the string value of the attribute.
+     * 
+     * the map returned by this method is live, and you can add new attribute
+     * by updating the map directly. Because of this design, there's no setter.
+     * 
+     * 
+     * @return
+     *     always non-null
+     */
+    public Map<QName, String> getOtherAttributes() {
+        return otherAttributes;
+    }
+
 
     /**
      * <p>Java class for anonymous complex type.
@@ -317,18 +393,7 @@ public class ScientificPaper {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="plainChapter" type="{https://github.com/milica152/XML_tim27}TChapter" maxOccurs="unbounded"/>
-     *         &lt;element name="keywords">
-     *           &lt;complexType>
-     *             &lt;complexContent>
-     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                 &lt;sequence>
-     *                   &lt;element name="keyword" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-     *                 &lt;/sequence>
-     *               &lt;/restriction>
-     *             &lt;/complexContent>
-     *           &lt;/complexType>
-     *         &lt;/element>
+     *         &lt;element ref="{https://github.com/milica152/XML_tim27}paragraph" maxOccurs="unbounded"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -339,127 +404,40 @@ public class ScientificPaper {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "plainChapter",
-        "keywords"
+        "paragraph"
     })
     public static class Abstract {
 
-        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
-        protected List<TChapter> plainChapter;
-        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
-        protected ScientificPaper.Abstract.Keywords keywords;
+        @XmlElement(required = true)
+        protected List<Paragraph> paragraph;
 
         /**
-         * Gets the value of the plainChapter property.
+         * Gets the value of the paragraph property.
          * 
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the plainChapter property.
+         * This is why there is not a <CODE>set</CODE> method for the paragraph property.
          * 
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
-         *    getPlainChapter().add(newItem);
+         *    getParagraph().add(newItem);
          * </pre>
          * 
          * 
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link TChapter }
+         * {@link Paragraph }
          * 
          * 
          */
-        public List<TChapter> getPlainChapter() {
-            if (plainChapter == null) {
-                plainChapter = new ArrayList<TChapter>();
+        public List<Paragraph> getParagraph() {
+            if (paragraph == null) {
+                paragraph = new ArrayList<Paragraph>();
             }
-            return this.plainChapter;
-        }
-
-        /**
-         * Gets the value of the keywords property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link ScientificPaper.Abstract.Keywords }
-         *     
-         */
-        public ScientificPaper.Abstract.Keywords getKeywords() {
-            return keywords;
-        }
-
-        /**
-         * Sets the value of the keywords property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link ScientificPaper.Abstract.Keywords }
-         *     
-         */
-        public void setKeywords(ScientificPaper.Abstract.Keywords value) {
-            this.keywords = value;
-        }
-
-
-        /**
-         * <p>Java class for anonymous complex type.
-         * 
-         * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="keyword" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         * 
-         * 
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "keyword"
-        })
-        public static class Keywords {
-
-            @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
-            protected List<String> keyword;
-
-            /**
-             * Gets the value of the keyword property.
-             * 
-             * <p>
-             * This accessor method returns a reference to the live list,
-             * not a snapshot. Therefore any modification you make to the
-             * returned list will be present inside the JAXB object.
-             * This is why there is not a <CODE>set</CODE> method for the keyword property.
-             * 
-             * <p>
-             * For example, to add a new item, do as follows:
-             * <pre>
-             *    getKeyword().add(newItem);
-             * </pre>
-             * 
-             * 
-             * <p>
-             * Objects of the following type(s) are allowed in the list
-             * {@link String }
-             * 
-             * 
-             */
-            public List<String> getKeyword() {
-                if (keyword == null) {
-                    keyword = new ArrayList<String>();
-                }
-                return this.keyword;
-            }
-
+            return this.paragraph;
         }
 
     }
@@ -490,7 +468,7 @@ public class ScientificPaper {
     })
     public static class Authors {
 
-        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+        @XmlElement(required = true)
         protected List<Author> author;
 
         /**
@@ -550,7 +528,7 @@ public class ScientificPaper {
     })
     public static class Chapters {
 
-        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+        @XmlElement(required = true)
         protected List<Chapter> chapter;
 
         /**
@@ -595,6 +573,546 @@ public class ScientificPaper {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
+     *         &lt;element name="status" minOccurs="0">
+     *           &lt;complexType>
+     *             &lt;simpleContent>
+     *               &lt;extension base="&lt;https://github.com/milica152/XML_tim27>TStatusS">
+     *                 &lt;anyAttribute processContents='skip' namespace=''/>
+     *               &lt;/extension>
+     *             &lt;/simpleContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *         &lt;element name="datePublished" minOccurs="0">
+     *           &lt;complexType>
+     *             &lt;simpleContent>
+     *               &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>date">
+     *                 &lt;anyAttribute processContents='skip' namespace=''/>
+     *               &lt;/extension>
+     *             &lt;/simpleContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *         &lt;element name="dateAccepted" minOccurs="0">
+     *           &lt;complexType>
+     *             &lt;simpleContent>
+     *               &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>date">
+     *                 &lt;anyAttribute processContents='skip' namespace=''/>
+     *               &lt;/extension>
+     *             &lt;/simpleContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *         &lt;element name="keywords">
+     *           &lt;complexType>
+     *             &lt;complexContent>
+     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                 &lt;sequence>
+     *                   &lt;element name="keyword" maxOccurs="unbounded">
+     *                     &lt;complexType>
+     *                       &lt;simpleContent>
+     *                         &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
+     *                           &lt;anyAttribute processContents='skip' namespace=''/>
+     *                         &lt;/extension>
+     *                       &lt;/simpleContent>
+     *                     &lt;/complexType>
+     *                   &lt;/element>
+     *                 &lt;/sequence>
+     *               &lt;/restriction>
+     *             &lt;/complexContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "status",
+        "datePublished",
+        "dateAccepted",
+        "keywords"
+    })
+    public static class Metadata {
+
+        protected ScientificPaper.Metadata.Status status;
+        protected ScientificPaper.Metadata.DatePublished datePublished;
+        protected ScientificPaper.Metadata.DateAccepted dateAccepted;
+        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+        protected ScientificPaper.Metadata.Keywords keywords;
+
+        /**
+         * Gets the value of the status property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link ScientificPaper.Metadata.Status }
+         *     
+         */
+        public ScientificPaper.Metadata.Status getStatus() {
+            return status;
+        }
+
+        /**
+         * Sets the value of the status property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link ScientificPaper.Metadata.Status }
+         *     
+         */
+        public void setStatus(ScientificPaper.Metadata.Status value) {
+            this.status = value;
+        }
+
+        /**
+         * Gets the value of the datePublished property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link ScientificPaper.Metadata.DatePublished }
+         *     
+         */
+        public ScientificPaper.Metadata.DatePublished getDatePublished() {
+            return datePublished;
+        }
+
+        /**
+         * Sets the value of the datePublished property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link ScientificPaper.Metadata.DatePublished }
+         *     
+         */
+        public void setDatePublished(ScientificPaper.Metadata.DatePublished value) {
+            this.datePublished = value;
+        }
+
+        /**
+         * Gets the value of the dateAccepted property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link ScientificPaper.Metadata.DateAccepted }
+         *     
+         */
+        public ScientificPaper.Metadata.DateAccepted getDateAccepted() {
+            return dateAccepted;
+        }
+
+        /**
+         * Sets the value of the dateAccepted property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link ScientificPaper.Metadata.DateAccepted }
+         *     
+         */
+        public void setDateAccepted(ScientificPaper.Metadata.DateAccepted value) {
+            this.dateAccepted = value;
+        }
+
+        /**
+         * Gets the value of the keywords property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link ScientificPaper.Metadata.Keywords }
+         *     
+         */
+        public ScientificPaper.Metadata.Keywords getKeywords() {
+            return keywords;
+        }
+
+        /**
+         * Sets the value of the keywords property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link ScientificPaper.Metadata.Keywords }
+         *     
+         */
+        public void setKeywords(ScientificPaper.Metadata.Keywords value) {
+            this.keywords = value;
+        }
+
+
+        /**
+         * <p>Java class for anonymous complex type.
+         * 
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         * 
+         * <pre>
+         * &lt;complexType>
+         *   &lt;simpleContent>
+         *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>date">
+         *       &lt;anyAttribute processContents='skip' namespace=''/>
+         *     &lt;/extension>
+         *   &lt;/simpleContent>
+         * &lt;/complexType>
+         * </pre>
+         * 
+         * 
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "value"
+        })
+        public static class DateAccepted {
+
+            @XmlValue
+            @XmlSchemaType(name = "date")
+            protected XMLGregorianCalendar value;
+            @XmlAnyAttribute
+            private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+
+            /**
+             * Gets the value of the value property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link XMLGregorianCalendar }
+             *     
+             */
+            public XMLGregorianCalendar getValue() {
+                return value;
+            }
+
+            /**
+             * Sets the value of the value property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link XMLGregorianCalendar }
+             *     
+             */
+            public void setValue(XMLGregorianCalendar value) {
+                this.value = value;
+            }
+
+            /**
+             * Gets a map that contains attributes that aren't bound to any typed property on this class.
+             * 
+             * <p>
+             * the map is keyed by the name of the attribute and 
+             * the value is the string value of the attribute.
+             * 
+             * the map returned by this method is live, and you can add new attribute
+             * by updating the map directly. Because of this design, there's no setter.
+             * 
+             * 
+             * @return
+             *     always non-null
+             */
+            public Map<QName, String> getOtherAttributes() {
+                return otherAttributes;
+            }
+
+        }
+
+
+        /**
+         * <p>Java class for anonymous complex type.
+         * 
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         * 
+         * <pre>
+         * &lt;complexType>
+         *   &lt;simpleContent>
+         *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>date">
+         *       &lt;anyAttribute processContents='skip' namespace=''/>
+         *     &lt;/extension>
+         *   &lt;/simpleContent>
+         * &lt;/complexType>
+         * </pre>
+         * 
+         * 
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "value"
+        })
+        public static class DatePublished {
+
+            @XmlValue
+            @XmlSchemaType(name = "date")
+            protected XMLGregorianCalendar value;
+            @XmlAnyAttribute
+            private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+
+            /**
+             * Gets the value of the value property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link XMLGregorianCalendar }
+             *     
+             */
+            public XMLGregorianCalendar getValue() {
+                return value;
+            }
+
+            /**
+             * Sets the value of the value property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link XMLGregorianCalendar }
+             *     
+             */
+            public void setValue(XMLGregorianCalendar value) {
+                this.value = value;
+            }
+
+            /**
+             * Gets a map that contains attributes that aren't bound to any typed property on this class.
+             * 
+             * <p>
+             * the map is keyed by the name of the attribute and 
+             * the value is the string value of the attribute.
+             * 
+             * the map returned by this method is live, and you can add new attribute
+             * by updating the map directly. Because of this design, there's no setter.
+             * 
+             * 
+             * @return
+             *     always non-null
+             */
+            public Map<QName, String> getOtherAttributes() {
+                return otherAttributes;
+            }
+
+        }
+
+
+        /**
+         * <p>Java class for anonymous complex type.
+         * 
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         * 
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="keyword" maxOccurs="unbounded">
+         *           &lt;complexType>
+         *             &lt;simpleContent>
+         *               &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
+         *                 &lt;anyAttribute processContents='skip' namespace=''/>
+         *               &lt;/extension>
+         *             &lt;/simpleContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         * 
+         * 
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "keyword"
+        })
+        public static class Keywords {
+
+            @XmlElement(required = true, namespace = "https://github.com/milica152/XML_tim27")
+            protected List<ScientificPaper.Metadata.Keywords.Keyword> keyword;
+
+            /**
+             * Gets the value of the keyword property.
+             * 
+             * <p>
+             * This accessor method returns a reference to the live list,
+             * not a snapshot. Therefore any modification you make to the
+             * returned list will be present inside the JAXB object.
+             * This is why there is not a <CODE>set</CODE> method for the keyword property.
+             * 
+             * <p>
+             * For example, to add a new item, do as follows:
+             * <pre>
+             *    getKeyword().add(newItem);
+             * </pre>
+             * 
+             * 
+             * <p>
+             * Objects of the following type(s) are allowed in the list
+             * {@link ScientificPaper.Metadata.Keywords.Keyword }
+             * 
+             * 
+             */
+            public List<ScientificPaper.Metadata.Keywords.Keyword> getKeyword() {
+                if (keyword == null) {
+                    keyword = new ArrayList<ScientificPaper.Metadata.Keywords.Keyword>();
+                }
+                return this.keyword;
+            }
+
+
+            /**
+             * <p>Java class for anonymous complex type.
+             * 
+             * <p>The following schema fragment specifies the expected content contained within this class.
+             * 
+             * <pre>
+             * &lt;complexType>
+             *   &lt;simpleContent>
+             *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
+             *       &lt;anyAttribute processContents='skip' namespace=''/>
+             *     &lt;/extension>
+             *   &lt;/simpleContent>
+             * &lt;/complexType>
+             * </pre>
+             * 
+             * 
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "value"
+            })
+            public static class Keyword {
+
+                @XmlValue
+                protected String value;
+                @XmlAnyAttribute
+                private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+
+                /**
+                 * Gets the value of the value property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getValue() {
+                    return value;
+                }
+
+                /**
+                 * Sets the value of the value property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setValue(String value) {
+                    this.value = value;
+                }
+
+                /**
+                 * Gets a map that contains attributes that aren't bound to any typed property on this class.
+                 * 
+                 * <p>
+                 * the map is keyed by the name of the attribute and 
+                 * the value is the string value of the attribute.
+                 * 
+                 * the map returned by this method is live, and you can add new attribute
+                 * by updating the map directly. Because of this design, there's no setter.
+                 * 
+                 * 
+                 * @return
+                 *     always non-null
+                 */
+                public Map<QName, String> getOtherAttributes() {
+                    return otherAttributes;
+                }
+
+            }
+
+        }
+
+
+        /**
+         * <p>Java class for anonymous complex type.
+         * 
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         * 
+         * <pre>
+         * &lt;complexType>
+         *   &lt;simpleContent>
+         *     &lt;extension base="&lt;https://github.com/milica152/XML_tim27>TStatusS">
+         *       &lt;anyAttribute processContents='skip' namespace=''/>
+         *     &lt;/extension>
+         *   &lt;/simpleContent>
+         * &lt;/complexType>
+         * </pre>
+         * 
+         * 
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "value"
+        })
+        public static class Status {
+
+            @XmlValue
+            protected TStatusS value;
+            @XmlAnyAttribute
+            private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+
+            /**
+             * Gets the value of the value property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link TStatusS }
+             *     
+             */
+            public TStatusS getValue() {
+                return value;
+            }
+
+            /**
+             * Sets the value of the value property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link TStatusS }
+             *     
+             */
+            public void setValue(TStatusS value) {
+                this.value = value;
+            }
+
+            /**
+             * Gets a map that contains attributes that aren't bound to any typed property on this class.
+             * 
+             * <p>
+             * the map is keyed by the name of the attribute and 
+             * the value is the string value of the attribute.
+             * 
+             * the map returned by this method is live, and you can add new attribute
+             * by updating the map directly. Because of this design, there's no setter.
+             * 
+             * 
+             * @return
+             *     always non-null
+             */
+            public Map<QName, String> getOtherAttributes() {
+                return otherAttributes;
+            }
+
+        }
+
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
      *         &lt;element name="reference">
      *           &lt;complexType>
      *             &lt;complexContent>
@@ -602,15 +1120,16 @@ public class ScientificPaper {
      *                 &lt;sequence>
      *                   &lt;element name="url" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *                   &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                   &lt;element name="year" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                   &lt;element name="authorName">
+     *                     &lt;simpleType>
+     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                       &lt;/restriction>
+     *                     &lt;/simpleType>
+     *                   &lt;/element>
      *                 &lt;/sequence>
      *                 &lt;attribute ref="{https://github.com/milica152/XML_tim27}id"/>
-     *                 &lt;attribute name="year" type="{http://www.w3.org/2001/XMLSchema}date" />
-     *                 &lt;attribute name="authorName">
-     *                   &lt;simpleType>
-     *                     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-     *                     &lt;/restriction>
-     *                   &lt;/simpleType>
-     *                 &lt;/attribute>
+     *                 &lt;anyAttribute processContents='skip' namespace=''/>
      *               &lt;/restriction>
      *             &lt;/complexContent>
      *           &lt;/complexType>
@@ -629,7 +1148,7 @@ public class ScientificPaper {
     })
     public static class References {
 
-        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+        @XmlElement(required = true)
         protected ScientificPaper.References.Reference reference;
 
         /**
@@ -669,15 +1188,16 @@ public class ScientificPaper {
          *       &lt;sequence>
          *         &lt;element name="url" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
          *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="year" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="authorName">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
          *       &lt;/sequence>
          *       &lt;attribute ref="{https://github.com/milica152/XML_tim27}id"/>
-         *       &lt;attribute name="year" type="{http://www.w3.org/2001/XMLSchema}date" />
-         *       &lt;attribute name="authorName">
-         *         &lt;simpleType>
-         *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-         *           &lt;/restriction>
-         *         &lt;/simpleType>
-         *       &lt;/attribute>
+         *       &lt;anyAttribute processContents='skip' namespace=''/>
          *     &lt;/restriction>
          *   &lt;/complexContent>
          * &lt;/complexType>
@@ -688,24 +1208,23 @@ public class ScientificPaper {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
             "url",
-            "name"
+            "name",
+            "year",
+            "authorName"
         })
         public static class Reference {
 
-            @XmlElement(namespace = "https://github.com/milica152/XML_tim27")
             protected String url;
-            @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+            @XmlElement(required = true)
             protected String name;
-            @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
-            @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-            @XmlID
-            @XmlSchemaType(name = "ID")
-            protected String id;
-            @XmlAttribute(name = "year")
-            @XmlSchemaType(name = "date")
-            protected XMLGregorianCalendar year;
-            @XmlAttribute(name = "authorName")
+            @XmlElement(required = true)
+            protected String year;
+            @XmlElement(required = true)
             protected String authorName;
+            @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
+            protected String id;
+            @XmlAnyAttribute
+            private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
             /**
              * Gets the value of the url property.
@@ -756,38 +1275,14 @@ public class ScientificPaper {
             }
 
             /**
-             * Gets the value of the id property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            public String getId() {
-                return id;
-            }
-
-            /**
-             * Sets the value of the id property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            public void setId(String value) {
-                this.id = value;
-            }
-
-            /**
              * Gets the value of the year property.
              * 
              * @return
              *     possible object is
-             *     {@link XMLGregorianCalendar }
+             *     {@link String }
              *     
              */
-            public XMLGregorianCalendar getYear() {
+            public String getYear() {
                 return year;
             }
 
@@ -796,10 +1291,10 @@ public class ScientificPaper {
              * 
              * @param value
              *     allowed object is
-             *     {@link XMLGregorianCalendar }
+             *     {@link String }
              *     
              */
-            public void setYear(XMLGregorianCalendar value) {
+            public void setYear(String value) {
                 this.year = value;
             }
 
@@ -827,6 +1322,121 @@ public class ScientificPaper {
                 this.authorName = value;
             }
 
+            /**
+             * Gets the value of the id property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
+             */
+            public String getId() {
+                return id;
+            }
+
+            /**
+             * Sets the value of the id property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            public void setId(String value) {
+                this.id = value;
+            }
+
+            /**
+             * Gets a map that contains attributes that aren't bound to any typed property on this class.
+             * 
+             * <p>
+             * the map is keyed by the name of the attribute and 
+             * the value is the string value of the attribute.
+             * 
+             * the map returned by this method is live, and you can add new attribute
+             * by updating the map directly. Because of this design, there's no setter.
+             * 
+             * 
+             * @return
+             *     always non-null
+             */
+            public Map<QName, String> getOtherAttributes() {
+                return otherAttributes;
+            }
+
+        }
+
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;simpleContent>
+     *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
+     *       &lt;anyAttribute processContents='skip' namespace=''/>
+     *     &lt;/extension>
+     *   &lt;/simpleContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "value"
+    })
+    public static class Title {
+
+        @XmlValue
+        protected String value;
+        @XmlAnyAttribute
+        private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+
+        /**
+         * Gets the value of the value property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getValue() {
+            return value;
+        }
+
+        /**
+         * Sets the value of the value property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        /**
+         * Gets a map that contains attributes that aren't bound to any typed property on this class.
+         * 
+         * <p>
+         * the map is keyed by the name of the attribute and 
+         * the value is the string value of the attribute.
+         * 
+         * the map returned by this method is live, and you can add new attribute
+         * by updating the map directly. Because of this design, there's no setter.
+         * 
+         * 
+         * @return
+         *     always non-null
+         */
+        public Map<QName, String> getOtherAttributes() {
+            return otherAttributes;
         }
 
     }
