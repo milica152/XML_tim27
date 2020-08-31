@@ -317,6 +317,19 @@ public class ObjectFactory {
      */
     public ScientificPaper.Metadata.Keywords.Keyword createScientificPaperMetadataKeywordsKeyword() {
         return new ScientificPaper.Metadata.Keywords.Keyword();
+     * Create an instance of {@link BusinessProcess }
+     *
+     */
+    public BusinessProcess createBusinessProcess() {
+        return new BusinessProcess();
+    }
+
+    /**
+     * Create an instance of {@link ReviewsGradeType }
+     *
+     */
+    public ReviewsGradeType createReviewsGradeType() {
+        return new ReviewsGradeType();
     }
 
 }
