@@ -33,6 +33,9 @@ public class ReviewRepository {
     @Autowired
     public DOMParser domParser;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, String reviewID) throws Exception {
         Collection col = null;
@@ -42,6 +45,7 @@ public class ReviewRepository {
             col = dbUtils.getOrCreateCollection(conn, reviewsCollectionPathInDB);
             col.setProperty("indent", "yes");
             dbUtils.storeDocument(reviewDocumentID + reviewID, xmlRes, col);
+            userRepository.addMyReview(reviewID, conn);
             return xmlRes;
 
         } finally {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -114,9 +115,9 @@ public class UserController {
     @PreAuthorize("(hasAuthority('EDITOR'))")
     @PostMapping("/findReviewerForSP")
     @ResponseBody
-    public ResponseEntity<String> findReviewerForSP(@RequestBody String title) throws Exception {   // treba da vrati vise reviewera
+    public ResponseEntity<List<String>> findReviewerForSP(@RequestBody String title) throws Exception {   // treba da vrati vise reviewera
         conn = AuthenticationUtilities.loadProperties();
-        return new ResponseEntity<>(userService.findReviewerForSP(conn, title), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findReviewersForSP(conn, title), HttpStatus.OK);
     }
 
     @PreAuthorize("(hasAuthority('EDITOR'))")

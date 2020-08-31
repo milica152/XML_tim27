@@ -6,12 +6,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -43,12 +39,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "list", namespace = "https://github.com/milica152/XML_tim27")
 public class List {
 
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true)
     protected java.util.List<String> listItem;
     @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    @XmlSchemaType(name = "ID")
     protected String id;
     @XmlAttribute(name = "style")
     protected String style;

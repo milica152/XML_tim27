@@ -115,7 +115,6 @@ public class ScientificPaperService {
         Element about = d.createElement("about");
         d.getDocumentElement().setAttribute("about", title);
 
-
         metadata.item(0).insertBefore(datePublished, keywords.item(0));
         metadata.item(0).insertBefore(status, datePublished);
 
@@ -125,18 +124,16 @@ public class ScientificPaperService {
         metadataExtractor.extractMetadata(new ByteArrayInputStream(newSciPap.getBytes()), metadataStream);
         String extractedMetadata = new String(metadataStream.toByteArray());
 
-            //System.out.println(extractedMetadata);
-
         // saving to RDF store
         scientificPaperRepository.saveMetadata(extractedMetadata);
-
-            scientificPaperRepository.save(conn, title, newSciPap);
+        scientificPaperRepository.save(conn, title, newSciPap);
+        userRepository.addMyScientificPaper(title, conn);
         logger.info("New Scientific paper published under the title: " + title);
 
         return "Scientific Paper published!";
 
     }catch (Exception e){
-        logger.warn("Ivalid document type! Must be ScientificPaper. Or the paths are wrong.");
+        logger.warn("Invalid document type! Must be ScientificPaper. Or the paths are wrong.");
     }
         return "Error saving scientific paper!";
     }
@@ -151,7 +148,6 @@ public class ScientificPaperService {
         }else{
             return scientificPaperRepository.search(loadProperties,  null,  text);
         }
-
     }
 
     public List<String> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -278,7 +274,6 @@ public class ScientificPaperService {
         return "ok";
     }
 
-
     public String accept(AuthenticationUtilities.ConnectionProperties loadXMLProperties, String title) throws Exception {
         String xmlRes = scientificPaperRepository.getByTitle(loadXMLProperties, title);
         Document d = domParser.buildDocument(xmlRes, schemaPath);
@@ -319,7 +314,6 @@ public class ScientificPaperService {
 
         return "ok";
     }
-
 
     public String getStatus(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException, IOException, SAXException, ParserConfigurationException {
         String doc = getByTitle(conn, title);

@@ -1,17 +1,12 @@
 
 package ftn.project.xml.model;
 
-import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -23,7 +18,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * &lt;complexType>
  *   &lt;simpleContent>
  *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
- *       &lt;attribute name="fontsize" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
  *       &lt;attribute ref="{https://github.com/milica152/XML_tim27}id"/>
  *       &lt;attribute name="style" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/extension>
@@ -42,13 +36,7 @@ public class Paragraph {
 
     @XmlValue
     protected String value;
-    @XmlAttribute(name = "fontsize")
-    @XmlSchemaType(name = "positiveInteger")
-    protected BigInteger fontsize;
     @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    @XmlSchemaType(name = "ID")
     protected String id;
     @XmlAttribute(name = "style")
     protected String style;
@@ -75,30 +63,6 @@ public class Paragraph {
      */
     public void setValue(String value) {
         this.value = value;
-    }
-
-    /**
-     * Gets the value of the fontsize property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getFontsize() {
-        return fontsize;
-    }
-
-    /**
-     * Sets the value of the fontsize property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setFontsize(BigInteger value) {
-        this.fontsize = value;
     }
 
     /**
