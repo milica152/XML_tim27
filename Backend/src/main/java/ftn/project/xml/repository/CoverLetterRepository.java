@@ -87,6 +87,7 @@ public class CoverLetterRepository {
         }
         if(res == null) {
             System.out.println("[WARNING] Document '" + cLetterDocumentID + id + "' can not be found!");
+            return "";
         }
         return (String) res.getContent();
     }

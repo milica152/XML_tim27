@@ -1,7 +1,5 @@
 package ftn.project.xml.repository;
 
-import ftn.project.xml.dto.ScientificPaperDTO;
-import ftn.project.xml.model.Review;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.DOMParser;
@@ -10,27 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XQueryService;
-
-import org.w3c.dom.Document;
-
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
 import static ftn.project.xml.templates.XUpdateTemplate.TARGET_NAMESPACE;
 
 @Repository
@@ -46,6 +33,9 @@ public class ReviewRepository {
     @Autowired
     public DOMParser domParser;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, String reviewID) throws Exception {
         Collection col = null;
@@ -55,6 +45,7 @@ public class ReviewRepository {
             col = dbUtils.getOrCreateCollection(conn, reviewsCollectionPathInDB);
             col.setProperty("indent", "yes");
             dbUtils.storeDocument(reviewDocumentID + reviewID, xmlRes, col);
+            userRepository.addMyReview(reviewID, conn);
             return xmlRes;
 
         } finally {

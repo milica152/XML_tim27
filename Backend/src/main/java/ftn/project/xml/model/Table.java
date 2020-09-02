@@ -1,20 +1,15 @@
 
 package ftn.project.xml.model;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -37,22 +32,45 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *                       &lt;simpleContent>
  *                         &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
  *                           &lt;attribute name="style" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                           &lt;attribute name="ordinal" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
  *                         &lt;/extension>
  *                       &lt;/simpleContent>
  *                     &lt;/complexType>
  *                   &lt;/element>
  *                 &lt;/sequence>
- *                 &lt;attribute name="ordinal" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
  *       &lt;/sequence>
  *       &lt;attribute ref="{https://github.com/milica152/XML_tim27}id"/>
- *       &lt;attribute name="width" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
- *       &lt;attribute name="height" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
- *       &lt;attribute name="measuringUnit" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="width">
+ *         &lt;simpleType>
+ *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger">
+ *             &lt;minInclusive value="1"/>
+ *             &lt;maxInclusive value="1000"/>
+ *           &lt;/restriction>
+ *         &lt;/simpleType>
+ *       &lt;/attribute>
+ *       &lt;attribute name="height">
+ *         &lt;simpleType>
+ *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger">
+ *             &lt;minInclusive value="1"/>
+ *             &lt;maxInclusive value="1000"/>
+ *           &lt;/restriction>
+ *         &lt;/simpleType>
+ *       &lt;/attribute>
+ *       &lt;attribute name="measuringUnit">
+ *         &lt;simpleType>
+ *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *             &lt;enumeration value="cm"/>
+ *             &lt;enumeration value="mm"/>
+ *             &lt;enumeration value="in"/>
+ *             &lt;enumeration value="px"/>
+ *             &lt;enumeration value="pt"/>
+ *             &lt;enumeration value="pc"/>
+ *           &lt;/restriction>
+ *         &lt;/simpleType>
+ *       &lt;/attribute>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -67,19 +85,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "table", namespace = "https://github.com/milica152/XML_tim27")
 public class Table {
 
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true)
     protected List<Table.Row> row;
     @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    @XmlSchemaType(name = "ID")
     protected String id;
     @XmlAttribute(name = "width")
-    @XmlSchemaType(name = "positiveInteger")
-    protected BigInteger width;
+    protected Integer width;
     @XmlAttribute(name = "height")
-    @XmlSchemaType(name = "positiveInteger")
-    protected BigInteger height;
+    protected Integer height;
     @XmlAttribute(name = "measuringUnit")
     protected String measuringUnit;
 
@@ -141,10 +154,10 @@ public class Table {
      * 
      * @return
      *     possible object is
-     *     {@link BigInteger }
+     *     {@link Integer }
      *     
      */
-    public BigInteger getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
@@ -153,10 +166,10 @@ public class Table {
      * 
      * @param value
      *     allowed object is
-     *     {@link BigInteger }
+     *     {@link Integer }
      *     
      */
-    public void setWidth(BigInteger value) {
+    public void setWidth(Integer value) {
         this.width = value;
     }
 
@@ -165,10 +178,10 @@ public class Table {
      * 
      * @return
      *     possible object is
-     *     {@link BigInteger }
+     *     {@link Integer }
      *     
      */
-    public BigInteger getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
@@ -177,10 +190,10 @@ public class Table {
      * 
      * @param value
      *     allowed object is
-     *     {@link BigInteger }
+     *     {@link Integer }
      *     
      */
-    public void setHeight(BigInteger value) {
+    public void setHeight(Integer value) {
         this.height = value;
     }
 
@@ -224,13 +237,11 @@ public class Table {
      *             &lt;simpleContent>
      *               &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
      *                 &lt;attribute name="style" type="{http://www.w3.org/2001/XMLSchema}string" />
-     *                 &lt;attribute name="ordinal" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
      *               &lt;/extension>
      *             &lt;/simpleContent>
      *           &lt;/complexType>
      *         &lt;/element>
      *       &lt;/sequence>
-     *       &lt;attribute name="ordinal" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
      *     &lt;/restriction>
      *   &lt;/complexContent>
      * &lt;/complexType>
@@ -244,11 +255,8 @@ public class Table {
     })
     public static class Row {
 
-        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+        @XmlElement(required = true)
         protected List<Table.Row.Cell> cell;
-        @XmlAttribute(name = "ordinal")
-        @XmlSchemaType(name = "positiveInteger")
-        protected BigInteger ordinal;
 
         /**
          * Gets the value of the cell property.
@@ -279,30 +287,6 @@ public class Table {
             return this.cell;
         }
 
-        /**
-         * Gets the value of the ordinal property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link BigInteger }
-         *     
-         */
-        public BigInteger getOrdinal() {
-            return ordinal;
-        }
-
-        /**
-         * Sets the value of the ordinal property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link BigInteger }
-         *     
-         */
-        public void setOrdinal(BigInteger value) {
-            this.ordinal = value;
-        }
-
 
         /**
          * <p>Java class for anonymous complex type.
@@ -314,7 +298,6 @@ public class Table {
          *   &lt;simpleContent>
          *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
          *       &lt;attribute name="style" type="{http://www.w3.org/2001/XMLSchema}string" />
-         *       &lt;attribute name="ordinal" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
          *     &lt;/extension>
          *   &lt;/simpleContent>
          * &lt;/complexType>
@@ -332,9 +315,6 @@ public class Table {
             protected String value;
             @XmlAttribute(name = "style")
             protected String style;
-            @XmlAttribute(name = "ordinal")
-            @XmlSchemaType(name = "positiveInteger")
-            protected BigInteger ordinal;
 
             /**
              * Gets the value of the value property.
@@ -382,30 +362,6 @@ public class Table {
              */
             public void setStyle(String value) {
                 this.style = value;
-            }
-
-            /**
-             * Gets the value of the ordinal property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link BigInteger }
-             *     
-             */
-            public BigInteger getOrdinal() {
-                return ordinal;
-            }
-
-            /**
-             * Sets the value of the ordinal property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link BigInteger }
-             *     
-             */
-            public void setOrdinal(BigInteger value) {
-                this.ordinal = value;
             }
 
         }

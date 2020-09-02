@@ -1,6 +1,5 @@
 package ftn.project.xml.service;
 
-import ftn.project.xml.model.CoverLetter;
 import ftn.project.xml.repository.CoverLetterRepository;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
@@ -9,10 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.xmldb.api.base.XMLDBException;
-
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -21,7 +17,6 @@ import java.util.Objects;
 
 @Service
 public class CoverLetterService {
-
 
     @Autowired
     public DOMParser domParser;

@@ -20,8 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="surname" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="profession" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="contact" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="profession" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="contact" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TAuthor", namespace = "https://github.com/milica152/XML_tim27", propOrder = {
+@XmlType(name = "TAuthor", propOrder = {
     "name",
     "surname",
     "profession",
@@ -42,13 +42,13 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class TAuthor {
 
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true)
     protected String name;
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true)
     protected String surname;
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27")
+    @XmlElement(required = true)
     protected String profession;
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27")
+    @XmlElement(required = true)
     protected String contact;
 
     /**
