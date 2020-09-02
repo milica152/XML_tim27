@@ -1,6 +1,8 @@
 package ftn.project.xml.service;
 
 import ftn.project.xml.dto.MetadataDTO;
+import ftn.project.xml.model.BusinessProcess;
+import ftn.project.xml.model.StatusEnum;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.model.User;
 import ftn.project.xml.repository.ScientificPaperRepository;
@@ -44,6 +46,9 @@ public class ScientificPaperService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BusinessProcessService businessProcessService;
 
     @Autowired
     private MetadataExtractor metadataExtractor;
@@ -128,6 +133,10 @@ public class ScientificPaperService {
         scientificPaperRepository.saveMetadata(extractedMetadata);
         scientificPaperRepository.save(conn, title, newSciPap);
         userRepository.addMyScientificPaper(title, conn);
+
+        // start a business process
+        businessProcessService.createBusinessProcess(title);
+
         logger.info("New Scientific paper published under the title: " + title);
 
         return "Scientific Paper published!";
@@ -141,6 +150,7 @@ public class ScientificPaperService {
     public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         return scientificPaperRepository.getByTitle(conn, s);
     }
+
     public List<String> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         if(author.equals("my")){
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -270,7 +280,9 @@ public class ScientificPaperService {
         String extractedMetadata = new String(metadataStream.toByteArray());
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
-
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.WITHDRAWN);
+        businessProcessService.save(businessProcess);
         return "ok";
     }
 
@@ -290,7 +302,9 @@ public class ScientificPaperService {
         String extractedMetadata = new String(metadataStream.toByteArray());
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
-
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.PUBLISHED);
+        businessProcessService.save(businessProcess);
         return "ok";
     }
 
@@ -311,7 +325,9 @@ public class ScientificPaperService {
         String extractedMetadata = new String(metadataStream.toByteArray());
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
-
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.REJECTED);
+        businessProcessService.save(businessProcess);
         return "ok";
     }
 

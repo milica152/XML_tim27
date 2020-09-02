@@ -53,6 +53,9 @@ public class UserService {
     private ScientificPaperRepository scientificPaperRepository;
 
     @Autowired
+    private BusinessProcessService businessProcessService;
+
+    @Autowired
     DBUtils dbUtils;
     private static String usersCollectionPathInDB = "/db/xml/users";   //path kolekcije
 
@@ -224,6 +227,9 @@ public class UserService {
             userRepository.delete(conn, reviewer);
             userRepository.save(conn, user);
         }
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.ON_REVIEW);
+        businessProcessService.save(businessProcess);
     }
 
 }
