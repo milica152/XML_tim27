@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { RegisterUser } from "../shared/models/register-user.model";
 import { LoginUser } from "../shared/models/login-user.model";
 
@@ -21,5 +21,14 @@ export class UserService {
   }
   getMyReviews(): Observable<any>{
     return this.httpClient.get("user/getMyReviews");
+  }
+
+  getPotentialReviewers(title: string): Observable<string[]> {
+//     return this.httpClient.post(this.backendUrl + "findReviewerForSP", title);
+        return of(["kati@gmail.com", "keti@gmail.com", "ketrin@gmail.com"]);
+  }
+
+  sendChosenReviewers(title: string, reviewers: string[]) {
+//     return this.httpClient.post(this.backendUrl + `pickReviewers?title=${title}`, reviewers);
   }
 }

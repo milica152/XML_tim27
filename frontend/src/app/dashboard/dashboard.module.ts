@@ -24,8 +24,10 @@ import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-p
 import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-preview/paper-full-preview.component';
 import { AddNewPaperComponent } from './add-new-paper/add-new-paper.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 import { ReviewComponent } from './review/review.component';
 import { PaperPreviewForReviewComponent } from './review/paper-preview-for-review/paper-preview-for-review.component';
+import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
 
 
 
@@ -38,7 +40,8 @@ import { PaperPreviewForReviewComponent } from './review/paper-preview-for-revie
     PaperFullPreviewComponent,
     AddNewPaperComponent,
     ReviewComponent,
-    PaperPreviewForReviewComponent
+    PaperPreviewForReviewComponent,
+    AssignReviewersComponent
     ],
     imports: [
         CommonModule,
@@ -61,7 +64,8 @@ import { PaperPreviewForReviewComponent } from './review/paper-preview-for-revie
         RouterModule,
         ToolbarModule,
         FlexModule,
-        MatTabsModule
+        MatTabsModule,
+        MatCheckboxModule
     ],
 
 })

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Inject} from '@angular/core';
 import { ScientificPaperService } from 'src/app/core/scientificPaper.service';
+import {AuthenticationApiService} from 'src/app/core/authentication-api.service'
 import { MatSnackBar} from '@angular/material';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {PreviewMyPapersComponent} from '../preview-my-papers.component'
@@ -14,9 +15,9 @@ export class PaperPreviewComponent implements OnInit {
   @Input() private paper: PaperPreviewModel;
   showButton: boolean;
   enabled: boolean;
+  role: string;
 
-
-    constructor(private scientificPaperService: ScientificPaperService, private snackBar: MatSnackBar,
+    constructor(private scientificPaperService: ScientificPaperService, private authenticationApiService: AuthenticationApiService, private snackBar: MatSnackBar,
               private route: ActivatedRoute, @Inject(PreviewMyPapersComponent) private parentComponent: PreviewMyPapersComponent,
                 private router: Router) { }
 
@@ -58,6 +59,7 @@ export class PaperPreviewComponent implements OnInit {
         this.getStatusOfPaper(this.paper.title);
       }
     });
+    this.role = this.authenticationApiService.getRole();
   }
 
   withdraw(paperId: string): void{
@@ -71,6 +73,19 @@ export class PaperPreviewComponent implements OnInit {
         });
       }
     });
+  }
+
+  reviews(paperId: string): any {
+  this.scientificPaperService.reviews(paperId).subscribe({
+        next: () => {
+          this.ngOnInit();
+        },
+        error: (message: string) => {
+          this.snackBar.open(message, 'Dismiss', {
+            duration: 3000
+          });
+        }
+      });
   }
 
 }

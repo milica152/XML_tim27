@@ -53,4 +53,9 @@ export class ScientificPaperService {
   withdraw(paperId: string) {
     return this.httpClient.post(`scientificPaper/withdraw`, paperId, {headers: this._headers, responseType: 'text'});
   }
+
+  reviews(paperId: string):any {
+  //doesnt exist on backend? what is return type?
+//      return this.httpClient.get(`scientificPaper/reviews?paperId=${peperId}`, {headers: this._headers});
+  }
 }

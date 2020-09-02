@@ -9,10 +9,18 @@
 <!--    </iframe>-->
 
 <!--  </mat-card-content>-->
-  <mat-card-actions fxLayout="row" fxLayoutGap="25%" style="margin-bottom: -10px;justify-content: center">
+  <mat-card-actions fxLayout="row" fxLayoutGap="18%" style="margin-bottom: -10px; width: fit-content;">
     <button mat-raised-button color="primary" matTooltip="Preview" [routerLink]="['/dashboard/preview/',
     this.paper.title]">
       <mat-icon>preview</mat-icon>
+    </button>
+    <button *ngIf="showButton && role==='AUTHOR'" mat-raised-button color="primary"
+            matTooltip="Reviews" [routerLink]="['/dashboard/paperReviews/']" (click)="reviews(this.paper.title)">
+      <mat-icon>grading</mat-icon>
+    </button>
+    <button *ngIf="role==='EDITOR'" mat-raised-button color="primary"
+            matTooltip="Assign Reviewers" [routerLink]="['/dashboard/assignReviewers/',this.paper.title]">
+      <mat-icon>supervisor_account</mat-icon>
     </button>
     <button *ngIf="showButton" id ="{{paper.title}}" mat-raised-button color="primary"
             matTooltip="Withdraw" [routerLink]="['/dashboard/previewMyPapers/']" (click)="withdraw(this.paper.title)">
