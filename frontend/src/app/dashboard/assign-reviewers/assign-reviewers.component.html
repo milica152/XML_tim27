@@ -1,22 +1,11 @@
-<mat-card>
-
-  <mat-card-content>
-    <h2>Assign reviewers</h2>
-
-    <div>
-      <div *ngFor="let check of this.checked">
-        <mat-checkbox [(ngModel)]="check.selected"
-                      (ngModelChange)="onChecked(check)">
-          {{check.email}}
-        </mat-checkbox>
-      </div>
-      <button mat-raised-button color="primary"
-              matTooltip="Send"   [routerLink]="['/dashboard']" (click)="sendChosenReviewers()">
-        <mat-icon>done</mat-icon>
-      </button>
-  </div>
-
-    <h4> Reviewers are sorted from most compatible to least compatible.</h4>
-
-  </mat-card-content>
-</mat-card>
+<div
+  fxLayout="row wrap"
+  fxLayout.xs="column"
+  fxLayoutGap="0.5%"
+  fxLayoutAlign="center"
+>
+  <app-assign-reviewers-paper-preview
+    *ngFor="let paper of this._papers"
+    [paper]="paper"
+  ></app-assign-reviewers-paper-preview>
+</div>

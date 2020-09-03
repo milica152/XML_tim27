@@ -28,6 +28,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { ReviewComponent } from './review/review.component';
 import { PaperPreviewForReviewComponent } from './review/paper-preview-for-review/paper-preview-for-review.component';
 import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
+import { AssignReviewersPaperPreviewComponent } from './assign-reviewers/assign-reviewers-paper-preview/assign-reviewers-paper-preview.component';
+import { AssignReviewersToPaperComponent } from './assign-reviewers/assign-reviewers-to-paper/assign-reviewers-to-paper.component';
 
 
 
@@ -41,7 +43,9 @@ import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.co
     AddNewPaperComponent,
     ReviewComponent,
     PaperPreviewForReviewComponent,
-    AssignReviewersComponent
+    AssignReviewersComponent,
+    AssignReviewersPaperPreviewComponent,
+    AssignReviewersToPaperComponent
     ],
     imports: [
         CommonModule,

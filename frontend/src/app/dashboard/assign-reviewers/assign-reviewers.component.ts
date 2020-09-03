@@ -1,53 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import {selectedReviewer} from "../../shared/models/selectedReviewer.model"
-import {ActivatedRoute, ParamMap} from '@angular/router';
-import {UserService} from "../../core/user.service"
-import { MatSnackBar} from '@angular/material';
+import { Component, OnInit } from "@angular/core";
+import { selectedReviewer } from "../../shared/models/selectedReviewer.model";
+import { ActivatedRoute, ParamMap } from "@angular/router";
+import { UserService } from "../../core/user.service";
+import { MatSnackBar } from "@angular/material";
+import { PaperPreviewModel } from "../../shared/models/paper-preview.model";
+import { ScientificPaperService } from "src/app/core/scientificPaper.service";
 
 @Component({
-  selector: 'app-assign-reviewers',
-  templateUrl: './assign-reviewers.component.html',
-  styleUrls: ['./assign-reviewers.component.scss']
+  selector: "app-assign-reviewers",
+  templateUrl: "./assign-reviewers.component.html",
+  styleUrls: ["./assign-reviewers.component.scss"],
 })
 export class AssignReviewersComponent implements OnInit {
-  reviewers;
-  checked: selectedReviewer[];
-  private _paperName: string;
+  private _papers: any[] = [];
 
-   constructor(private route: ActivatedRoute, private userService: UserService, private snackBar: MatSnackBar) {}
+  constructor(
+    private userService: UserService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private scientificPaperService: ScientificPaperService
+  ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-        this._paperName = params.get('paperName');
-      });
-    this.reviewers=["kati@gmail.com", "keti@gmail.com", "ketrin@gmail.com"];
-    this.getReviewers(this._paperName);
+    this.getAllPapers();
   }
 
-  sendChosenReviewers() {
-    if(!this.checked){
-        this.snackBar.open("Please choose at least one reviewer.", 'Dismiss', {duration: 3000});
-    } else {
-    this.reviewers = this.checked.filter((reviewer) => reviewer.selected).map((reviewer) => reviewer.email);
-    this.userService.sendChosenReviewers(this._paperName, this.reviewers);
-    this.snackBar.open("Reviewers successfully chosen.", 'Dismiss', {duration: 3000});
-    }
-}
-    public getReviewers(title: string) {
-      this.userService.getPotentialReviewers(title).subscribe({
-        next: (result) => {
-          this.checked = [];
-          for(var reviewer of result) {
-            var selected = new selectedReviewer(reviewer, false);
-            this.checked.push(selected);
-          }
-        },
-        error: (message: string) => {
-          this.snackBar.open(message, 'Dismiss', {
-            duration: 3000
-          });
-        }
-      });
-    }
+  get papers(): any[] {
+    return this._papers;
+  }
 
+  getAllPapers() {
+    this.scientificPaperService.getAllPapers().subscribe({
+      next: (result) => {
+        this._papers = result.filter(
+          (paper) => this.getStatusOfPaper(paper) !== "in process"
+        );
+      },
+      error: (message: string) => {
+        this.snackBar.open(message, "Dismiss", {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
+  getStatusOfPaper(paper: string): string {
+    this.scientificPaperService.getStatusOfPaper(paper).subscribe({
+      next: (result) => {
+        return result;
+      },
+      error: (message: string) => {
+        this.snackBar.open(message, "Dismiss", {
+          duration: 3000,
+        });
+        return null;
+      },
+    });
+    return null;
+  }
 }
