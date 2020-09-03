@@ -1,10 +1,7 @@
 package ftn.project.xml.service;
 
 import ftn.project.xml.dto.MetadataDTO;
-import ftn.project.xml.model.BusinessProcess;
-import ftn.project.xml.model.StatusEnum;
-import ftn.project.xml.model.TUser;
-import ftn.project.xml.model.User;
+import ftn.project.xml.model.*;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
@@ -289,6 +286,16 @@ public class ScientificPaperService {
     public String accept(AuthenticationUtilities.ConnectionProperties loadXMLProperties, String title) throws Exception {
         String xmlRes = scientificPaperRepository.getByTitle(loadXMLProperties, title);
         Document d = domParser.buildDocument(xmlRes, schemaPath);
+
+        // if one reviewer isnt done, editor cant publish paper
+        Users allUsers = userRepository.getAll(loadXMLProperties);
+        for(TUser user : allUsers.getUser()){
+            for(String pendingPaper : user.getPendingPapersToReview().getPaperToReviewID()){
+                if(pendingPaper.equalsIgnoreCase(title)){
+                    return "Error: not every reviewer is done. Scientific paper can't be published.";
+                }
+            }
+        }
 
         Node oldStatus = d.getElementsByTagName("status").item(0);
 
