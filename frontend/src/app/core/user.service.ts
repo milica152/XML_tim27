@@ -23,9 +23,9 @@ export class UserService {
     return this.httpClient.get("user/getMyReviews");
   }
 
-  getPotentialReviewers(title: string): Observable<string[]> {
-//     return this.httpClient.post(this.backendUrl + "findReviewerForSP", title);
-        return of(["kati@gmail.com", "keti@gmail.com", "ketrin@gmail.com"]);
+  getPotentialReviewers(title: string): Observable<any> {
+      return this.httpClient.post("user/findReviewerForSP", title);
+        // return of(["kati@gmail.com", "keti@gmail.com", "ketrin@gmail.com"]);
   }
 
   sendChosenReviewers(title: string, reviewers: string[]) {
