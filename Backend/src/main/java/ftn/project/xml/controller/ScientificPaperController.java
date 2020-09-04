@@ -143,4 +143,11 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.getStatus(conn, paper), HttpStatus.OK);
     }
 
+    @PreAuthorize("(hasAuthority('EDITOR'))")
+    @GetMapping("/checkIfReviewed")
+    @ResponseBody
+    public ResponseEntity<Boolean> checkIfReviewed(@RequestParam("title") String title) throws Exception{
+        return new ResponseEntity<>(scientificPaperService.checkIfReviewed(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
+    }
+
 }

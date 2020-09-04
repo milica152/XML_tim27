@@ -53,6 +53,9 @@ public class UserService {
     private ScientificPaperRepository scientificPaperRepository;
 
     @Autowired
+    private BusinessProcessService businessProcessService;
+
+    @Autowired
     DBUtils dbUtils;
     private static String usersCollectionPathInDB = "/db/xml/users";   //path kolekcije
 
@@ -74,9 +77,18 @@ public class UserService {
             regUser.setRole(TRole.AUTHOR);
 
             regUser.setProfession(user.getProfession());
+
             TUser.MyPapers papers = new TUser.MyPapers();
-            papers.setMyScientificPaperID(new ArrayList<String>());
+            papers.setMyScientificPaperID(new ArrayList<>());
             regUser.setMyPapers(papers);
+
+            TUser.PendingPapersToReview pendingPapersToReview = new TUser.PendingPapersToReview();
+            pendingPapersToReview.setPaperToReviewID(new ArrayList<>());
+            regUser.setPendingPapersToReview(pendingPapersToReview);
+
+            TUser.MyReviews myReviews = new TUser.MyReviews();
+            myReviews.setMyReviewID(new ArrayList<>());
+            regUser.setMyReviews(myReviews);
 
             TUser u = userRepository.save(conn, regUser);
             return u;
@@ -224,6 +236,9 @@ public class UserService {
             userRepository.delete(conn, reviewer);
             userRepository.save(conn, user);
         }
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.ON_REVIEW);
+        businessProcessService.save(businessProcess);
     }
 
 }
