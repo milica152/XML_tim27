@@ -24,8 +24,12 @@ import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-p
 import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-preview/paper-full-preview.component';
 import { AddNewPaperComponent } from './add-new-paper/add-new-paper.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 import { ReviewComponent } from './review/review.component';
 import { PaperPreviewForReviewComponent } from './review/paper-preview-for-review/paper-preview-for-review.component';
+import { AssignReviewersComponent } from './assign-reviewers/assign-reviewers.component';
+import { AssignReviewersPaperPreviewComponent } from './assign-reviewers/assign-reviewers-paper-preview/assign-reviewers-paper-preview.component';
+import { AssignReviewersToPaperComponent } from './assign-reviewers/assign-reviewers-to-paper/assign-reviewers-to-paper.component';
 
 
 
@@ -38,7 +42,10 @@ import { PaperPreviewForReviewComponent } from './review/paper-preview-for-revie
     PaperFullPreviewComponent,
     AddNewPaperComponent,
     ReviewComponent,
-    PaperPreviewForReviewComponent
+    PaperPreviewForReviewComponent,
+    AssignReviewersComponent,
+    AssignReviewersPaperPreviewComponent,
+    AssignReviewersToPaperComponent
     ],
     imports: [
         CommonModule,
@@ -61,7 +68,8 @@ import { PaperPreviewForReviewComponent } from './review/paper-preview-for-revie
         RouterModule,
         ToolbarModule,
         FlexModule,
-        MatTabsModule
+        MatTabsModule,
+        MatCheckboxModule
     ],
 
 })

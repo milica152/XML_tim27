@@ -2,30 +2,28 @@
   <app-toolbar class="header"></app-toolbar>
 
   <div class="content">
-    <div *ngIf="_content==='previewAllPapers'">
+    <div *ngIf="_content === 'previewAllPapers'">
       <app-preview-my-papers></app-preview-my-papers>
     </div>
-    <div *ngIf="_content==='previewMyPapers'">
-        <app-preview-my-papers></app-preview-my-papers>
+    <div *ngIf="_content === 'previewMyPapers'">
+      <app-preview-my-papers></app-preview-my-papers>
     </div>
-    <div *ngIf="_content==='addPaper'">
-        <app-add-new-paper></app-add-new-paper>
+    <div *ngIf="_content === 'addPaper'">
+      <app-add-new-paper></app-add-new-paper>
     </div>
-    <div *ngIf="_content==='assignReviewers'">
-
+    <div *ngIf="_content === 'assignReviewers'">
+      <app-assign-reviewers></app-assign-reviewers>
     </div>
-    <div *ngIf="_content==='previewReviewedPapers'">
-
+    <div *ngIf="_content === 'assignReviewersToPaper'">
+      <app-assign-reviewers-to-paper></app-assign-reviewers-to-paper>
     </div>
-    <div *ngIf="_content==='previewRevisedPapers'">
-
+    <div *ngIf="_content === 'previewReviewedPapers'"></div>
+    <div *ngIf="_content === 'previewRevisedPapers'"></div>
+    <div *ngIf="_content === 'previewPapersToReview'">
+      <app-review></app-review>
     </div>
-    <div *ngIf="_content==='previewPapersToReview'">
-        <app-review></app-review>
-    </div>
-    <div *ngIf="_content==='preview'">
+    <div *ngIf="_content === 'preview'">
       <app-paper-full-preview></app-paper-full-preview>
     </div>
   </div>
-
 </div>
