@@ -287,16 +287,6 @@ public class ScientificPaperService {
         String xmlRes = scientificPaperRepository.getByTitle(loadXMLProperties, title);
         Document d = domParser.buildDocument(xmlRes, schemaPath);
 
-        // if one reviewer isnt done, editor cant publish paper
-        Users allUsers = userRepository.getAll(loadXMLProperties);
-        for(TUser user : allUsers.getUser()){
-            for(String pendingPaper : user.getPendingPapersToReview().getPaperToReviewID()){
-                if(pendingPaper.equalsIgnoreCase(title)){
-                    return "Error: not every reviewer is done. Scientific paper can't be published.";
-                }
-            }
-        }
-
         Node oldStatus = d.getElementsByTagName("status").item(0);
 
         scientificPaperRepository.deleteMetadata(xmlRes);
@@ -353,5 +343,18 @@ public class ScientificPaperService {
 
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
         return scientificPaperRepository.getAllPapers(loadProperties);
+    }
+
+    public Boolean checkIfReviewed(AuthenticationUtilities.ConnectionProperties loadXMLProperties, String title) throws Exception {
+        // if one reviewer isnt done, paper is not considered reviewed
+        Users allUsers = userRepository.getAll(loadXMLProperties);
+        for(TUser user : allUsers.getUser()){
+            for(String pendingPaper : user.getPendingPapersToReview().getPaperToReviewID()){
+                if(pendingPaper.equalsIgnoreCase(title)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
