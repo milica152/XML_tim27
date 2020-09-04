@@ -77,9 +77,18 @@ public class UserService {
             regUser.setRole(TRole.AUTHOR);
 
             regUser.setProfession(user.getProfession());
+
             TUser.MyPapers papers = new TUser.MyPapers();
-            papers.setMyScientificPaperID(new ArrayList<String>());
+            papers.setMyScientificPaperID(new ArrayList<>());
             regUser.setMyPapers(papers);
+
+            TUser.PendingPapersToReview pendingPapersToReview = new TUser.PendingPapersToReview();
+            pendingPapersToReview.setPaperToReviewID(new ArrayList<>());
+            regUser.setPendingPapersToReview(pendingPapersToReview);
+
+            TUser.MyReviews myReviews = new TUser.MyReviews();
+            myReviews.setMyReviewID(new ArrayList<>());
+            regUser.setMyReviews(myReviews);
 
             TUser u = userRepository.save(conn, regUser);
             return u;
