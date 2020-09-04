@@ -42,9 +42,9 @@ public class ReviewController {
     }
 
     @GetMapping("/findByTitleToHTML")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("(hasAuthority('AUTHOR', 'EDITOR'))")
     @ResponseBody
-    public ResponseEntity<String> geReviewByIdHTML(@RequestParam("title") String title) throws Exception {
+    public ResponseEntity<String> getReviewByIdHTML(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(reviewService.transformToHTML(reviewService.getByDocumentId(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
     }
 

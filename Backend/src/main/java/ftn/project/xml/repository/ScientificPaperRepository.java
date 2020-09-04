@@ -160,7 +160,10 @@ public class ScientificPaperRepository {
 
     public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         TUser user = userRepository.getUserByEmail(loadProperties, email);
-        return user.getMyPapers().getMyScientificPaperID();
+        if(user.getMyPapers()!= null){
+            return user.getMyPapers().getMyScientificPaperID();
+        }
+        else return new ArrayList<String>();
     }
 
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {

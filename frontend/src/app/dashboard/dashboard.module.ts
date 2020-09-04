@@ -22,6 +22,9 @@ import {
   MAT_DATE_LOCALE,
   DateAdapter,
 } from "@angular/material";
+import { ReviewedPapersComponent } from "./reviewed-papers/reviewed-papers.component";
+import { ReviewedPaperPreviewComponent } from "./reviewed-papers/reviewed-paper-preview/reviewed-paper-preview.component";
+import { PaperReviewsComponent } from "./reviewed-papers/paper-reviews/paper-reviews.component";
 import { PaginatorComponent } from "./paginator/paginator.component";
 import { RouterModule } from "@angular/router";
 import { ToolbarModule } from "../toolbar/toolbar.module";
@@ -31,11 +34,12 @@ import { PaperPreviewComponent } from "./preview-my-papers/paper-preview/paper-p
 import { PaperFullPreviewComponent } from "./preview-my-papers/paper-full-preview/paper-full-preview.component";
 import { AddNewPaperComponent } from "./add-new-paper/add-new-paper.component";
 import { MatTabsModule } from "@angular/material/tabs";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ReviewComponent } from "./review/review.component";
 import { PaperPreviewForReviewComponent } from "./review/paper-preview-for-review/paper-preview-for-review.component";
-import { ReviewedPapersComponent } from "./reviewed-papers/reviewed-papers.component";
-import { ReviewedPaperPreviewComponent } from './reviewed-papers/reviewed-paper-preview/reviewed-paper-preview.component';
-import { PaperReviewsComponent } from './reviewed-papers/paper-reviews/paper-reviews.component';
+import { AssignReviewersComponent } from "./assign-reviewers/assign-reviewers.component";
+import { AssignReviewersPaperPreviewComponent } from "./assign-reviewers/assign-reviewers-paper-preview/assign-reviewers-paper-preview.component";
+import { AssignReviewersToPaperComponent } from "./assign-reviewers/assign-reviewers-to-paper/assign-reviewers-to-paper.component";
 
 @NgModule({
   declarations: [
@@ -51,6 +55,9 @@ import { PaperReviewsComponent } from './reviewed-papers/paper-reviews/paper-rev
     ReviewedPapersComponent,
     ReviewedPaperPreviewComponent,
     PaperReviewsComponent,
+    AssignReviewersComponent,
+    AssignReviewersPaperPreviewComponent,
+    AssignReviewersToPaperComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +81,7 @@ import { PaperReviewsComponent } from './reviewed-papers/paper-reviews/paper-rev
     ToolbarModule,
     FlexModule,
     MatTabsModule,
+    MatCheckboxModule,
   ],
 })
 export class DashboardModule {}
