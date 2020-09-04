@@ -1,0 +1,11 @@
+<div
+  fxLayout="row wrap"
+  fxLayout.xs="column"
+  fxLayoutGap="0.5%"
+  fxLayoutAlign="center"
+>
+  <app-reviewed-paper-preview
+    *ngFor="let paper of this._papers"
+    [paper]="paper"
+  ></app-reviewed-paper-preview>
+</div>
