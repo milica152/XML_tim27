@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -43,12 +42,11 @@ public class ReviewController {
     }
 
     @GetMapping("/findByTitleToHTML")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("(hasAuthority('AUTHOR', 'EDITOR'))")
     @ResponseBody
-    public ResponseEntity<String> geReviewByIdHTML(@RequestParam("title") String title) throws Exception {
+    public ResponseEntity<String> getReviewByIdHTML(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(reviewService.transformToHTML(reviewService.getByDocumentId(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
     }
-
 
     @PostMapping("/findAllBySPTitle")
     @ResponseBody

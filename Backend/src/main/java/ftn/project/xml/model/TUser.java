@@ -493,6 +493,11 @@ public class TUser {
             return this.myReviewID;
         }
 
+        public void setMyReviewID(List<String> listOfReviews) {
+            this.myReviewID = listOfReviews;
+        }
+
+
     }
 
 
@@ -552,6 +557,12 @@ public class TUser {
             }
             return this.paperToReviewID;
         }
+
+
+        public void setPaperToReviewID(List<String> listOfPapers) {
+            this.paperToReviewID = listOfPapers;
+        }
+
 
     }
 
