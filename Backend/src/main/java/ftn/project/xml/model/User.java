@@ -1,5 +1,6 @@
 package ftn.project.xml.model;
 
+import org.apache.catalina.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

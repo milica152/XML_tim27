@@ -1,4 +1,3 @@
-
 package ftn.project.xml.model;
 
 import javax.xml.bind.annotation.XmlAccessType;

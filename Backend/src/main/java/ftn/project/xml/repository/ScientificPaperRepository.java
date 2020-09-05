@@ -89,7 +89,6 @@ public class ScientificPaperRepository {
     }
 
     public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String paperID) throws XMLDBException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        ScientificPaper sp = null;
         dbUtils.initilizeDBserver(conn);
 
         Collection col = null;
@@ -125,8 +124,10 @@ public class ScientificPaperRepository {
         }
         if(res == null) {
             logger.warn("Document '" + papersDocumentID+paperID + "' can not be found!");
+            return "";
         }
         return (String) res.getContent();
+
     }
 
     public List<String> search(AuthenticationUtilities.ConnectionProperties conn, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -158,20 +159,14 @@ public class ScientificPaperRepository {
     }
 
     public List<String> getMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
-
         TUser user = userRepository.getUserByEmail(loadProperties, email);
         List<String> myPapers = new ArrayList<>();
-//        for (String paper: user.getMyPapers().getMyScientificPaperID()){
-//            if(getByTitle(paper))
-//        }
-
         try{
             user.getMyPapers().getMyScientificPaperID();
             return user.getMyPapers().getMyScientificPaperID();
         }catch (NullPointerException ex){
-            return null;
+            return myPapers;
         }
-
     }
 
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {

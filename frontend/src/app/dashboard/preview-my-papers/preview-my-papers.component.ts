@@ -14,6 +14,15 @@ export class PreviewMyPapersComponent implements OnInit {
   private _papers: any[] = [];
   private searchParameter = '';
   private _content: string;
+  private advanced = false;
+  private basic = true;
+  private abstractContent = "";
+  private headline = "";
+  private datePublished = new Date();
+  private referencedDocId = "";
+  private authorsName = "";
+  private keywords = "";
+  private dateAccepted = new Date();
 
   get content(): string {
     return this._content;
@@ -136,8 +145,9 @@ export class PreviewMyPapersComponent implements OnInit {
     else{
       this.searchPapers('all');
     }
-
   }
+
+
 
   private resetForm(form) {
     form.reset();
@@ -149,5 +159,51 @@ export class PreviewMyPapersComponent implements OnInit {
       this.getAllPapers();
     }
 
+  }
+
+  private advancedSearch(){
+    this.basic = false;
+    this.advanced = true;
+  }
+
+  private basicSearch() {
+    this.advanced = false;
+    this.basic = true;
+  }
+
+  private resetAdvancedForm(form){
+    form.reset();
+    this.abstractContent = "";
+    this.headline = "";
+    this.datePublished = new Date();
+    this.referencedDocId = "";
+    this.authorsName = "";
+    this.keywords = "";
+    this.dateAccepted = new Date();
+  }
+
+
+  private onSubmitAdvanced() {
+  console.log(this.dateAccepted);
+     this.scientificPaperService.advancePaperSearch(this.abstractContent, this.headline, this.datePublished.toString(), this.referencedDocId, this.authorsName, this.keywords, this.dateAccepted.toString()).subscribe(
+          {
+            next: (result) => {
+              this._papers=[];
+              for(var paper of result) {
+                var bool = false;
+                if (this.getStatusOfPaper(paper) !== 'in process') {
+                  bool = true;
+                }
+                var paperModel = new PaperPreviewModel(paper, this.getStatusOfPaper(paper), bool);
+                this._papers.push(paperModel);
+              }
+            },
+            error: (message: string) => {
+              this.snackBar.open(message, 'Dismiss', {
+                duration: 3000
+              });
+            }
+          }
+        );
   }
 }

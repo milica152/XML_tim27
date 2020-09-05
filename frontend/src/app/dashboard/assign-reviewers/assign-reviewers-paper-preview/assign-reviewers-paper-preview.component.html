@@ -1,0 +1,36 @@
+<mat-card>
+  <mat-card-header style="justify-content: center; margin-top: 8px">
+    <mat-icon mat-card-avatar>history_edu</mat-icon>
+    <mat-card-title>{{ paper }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions
+    fxLayout="row"
+    fxLayoutGap="7%"
+    style="margin-bottom: -10px; margin-left: 3px; justify-content: center"
+  >
+    <button
+      mat-raised-button
+      color="primary"
+      matTooltip="Preview"
+      [routerLink]="['/dashboard/preview/', this.paper]"
+    >
+      <mat-icon>preview</mat-icon>
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      matTooltip="Assign Reviewers"
+      [routerLink]="['/dashboard/assignReviewersToPaper/', this.paper]"
+    >
+      <mat-icon>supervisor_account</mat-icon>
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      matTooltip="Reject"
+      (click)="rejectPaper(this.paper)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

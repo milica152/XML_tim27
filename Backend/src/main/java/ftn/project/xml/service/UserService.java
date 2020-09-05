@@ -3,10 +3,7 @@ package ftn.project.xml.service;
 import ftn.project.xml.dto.UserLoginDTO;
 import ftn.project.xml.dto.UserRegisterDTO;
 import ftn.project.xml.exceptions.EntityAlreadyExistsException;
-import ftn.project.xml.model.ScientificPaper;
-import ftn.project.xml.model.TRole;
-import ftn.project.xml.model.TUser;
-import ftn.project.xml.model.User;
+import ftn.project.xml.model.*;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.security.TokenUtils;
@@ -29,8 +26,13 @@ import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -49,6 +51,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ScientificPaperRepository scientificPaperRepository;
+
+    @Autowired
+    private BusinessProcessService businessProcessService;
 
     @Autowired
     DBUtils dbUtils;
@@ -72,9 +77,18 @@ public class UserService {
             regUser.setRole(TRole.AUTHOR);
 
             regUser.setProfession(user.getProfession());
+
             TUser.MyPapers papers = new TUser.MyPapers();
-            papers.setMyScientificPaperID(new ArrayList<String>());
+            papers.setMyScientificPaperID(new ArrayList<>());
             regUser.setMyPapers(papers);
+
+            TUser.PendingPapersToReview pendingPapersToReview = new TUser.PendingPapersToReview();
+            pendingPapersToReview.setPaperToReviewID(new ArrayList<>());
+            regUser.setPendingPapersToReview(pendingPapersToReview);
+
+            TUser.MyReviews myReviews = new TUser.MyReviews();
+            myReviews.setMyReviewID(new ArrayList<>());
+            regUser.setMyReviews(myReviews);
 
             TUser u = userRepository.save(conn, regUser);
             return u;
@@ -101,7 +115,7 @@ public class UserService {
         return userRepository.getEditor(conn);
     }
 
-    public String delete(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String email) throws Exception {
         return userRepository.delete(conn, email);
     }
 
@@ -116,31 +130,117 @@ public class UserService {
     }
 
     public String deletePendingSP(AuthenticationUtilities.ConnectionProperties conn, String title) throws Exception {
-        //User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        TUser loggedTUser = userRepository.getUserByEmail(conn, "milica@gmail.com");
-        TUser.PendingPapersToReview myPapers = loggedTUser.getPendingPapersToReview();
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TUser user = userRepository.getUserByEmail(conn, loggedUser.getEmail());
+        TUser.PendingPapersToReview myPapers = user.getPendingPapersToReview();
         for(String spID : myPapers.getPaperToReviewID()){
             if(spID.equalsIgnoreCase(title)){
                 myPapers.getPaperToReviewID().remove(spID);
                 break;
             }
         }
-        loggedTUser.setPendingPapersToReview(myPapers);
-        userRepository.remove(conn, loggedTUser);
-        userRepository.save(conn, loggedTUser);
+
+        user.setPendingPapersToReview(myPapers);
+        userRepository.delete(conn, user.getEmail());
+        userRepository.save(conn, user);
         return "ok";
     }
 
-    public String findReviewerForSP(AuthenticationUtilities.ConnectionProperties conn, String title) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        String sp = scientificPaperRepository.getByTitle(conn, title);
-        return "";
+    private HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
+        // Create a list from elements of HashMap
+        List<Map.Entry<String, Integer> > list =
+                new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+
+        // Sort the list
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2)
+            {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        // put data from sorted list to hashmap
+        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
     }
 
-    public void pickReviewers(AuthenticationUtilities.ConnectionProperties conn, ArrayList<String> emails, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
-        for(String reviewer : emails){
-            userRepository.addPendingPaper(title,conn, reviewer);
+    public List<String> findReviewersForSP(AuthenticationUtilities.ConnectionProperties conn, String title) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException {
+        String sp = scientificPaperRepository.getByTitle(conn, title);
+        ScientificPaper mainSP =XML2SciPep(sp);
+
+        HashMap<String, Integer> result = new HashMap<>();
+        Users allUsers = userRepository.getAll(conn);
+
+        // initialize map
+        for(TUser user : allUsers.getUser()){
+            result.put(user.getEmail(), 0);
+            List<String> mySciPepTitles = scientificPaperRepository.getMyPapers(conn, user.getEmail());
+            for(String myPaperTitle : mySciPepTitles){
+                if(!myPaperTitle.equalsIgnoreCase(title)){     // ako ja nisam autor ovog rada, mogu biti reviewer
+                    String myPaperContent = scientificPaperRepository.getByTitle(conn, myPaperTitle);
+                    ScientificPaper myPaper =XML2SciPep(myPaperContent);
+                    for(ScientificPaper.Metadata.Keywords.Keyword keyword : myPaper.getMetadata().getKeywords().getKeyword()){
+                        for(ScientificPaper.Metadata.Keywords.Keyword mainKeyword : mainSP.getMetadata().getKeywords().getKeyword()){
+                            if(mainKeyword.getValue().equalsIgnoreCase(keyword.getValue())){
+                                result.put(user.getEmail(), result.get(user.getEmail()) + 1);
+                            }
+                        }
+                    }
+                }else{         // this is my paper, i can't be reviewer
+                    result.remove(user.getEmail());
+                    break;
+                }
+            }
         }
+
+        result = sortByValue(result);
+        List<String> emails = new ArrayList<>();
+        for(String email : result.keySet()){
+            emails.add(email);
+        }
+
+        List<String> emailsReversed = new ArrayList<>();
+        for(int i = emails.size()-1; i>=0; i--){
+            emailsReversed.add(emails.get(i));
+        }
+
+        if(emailsReversed.size()<10){
+            return emailsReversed;
+        }else {
+            return emailsReversed.subList(0, 10);
+        }
+
     }
+
+    private static ScientificPaper XML2SciPep(String xmlContent) throws JAXBException {
+        ScientificPaper result;
+        StringReader reader = new StringReader(xmlContent);
+
+        JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        result = (ScientificPaper) unmarshaller.unmarshal(reader);
+
+        return result;
+    }
+
+    public void pickReviewers(AuthenticationUtilities.ConnectionProperties conn, ArrayList<String> emails, String title) throws Exception {
+        for(String reviewer : emails){
+            TUser user = userRepository.getUserByEmail(conn, reviewer);
+            TUser.PendingPapersToReview myPapers = user.getPendingPapersToReview();
+            myPapers.getPaperToReviewID().add(title);
+            user.setPendingPapersToReview(myPapers);
+            userRepository.delete(conn, reviewer);
+            userRepository.save(conn, user);
+        }
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.ON_REVIEW);
+        businessProcessService.save(businessProcess);
+    }
+  
     public User getLoggedUser() {
         User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return logged;

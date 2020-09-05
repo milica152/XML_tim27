@@ -1,4 +1,4 @@
 # XML_tim27
   -Ana Pjević
-  -Luka Banjac
+  -Katarina Radišić
   -Milica Medić

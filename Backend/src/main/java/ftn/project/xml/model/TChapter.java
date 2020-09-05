@@ -7,12 +7,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -47,24 +43,20 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TChapter", namespace = "https://github.com/milica152/XML_tim27", propOrder = {
+@XmlType(name = "TChapter", propOrder = {
     "title",
     "text"
 })
 @XmlSeeAlso({
-    ftn.project.xml.model.CoverLetter.Chapters.class,
     Chapter.class
 })
 public class TChapter {
 
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true)
     protected Title title;
-    @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+    @XmlElement(required = true)
     protected TChapter.Text text;
     @XmlAttribute(name = "id", namespace = "https://github.com/milica152/XML_tim27")
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    @XmlSchemaType(name = "ID")
     protected String id;
 
     /**
@@ -165,7 +157,7 @@ public class TChapter {
     })
     public static class Text {
 
-        @XmlElement(namespace = "https://github.com/milica152/XML_tim27", required = true)
+        @XmlElement(required = true)
         protected List<Paragraph> paragraph;
 
         /**

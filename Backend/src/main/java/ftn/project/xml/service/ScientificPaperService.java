@@ -1,8 +1,7 @@
 package ftn.project.xml.service;
 
 import ftn.project.xml.dto.MetadataDTO;
-import ftn.project.xml.model.TUser;
-import ftn.project.xml.model.User;
+import ftn.project.xml.model.*;
 import ftn.project.xml.repository.ScientificPaperRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.*;
@@ -34,7 +33,6 @@ import java.util.Objects;
 public class ScientificPaperService {
     private static String schemaPath = "backend\\src\\main\\resources\\static\\schemas\\scientificPaper.xsd";
 
-
     Logger logger = LoggerFactory.getLogger(ScientificPaperService.class);
 
     @Autowired
@@ -45,6 +43,9 @@ public class ScientificPaperService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BusinessProcessService businessProcessService;
 
     @Autowired
     private MetadataExtractor metadataExtractor;
@@ -119,7 +120,6 @@ public class ScientificPaperService {
         Element about = d.createElement("about");
         d.getDocumentElement().setAttribute("about", title);
 
-
         metadata.item(0).insertBefore(datePublished, keywords.item(0));
         metadata.item(0).insertBefore(status, datePublished);
 
@@ -129,18 +129,20 @@ public class ScientificPaperService {
         metadataExtractor.extractMetadata(new ByteArrayInputStream(newSciPap.getBytes()), metadataStream);
         String extractedMetadata = new String(metadataStream.toByteArray());
 
-            //System.out.println(extractedMetadata);
-
         // saving to RDF store
         scientificPaperRepository.saveMetadata(extractedMetadata);
+        scientificPaperRepository.save(conn, title, newSciPap);
+        userRepository.addMyScientificPaper(title, conn);
 
-            scientificPaperRepository.save(conn, title, newSciPap);
+        // start a business process
+        businessProcessService.createBusinessProcess(title);
+
         logger.info("New Scientific paper published under the title: " + title);
 
         return "Scientific Paper published!";
 
     }catch (Exception e){
-        logger.warn("Ivalid document type! Must be ScientificPaper. Or the paths are wrong.");
+        logger.warn("Invalid document type! Must be ScientificPaper. Or the paths are wrong.");
     }
         return "Error saving scientific paper!";
     }
@@ -148,6 +150,7 @@ public class ScientificPaperService {
     public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         return scientificPaperRepository.getByTitle(conn, s);
     }
+
     public List<String> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         if(author.equals("my")){
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -155,7 +158,6 @@ public class ScientificPaperService {
         }else{
             return scientificPaperRepository.search(loadProperties,  null,  text);
         }
-
     }
 
     public List<String> findMyPapers(AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -278,10 +280,11 @@ public class ScientificPaperService {
         String extractedMetadata = new String(metadataStream.toByteArray());
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
-
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.WITHDRAWN);
+        businessProcessService.save(businessProcess);
         return "ok";
     }
-
 
     public String accept(AuthenticationUtilities.ConnectionProperties loadXMLProperties, String title) throws Exception {
         String xmlRes = scientificPaperRepository.getByTitle(loadXMLProperties, title);
@@ -299,7 +302,9 @@ public class ScientificPaperService {
         String extractedMetadata = new String(metadataStream.toByteArray());
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
-
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.PUBLISHED);
+        businessProcessService.save(businessProcess);
         return "ok";
     }
 
@@ -320,10 +325,11 @@ public class ScientificPaperService {
         String extractedMetadata = new String(metadataStream.toByteArray());
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
-
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(StatusEnum.REJECTED);
+        businessProcessService.save(businessProcess);
         return "ok";
     }
-
 
     public String getStatus(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException, IOException, SAXException, ParserConfigurationException {
         String doc = getByTitle(conn, title);
@@ -340,5 +346,18 @@ public class ScientificPaperService {
 
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
         return scientificPaperRepository.getAllPapers(loadProperties);
+    }
+
+    public Boolean checkIfReviewed(AuthenticationUtilities.ConnectionProperties loadXMLProperties, String title) throws Exception {
+        // if one reviewer isnt done, paper is not considered reviewed
+        Users allUsers = userRepository.getAll(loadXMLProperties);
+        for(TUser user : allUsers.getUser()){
+            for(String pendingPaper : user.getPendingPapersToReview().getPaperToReviewID()){
+                if(pendingPaper.equalsIgnoreCase(title)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

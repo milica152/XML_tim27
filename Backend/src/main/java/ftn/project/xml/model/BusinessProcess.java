@@ -1,4 +1,3 @@
-
 package ftn.project.xml.model;
 
 import java.math.BigInteger;
@@ -157,3 +156,4 @@ public class BusinessProcess {
     }
 
 }
+

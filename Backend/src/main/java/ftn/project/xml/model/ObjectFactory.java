@@ -29,6 +29,7 @@ public class ObjectFactory {
     public ObjectFactory() {
     }
 
+
     /**
      * Create an instance of {@link ScientificPaper }
      *
@@ -222,16 +223,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ScientificPaper.Abstract.Keywords }
-     *
-     */
-    public ScientificPaper.Abstract.Keywords createScientificPaperAbstractKeywords() {
-        return new ScientificPaper.Abstract.Keywords();
-    }
-
-
-
-    /**
      * Create an instance of {@link TUser }
      *
      */
@@ -272,7 +263,62 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link BusinessProcess }
+     * Create an instance of {@link ScientificPaper.Metadata }
+     * 
+     */
+    public ScientificPaper.Metadata createScientificPaperMetadata() {
+        return new ScientificPaper.Metadata();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Metadata.Keywords }
+     * 
+     */
+    public ScientificPaper.Metadata.Keywords createScientificPaperMetadataKeywords() {
+        return new ScientificPaper.Metadata.Keywords();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Title }
+     * 
+     */
+    public ScientificPaper.Title createScientificPaperTitle() {
+        return new ScientificPaper.Title();
+    }
+
+
+    /**
+     * Create an instance of {@link ScientificPaper.Metadata.Status }
+     * 
+     */
+    public ScientificPaper.Metadata.Status createScientificPaperMetadataStatus() {
+        return new ScientificPaper.Metadata.Status();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Metadata.DatePublished }
+     * 
+     */
+    public ScientificPaper.Metadata.DatePublished createScientificPaperMetadataDatePublished() {
+        return new ScientificPaper.Metadata.DatePublished();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Metadata.DateAccepted }
+     * 
+     */
+    public ScientificPaper.Metadata.DateAccepted createScientificPaperMetadataDateAccepted() {
+        return new ScientificPaper.Metadata.DateAccepted();
+    }
+
+    /**
+     * Create an instance of {@link ScientificPaper.Metadata.Keywords.Keyword }
+     * 
+     */
+    public ScientificPaper.Metadata.Keywords.Keyword createScientificPaperMetadataKeywordsKeyword() {
+        return new ScientificPaper.Metadata.Keywords.Keyword();
+    }
+     /**
      *
      */
     public BusinessProcess createBusinessProcess() {
