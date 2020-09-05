@@ -91,4 +91,28 @@ export class ScientificPaperService {
       responseType: "text",
     });
   }
+
+  accept(paperTitle: string): Observable<any> {
+    return this.httpClient.post(`scientificPaper/accept`, paperTitle, {
+      headers: this._headers,
+      responseType: "text",
+    });
+  }
+
+  checkIfReviewed(title: string) {
+    return this.httpClient.get(
+      `scientificPaper/checkIfReviewed?title=${title}`,
+      {
+        headers: this._headers,
+        responseType: "text",
+      }
+    );
+  }
+
+  requestRevision(paperTitle: string) {
+    return this.httpClient.post(`scientificPaper/requestRevision`, paperTitle, {
+      headers: this._headers,
+      responseType: "text",
+    });
+  }
 }

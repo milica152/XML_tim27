@@ -14,19 +14,33 @@
     <div *ngIf="_content === 'assignReviewers'">
       <app-assign-reviewers></app-assign-reviewers>
     </div>
-    <div *ngIf="_content === 'assignReviewersToPaper'">
-      <app-assign-reviewers-to-paper></app-assign-reviewers-to-paper>
+
+    <div *ngIf="_content === 'previewReviewedPapers'">
+      <app-reviewed-papers></app-reviewed-papers>
     </div>
-    <div *ngIf="_content === 'previewReviewedPapers'"></div>
+    <div *ngIf="_content === 'paperReviews'">
+      <app-paper-reviews></app-paper-reviews>
+    </div>
     <div *ngIf="_content === 'previewRevisedPapers'"></div>
     <div *ngIf="_content === 'previewPapersToReview'">
       <app-review></app-review>
     </div>
+
+    <div *ngIf="_content === 'assignReviewersToPaper'">
+      <app-assign-reviewers-to-paper></app-assign-reviewers-to-paper>
+    </div>
+
     <div *ngIf="_content === 'preview'">
       <app-paper-full-preview></app-paper-full-preview>
     </div>
-    <div *ngIf="_content==='addReview'">
-      <app-add-review></app-add-review>
+    <div *ngIf="_content === 'requestedRevisions'">
+      <app-requested-revisions></app-requested-revisions>
+    </div>
+    <div *ngIf="content === 'revisionReviews'">
+      <app-revision-reviews></app-revision-reviews>
+      <div *ngIf="_content === 'addReview'">
+        <app-add-review></app-add-review>
+      </div>
     </div>
   </div>
 </div>

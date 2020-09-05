@@ -1,0 +1,28 @@
+<mat-card>
+  <mat-card-header style="justify-content: center; margin-top: 8px">
+    <mat-icon mat-card-avatar>history_edu</mat-icon>
+    <mat-card-title>{{ paper }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions
+    fxLayout="row"
+    fxLayoutGap="7%"
+    style="margin-bottom: -10px; margin-left: 3px; justify-content: center"
+  >
+    <button
+      mat-raised-button
+      color="primary"
+      matTooltip="Reviews"
+      [routerLink]="['/dashboard/revisionReviews', this.paper]"
+    >
+      <mat-icon>grading</mat-icon>
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      matTooltip="Add revision"
+      [routerLink]="['/dashboard/addPaper']"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

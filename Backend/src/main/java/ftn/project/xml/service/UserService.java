@@ -95,11 +95,12 @@ public class UserService {
         }
     }
 
-    public String login(AuthenticationUtilities.ConnectionProperties conn, UserLoginDTO userLoginDTO) throws UsernameNotFoundException, BadCredentialsException{
+    public String login(AuthenticationUtilities.ConnectionProperties conn, UserLoginDTO userLoginDTO) throws UsernameNotFoundException, BadCredentialsException, ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.getEmail(), userLoginDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
         UserDetails details = userDetailsService.loadUserByUsername(userLoginDTO.getEmail());
+
         return tokenUtils.generateToken(details);
     }
 
@@ -231,6 +232,11 @@ public class UserService {
         for(String reviewer : emails){
             TUser user = userRepository.getUserByEmail(conn, reviewer);
             TUser.PendingPapersToReview myPapers = user.getPendingPapersToReview();
+
+            if(myPapers == null){
+                myPapers = new TUser.PendingPapersToReview();
+            }
+
             myPapers.getPaperToReviewID().add(title);
             user.setPendingPapersToReview(myPapers);
             userRepository.delete(conn, reviewer);

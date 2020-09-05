@@ -322,7 +322,6 @@ public class ScientificPaperService {
         oldStatus.setTextContent("rejected");
 
         xmlRes = domParser.DOMToXML(d);
-        //System.out.println(xmlRes);
 
         ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
         metadataExtractor.extractMetadata(new ByteArrayInputStream(xmlRes.getBytes()), metadataStream);
@@ -331,6 +330,28 @@ public class ScientificPaperService {
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
         businessProcess.setStatus(TStatusS.REJECTED);
+        businessProcessService.save(businessProcess);
+        return "ok";
+    }
+
+    public String requestRevision(AuthenticationUtilities.ConnectionProperties loadXMLProperties, String title) throws Exception {
+        String xmlRes = scientificPaperRepository.getByTitle(loadXMLProperties, title);
+        Document d = domParser.buildDocument(xmlRes, schemaPath);
+
+        Node oldStatus = d.getElementsByTagName("status").item(0);
+
+        scientificPaperRepository.deleteMetadata(xmlRes);
+        oldStatus.setTextContent("on_revision");
+
+        xmlRes = domParser.DOMToXML(d);
+
+        ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
+        metadataExtractor.extractMetadata(new ByteArrayInputStream(xmlRes.getBytes()), metadataStream);
+        String extractedMetadata = new String(metadataStream.toByteArray());
+        scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
+        scientificPaperRepository.saveMetadata(extractedMetadata);
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setStatus(TStatusS.ON_REVISION);
         businessProcessService.save(businessProcess);
         return "ok";
     }
