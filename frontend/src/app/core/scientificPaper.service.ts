@@ -56,16 +56,17 @@ export class ScientificPaperService {
   }
 
   advancePaperSearch(
-    absContent: string,
-    headline: string,
+    status: string,
+    title: string,
     published: string,
-    refDocId: string,
     authorsName: string,
     keywords: string,
-    accepted: string
+    accepted: string,
+    author: string
   ): Observable<any> {
     return this.httpClient.get(
-      `scientificPaper/advancedSearch?absContent=${absContent}&headline=${headline}&published=${published}&refDocId=${refDocId}&authorsName=${authorsName}&keywords=${keywords}&accepted=${accepted}`,
+      `scientificPaper/advancedSearch?status=${status}&title=${title}&published=${published}
+      &authorsName=${authorsName}&keywords=${keywords}&accepted=${accepted}&author=${author}`,
       { headers: this._headers }
     );
   }

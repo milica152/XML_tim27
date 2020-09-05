@@ -14,10 +14,13 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;simpleType name="TStatusS">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="accepted"/>
+ *     &lt;enumeration value="published"/>
  *     &lt;enumeration value="rejected"/>
  *     &lt;enumeration value="withdrawn"/>
- *     &lt;enumeration value="in process"/>
+ *     &lt;enumeration value="on_review"/>
+ *     &lt;enumeration value="on_revision"/>
+ *     &lt;enumeration value="submitted"/>
+ *     &lt;enumeration value="revised"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -27,14 +30,20 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum TStatusS {
 
-    @XmlEnumValue("accepted")
-    ACCEPTED("accepted"),
+    @XmlEnumValue("published")
+    PUBLISHED("published"),
     @XmlEnumValue("rejected")
     REJECTED("rejected"),
     @XmlEnumValue("withdrawn")
     WITHDRAWN("withdrawn"),
-    @XmlEnumValue("in process")
-    IN_PROCESS("in process");
+    @XmlEnumValue("on_review")
+    ON_REVIEW("on_review"),
+    @XmlEnumValue("on_revision")
+    ON_REVISION("on_revision"),
+    @XmlEnumValue("submitted")
+    SUBMITTED("submitted"),
+    @XmlEnumValue("revised")
+    REVISED("revised");
     private final String value;
 
     TStatusS(String v) {

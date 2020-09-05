@@ -2,9 +2,11 @@ import {Component, ElementRef, OnInit, ViewChild, OnDestroy} from '@angular/core
 import {NewScientificPaper} from '../../shared/models/newScientificPaper.model';
 import {ScientificPaperService} from '../../core/scientificPaper.service';
 import {CoverLetterService} from '../../core/cover-letter.service';
+import {UserService} from '../../core/user.service';
 import {XonomyApiService} from "../../core/xonomy-api.service";
 declare const Xonomy: any;
 import { MatSnackBar} from '@angular/material';
+import {Router} from '@angular/router'
 
 @Component({
   selector: 'app-add-new-paper',
@@ -17,15 +19,22 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
   @ViewChild('editorCL', { static: false }) editorCL: ElementRef;
   newScientificPaper: Document;
   newScientificPaperTemp: string = '';
+  newCoverLetterTemp: Document;
   newCoverLetter :string ='';
   paperTitle: string = '';
+  loggedUser: any = null;
   metadata: SVGMetadataElement;
   paperPublished: boolean = false;
   coverLetterPublished: boolean = false;
   constructor(private scientificPaperService: ScientificPaperService, private xonomyApiService: XonomyApiService,
-              private snackBar: MatSnackBar, private coverLettersService: CoverLetterService) {}
+              private snackBar: MatSnackBar, private coverLettersService: CoverLetterService,
+              private userService: UserService, private router:Router) {}
 
   ngOnInit() {
+    this.userService.getLoggedUser().subscribe({
+      next: (result) => {
+        this.loggedUser = result;
+      }});
   }
 
   ngOnDestroy(): void {
@@ -38,9 +47,6 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
       ).subscribe(
         response => {
           this.paperPublished = false;
-          this.snackBar.open(response, 'Dismiss', {
-            duration: 3000,
-          });
         }, error => {
           this.snackBar.open(error, 'Dismiss', {
             duration: 3000,
@@ -55,10 +61,12 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
     const input = event.target;
     const fileReader = new FileReader();
     fileReader.onload = () => {
+      // var xschema = XonomyBuilder.convertSchema(schema);
       this.newScientificPaperTemp = fileReader.result.toString();
-      console.log(new DOMParser().parseFromString(fileReader.result.toString(), 'text/xml'));
+      // console.log(new DOMParser().parseFromString(fileReader.result.toString(), 'text/xml'));
       this.newScientificPaper = new DOMParser().parseFromString(fileReader.result.toString(), 'text/xml');
       this.renderXonomySP(this.separateMetadata(this.newScientificPaper));
+
     };
     fileReader.readAsText(input.files[0]);
   }
@@ -68,9 +76,25 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
     fileReader.onload = () => {
       const fileContent = fileReader.result.toString();
       this.newCoverLetter = fileReader.result.toString();
-      this.renderXonomyCL(fileContent);
+      this.newCoverLetterTemp = new DOMParser().parseFromString(fileReader.result.toString(), 'text/xml');
+      this.renderXonomyCL(this.fillCoverLetter(this.newCoverLetterTemp));
     };
     fileReader.readAsText(input.files[0]);
+  }
+
+  fillCoverLetter(xmlDoc:Document){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var today1 = yyyy + '-' + mm + '-' + dd;
+    xmlDoc.getElementsByTagName('date')[0].innerHTML = today1;
+    xmlDoc.getElementsByTagName('name')[0].innerHTML = this.loggedUser.name;
+    xmlDoc.getElementsByTagName('surname')[0].innerHTML = this.loggedUser.surname;
+    xmlDoc.getElementsByTagName('profession')[0].innerHTML = this.loggedUser.profession;
+    xmlDoc.getElementsByTagName('contact')[0].innerHTML = this.loggedUser.email;
+    xmlDoc.getElementsByTagName('paperTitle')[0].innerHTML = this.paperTitle;
+    return xmlDoc;
   }
 
   separateMetadata(xmlDoc: Document) {
@@ -98,14 +122,18 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
          this.snackBar.open(response, 'Dismiss', {
            duration: 3000,
          });
+         if(response.toString().startsWith("Paper with the title")){
+           this.newScientificPaperTemp = '';
+           this.paperPublished =false;
+           // this.router.navigate(['/dashboard/addPaper']);
+         }
        },
        error => {
+         this.newScientificPaperTemp = '';
+         this.paperPublished =false;
          this.snackBar.open(error, 'Dismiss', {
            duration: 3000,
          });
-       },
-       () => {
-         console.log('Done!');
        }
      );
  }
@@ -157,10 +185,11 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
     }
   }
 
-  renderXonomyCL(xml: string) {
+  renderXonomyCL(xml: Document) {
     Xonomy.setMode('laic');
     Xonomy.render(xml, this.editorCL.nativeElement, {
-      elements: this.xonomyApiService.scientificPublicationSpecification.elements,
+      allowModeSwitching: true,
+      elements: this.xonomyApiService.coverLetterSpecification.elements,
       onchange: () => { this.onCoverLetterChange() }
     });
   }

@@ -27,7 +27,7 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @PreAuthorize("(hasAuthority('REVIEWER'))")
+    @PreAuthorize("hasAnyAuthority('EDITOR','REVIEWER')")
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<String> saveReview(@RequestBody String reviewXML) throws Exception {
@@ -112,5 +112,11 @@ public class ReviewController {
     }
 
 
+
+    @PostMapping("/rejectReview")
+    @PreAuthorize("hasAnyAuthority('EDITOR','REVIEWER')")
+    public ResponseEntity<String> rejectReview(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(reviewService.rejectReview(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
+    }
 
 }

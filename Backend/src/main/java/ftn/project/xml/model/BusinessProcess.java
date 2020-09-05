@@ -1,7 +1,8 @@
-
 package ftn.project.xml.model;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,8 +23,15 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="paperTitle" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
- *         &lt;element name="status" type="{}statusEnum"/>
- *         &lt;element name="reviewsGrade" type="{}reviewsGradeType"/>
+ *         &lt;element name="status" minOccurs="1"/>
+ *         &lt;complexType>
+ *                  &lt;simpleContent>
+ *                    &lt;extension base="&lt;https://github.com/milica152/XML_tim27>TStatusS">
+ *                      &lt;anyAttribute processContents='skip' namespace=''/>
+ *                    &lt;/extension>
+ *                  &lt;/simpleContent>
+ *                 &lt;/complexType>
+ *         &lt;element name="reviewsGrade" type="{}reviewsGradeType" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -49,9 +57,9 @@ public class BusinessProcess {
     protected BigInteger version;
     @XmlElement(required = true)
     @XmlSchemaType(name = "string")
-    protected StatusEnum status;
+    protected TStatusS status;
     @XmlElement(required = true)
-    protected ReviewsGradeType reviewsGrade;
+    protected List<ReviewsGradeType> reviewsGrade;
 
     /**
      * Gets the value of the paperTitle property.
@@ -106,10 +114,10 @@ public class BusinessProcess {
      * 
      * @return
      *     possible object is
-     *     {@link StatusEnum }
+     *     {@link TStatusS }
      *     
      */
-    public StatusEnum getStatus() {
+    public TStatusS getStatus() {
         return status;
     }
 
@@ -118,35 +126,44 @@ public class BusinessProcess {
      * 
      * @param value
      *     allowed object is
-     *     {@link StatusEnum }
+     *     {@link TStatusS }
      *     
      */
-    public void setStatus(StatusEnum value) {
+    public void setStatus(TStatusS value) {
         this.status = value;
     }
 
     /**
      * Gets the value of the reviewsGrade property.
      * 
-     * @return
-     *     possible object is
-     *     {@link ReviewsGradeType }
-     *     
-     */
-    public ReviewsGradeType getReviewsGrade() {
-        return reviewsGrade;
-    }
-
-    /**
-     * Sets the value of the reviewsGrade property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the reviewsGrade property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link ReviewsGradeType }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getReviewsGrade().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ReviewsGradeType }
+     * 
+     * 
      */
-    public void setReviewsGrade(ReviewsGradeType value) {
-        this.reviewsGrade = value;
+    public List<ReviewsGradeType> getReviewsGrade() {
+        if (reviewsGrade == null) {
+            reviewsGrade = new ArrayList<ReviewsGradeType>();
+        }
+        return this.reviewsGrade;
     }
 
+    public void setReviewsGrade(List<ReviewsGradeType> reviewsGradeTypes) {
+        this.reviewsGrade = reviewsGradeTypes;
+    }
 }
+

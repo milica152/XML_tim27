@@ -1,3 +1,16 @@
+returnImage = async function() {
+  const file = document.querySelector('#img').files[0];
+  base64 = await toBase64(file);
+  return Xonomy.answer(base64.split("data:image/jpeg;base64,")[1]);
+}
+
+const toBase64 = file => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = error => reject(error);
+});
+
 var Xonomy={
 	lang: "", //"en"|"de"|fr"| ...
 	mode: "nerd", //"nerd"|"laic"
@@ -1091,6 +1104,36 @@ Xonomy.askString=function(defaultString, askerParameter, jsMe) {
 	html+="</form>";
 	return html;
 };
+
+Xonomy.askInteger=function(defaultString, askerParameter, jsMe) {
+  var width=($("body").width()*.4)-75
+  var html="";
+  html+="<form onsubmit='Xonomy.answer(this.val.value); return false'>";
+  html+="<input name='val' type='number' min='0' style='width: "+width+"px;' value='"+Xonomy.xmlEscape(defaultString)+"' onkeyup='Xonomy.notKeyUp=true'/>";
+  html+=" <input type='submit' value='OK'>";
+  html+="</form>";
+  return html;
+};
+
+Xonomy.askDate=function(defaultString, askerParameter, jsMe) {
+  var width=($("body").width()*.4)-75
+  var html="";
+  html+="<form onsubmit='Xonomy.answer(this.val.value); return false'>";
+  html+="<input name='val' type=\"date\" style='width: "+width+"px;' value='"+Xonomy.xmlEscape(defaultString)+"' onkeyup='Xonomy.notKeyUp=true'/>";
+  html+=" <input type='submit' value='OK'>";
+  html+="</form>";
+  return html;
+};
+
+Xonomy.askSincerely=function(defaultString, askerParameter, jsMe) {
+  var width=($("body").width()*.4)-75
+  var html="";
+  html+="<form>";
+  html+="<input type='text' id='sincerely' value='Sincerely, ' readonly>";
+  html+="</form>";
+  return html;
+};
+
 Xonomy.askLongString=function(defaultString, askerParameter, jsMe) {
 	var width=($("body").width()*.5)-75
 	var html="";

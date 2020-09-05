@@ -25,8 +25,12 @@ export class UserService {
   loginUser(userData: LoginUser): Observable<any> {
     return this.httpClient.post(this.backendUrl + "login", userData);
   }
+
+  getLoggedUser(): Observable<any>{
+    return this.httpClient.get("user/getLoggedUser");
+  }
   getMyReviews(): Observable<any> {
-    return this.httpClient.get("user/getMyReviews");
+    return this.httpClient.get("user/getMyPendingReviews");
   }
 
   getPotentialReviewers(title: string): Observable<any> {
@@ -38,4 +42,5 @@ export class UserService {
     console.log("reviewers: ", emails);
     return this.httpClient.post(`user/pickReviewers/` + title, emails);
   }
+
 }

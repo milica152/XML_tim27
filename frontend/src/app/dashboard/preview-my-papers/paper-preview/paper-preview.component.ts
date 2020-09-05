@@ -38,7 +38,7 @@ export class PaperPreviewComponent implements OnInit {
   getStatusOfPaper(paper: string): void {
     this.scientificPaperService.getStatusOfPaper(paper).subscribe({
       next: (result: string) => {
-        if (result === "in process") {
+        if (result === "submitted") {
           if (document.getElementById(paper) != null) {
             document.getElementById(paper).removeAttribute("disabled");
           }
@@ -71,6 +71,9 @@ export class PaperPreviewComponent implements OnInit {
   withdraw(paperId: string): void {
     this.scientificPaperService.withdraw(paperId).subscribe({
       next: () => {
+        this.snackBar.open("Paper "+paperId+" successfully withdrawn!", "Dismiss", {
+          duration: 3000,
+        });
         this.ngOnInit();
       },
       error: (message: string) => {

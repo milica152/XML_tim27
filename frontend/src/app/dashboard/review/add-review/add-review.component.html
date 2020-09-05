@@ -1,0 +1,16 @@
+<div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.xs="column" fxLayoutAlign="center">
+  <button
+    type="button"
+    mat-raised-button
+    (click)="addReview()">
+    Send
+  </button>
+</div>
+
+<div
+  id = "Reviewdiv"
+  #editorReview
+  [(ngModel)]="newReview"
+  name="xonomyContentReview"
+  ngDefaultControl
+></div>

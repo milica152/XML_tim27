@@ -23,6 +23,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +69,10 @@ public class ScientificPaperService {
         NodeList nl = d.getElementsByTagName("title");
         String title = nl.item(0).getTextContent();
         title = title.replaceAll("\\s","");
+
+        if(scientificPaperRepository.getByTitle(conn, title)!=""){
+            return "Paper with the title " + title + " already exists!";
+        }
         // pokreni bussiness process
 
         // popuni sp metapodacima
@@ -100,6 +105,9 @@ public class ScientificPaperService {
         }
 
         for(TUser u: usersAuthors){
+            if(u.getMyPapers()==null){
+                u.setMyPapers(new TUser.MyPapers());
+            }
             u.getMyPapers().getMyScientificPaperID().add(title);
             userRepository.save(conn, u);
         }
@@ -111,7 +119,7 @@ public class ScientificPaperService {
         // status
         Element status = d.createElement("status");
         status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
-        status.setTextContent("in process");
+        status.setTextContent("submitted");
 
         // about
         Element about = d.createElement("about");
@@ -129,7 +137,6 @@ public class ScientificPaperService {
         // saving to RDF store
         scientificPaperRepository.saveMetadata(extractedMetadata);
         scientificPaperRepository.save(conn, title, newSciPap);
-        userRepository.addMyScientificPaper(title, conn);
 
         // start a business process
         businessProcessService.createBusinessProcess(title);
@@ -162,7 +169,7 @@ public class ScientificPaperService {
         return scientificPaperRepository.getMyPapers(loadProperties, user.getEmail());
     }
 
-    public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws Exception {
         return scientificPaperRepository.delete(loadProperties, title);
     }
 
@@ -263,8 +270,8 @@ public class ScientificPaperService {
 
         Node oldStatus = d.getElementsByTagName("status").item(0);
 
-        if(!oldStatus.getTextContent().equalsIgnoreCase("in process")){
-            return "error: scientific paper must be in process to be withdrawn";
+        if(!oldStatus.getTextContent().equalsIgnoreCase("submitted")){
+            return "error: scientific paper must be submitted to be withdrawn";
         }
         scientificPaperRepository.deleteMetadata(xmlRes);
         oldStatus.setTextContent("withdrawn");
@@ -278,7 +285,7 @@ public class ScientificPaperService {
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.WITHDRAWN);
+        businessProcess.setStatus(TStatusS.WITHDRAWN);
         businessProcessService.save(businessProcess);
         return "ok";
     }
@@ -290,7 +297,7 @@ public class ScientificPaperService {
         Node oldStatus = d.getElementsByTagName("status").item(0);
 
         scientificPaperRepository.deleteMetadata(xmlRes);
-        oldStatus.setTextContent("accepted");
+        oldStatus.setTextContent("published");
 
         xmlRes = domParser.DOMToXML(d);
 
@@ -300,7 +307,7 @@ public class ScientificPaperService {
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.PUBLISHED);
+        businessProcess.setStatus(TStatusS.PUBLISHED);
         businessProcessService.save(businessProcess);
         return "ok";
     }
@@ -322,7 +329,7 @@ public class ScientificPaperService {
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.REJECTED);
+        businessProcess.setStatus(TStatusS.REJECTED);
         businessProcessService.save(businessProcess);
         return "ok";
     }
@@ -344,7 +351,7 @@ public class ScientificPaperService {
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.ON_REVISION);
+        businessProcess.setStatus(TStatusS.ON_REVISION);
         businessProcessService.save(businessProcess);
         return "ok";
     }
@@ -377,5 +384,19 @@ public class ScientificPaperService {
             }
         }
         return true;
+    }
+
+    public List<String> advancedSearch(AuthenticationUtilities.ConnectionProperties loadProperties, String status,
+                                       String title, String published, String authorsName,
+                                       String keywords, String accepted, String author) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException, ParseException {
+        if(author.equals("my")){
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return scientificPaperRepository.advancedSearch(loadProperties,  user.getEmail(),  status, title,
+                    published, authorsName, keywords, accepted);
+        }else{
+            return scientificPaperRepository.advancedSearch(loadProperties,  null,  status, title,
+                    published, authorsName, keywords, accepted);
+        }
+
     }
 }

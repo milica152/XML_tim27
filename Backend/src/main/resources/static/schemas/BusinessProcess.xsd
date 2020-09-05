@@ -5,12 +5,20 @@
             <xs:sequence>
                 <xs:element name="paperTitle" type="xs:string"/>
                 <xs:element name="version" type="xs:positiveInteger"/>
-                <xs:element name="status" type="statusEnum"/>
-                <xs:element name="reviewsGrade" type="reviewsGradeType"/>
+                <xs:element minOccurs="1" name="status">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="TStatusS">
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="reviewsGrade" type="reviewsGradeType" maxOccurs="unbounded"/>
+
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:simpleType name="statusEnum">
+    <xs:simpleType name="TStatusS">
         <xs:restriction base="xs:string">
             <xs:enumeration value="published"/>
             <xs:enumeration value="rejected"/>

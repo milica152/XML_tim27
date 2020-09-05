@@ -243,8 +243,12 @@ public class UserService {
             userRepository.save(conn, user);
         }
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.ON_REVIEW);
+        businessProcess.setStatus(TStatusS.ON_REVIEW);
         businessProcessService.save(businessProcess);
     }
-
+  
+    public User getLoggedUser() {
+        User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return logged;
+    }
 }

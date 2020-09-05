@@ -16,13 +16,13 @@ export class PreviewMyPapersComponent implements OnInit {
   private _content: string;
   private advanced = false;
   private basic = true;
-  private abstractContent = "";
-  private headline = "";
-  private datePublished = new Date();
+  private status = "";
+  private title = "";
+  private datePublished = null;
   private referencedDocId = "";
   private authorsName = "";
   private keywords = "";
-  private dateAccepted = new Date();
+  private dateAccepted = null;
 
   get content(): string {
     return this._content;
@@ -75,14 +75,10 @@ export class PreviewMyPapersComponent implements OnInit {
         this._papers = [];
         for (var paper of result) {
           var bool = false;
-          if (this.getStatusOfPaper(paper) !== "in process") {
-            bool = true;
-          }
-          var paperModel = new PaperPreviewModel(
-            paper,
-            this.getStatusOfPaper(paper),
-            bool
-          );
+          // if(this.getStatusOfPaper(paper) !== 'in process'){
+          //   bool = true;
+          // }
+          var paperModel = new PaperPreviewModel(paper, null, true);
           this._papers.push(paperModel);
         }
       },
@@ -97,10 +93,14 @@ export class PreviewMyPapersComponent implements OnInit {
   public getMyPapers() {
     this.scientificPaperService.getMyPapers().subscribe({
       next: (result) => {
-        console.log("um", result);
+        // console.log(result);
         this._papers = [];
+        if (result == null) {
+          return;
+        }
         for (var paper of result) {
           var bool = false;
+          console.log(paper);
           if (this.getStatusOfPaper(paper) !== "in process") {
             bool = true;
           }
@@ -155,9 +155,16 @@ export class PreviewMyPapersComponent implements OnInit {
     }
   }
 
+  private onSubmitAdvanced() {
+    if (this._content === "previewMyPapers") {
+      this.searchAdvanced("my");
+    } else {
+      this.searchAdvanced("all");
+    }
+  }
   private resetForm(form) {
     form.reset();
-    this.searchParameter = "";
+    // this.searchParameter = '';
     if (this._content === "previewMyPapers") {
       this.getMyPapers();
     } else {
@@ -177,26 +184,25 @@ export class PreviewMyPapersComponent implements OnInit {
 
   private resetAdvancedForm(form) {
     form.reset();
-    this.abstractContent = "";
-    this.headline = "";
-    this.datePublished = new Date();
-    this.referencedDocId = "";
+    this.status = "";
+    this.title = "";
+    this.datePublished = null;
     this.authorsName = "";
     this.keywords = "";
-    this.dateAccepted = new Date();
+    this.dateAccepted = null;
   }
 
-  private onSubmitAdvanced() {
-    console.log(this.dateAccepted);
+  private searchAdvanced(type: string) {
+    console.log(this.datePublished);
     this.scientificPaperService
       .advancePaperSearch(
-        this.abstractContent,
-        this.headline,
-        this.datePublished.toString(),
-        this.referencedDocId,
+        this.status,
+        this.title,
+        this.datePublished,
         this.authorsName,
         this.keywords,
-        this.dateAccepted.toString()
+        this.dateAccepted,
+        type
       )
       .subscribe({
         next: (result) => {

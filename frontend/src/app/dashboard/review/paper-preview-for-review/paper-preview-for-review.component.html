@@ -11,7 +11,8 @@
     <button mat-raised-button color="primary" matTooltip="Reject Review" (click)="reject_review(this.paper.title)">
       <mat-icon>cancel</mat-icon>
     </button>
-    <button mat-raised-button color="primary" matTooltip="Create Review" (click)="accept_review(this.paper.title)">
+    <button mat-raised-button color="primary" matTooltip="Create Review" [routerLink]="['/dashboard/addReview/']"
+            [queryParams]="{ paperTitle: this.paper.title }">
       <mat-icon>check</mat-icon>
     </button>
   </mat-card-actions>

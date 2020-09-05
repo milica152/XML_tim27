@@ -1,5 +1,8 @@
 package ftn.project.xml.repository;
 
+import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
+import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.DOMParser;
@@ -7,6 +10,7 @@ import org.exist.xmldb.EXistResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.xml.sax.SAXException;
 import org.xmldb.api.DatabaseManager;
@@ -31,13 +35,18 @@ public class ReviewRepository {
     private DBUtils dbUtils;
 
     @Autowired
-    public DOMParser domParser;
-
-    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ScientificPaperService scientificPaperService;
 
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, String reviewID) throws Exception {
+    @Autowired ScientificPaperRepository scientificPaperRepository;
+
+    @Autowired
+    public DOMParser domParser;
+
+
+    public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, String reviewID, String title) throws Exception {
         Collection col = null;
         dbUtils.initilizeDBserver(conn);
 
@@ -49,6 +58,13 @@ public class ReviewRepository {
             return xmlRes;
 
         } finally {
+            User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            TUser tUser = userRepository.getUserByEmail(conn, logged.getEmail());
+            tUser.getPendingPapersToReview().getPaperToReviewID().remove(title);
+            userRepository.save(conn, tUser);
+//            if(scientificPaperService.checkIfReviewed(conn, title)){
+//                ScientificPaper sp = scientificPaperRepository.getByTitle(conn, title);
+//            }
 
             // don't forget to cleanup
             if(col != null) {

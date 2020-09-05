@@ -36,13 +36,14 @@ import { AddNewPaperComponent } from "./add-new-paper/add-new-paper.component";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ReviewComponent } from "./review/review.component";
-import { PaperPreviewForReviewComponent } from "./review/paper-preview-for-review/paper-preview-for-review.component";
-import { AssignReviewersComponent } from "./assign-reviewers/assign-reviewers.component";
-import { AssignReviewersPaperPreviewComponent } from "./assign-reviewers/assign-reviewers-paper-preview/assign-reviewers-paper-preview.component";
-import { AssignReviewersToPaperComponent } from "./assign-reviewers/assign-reviewers-to-paper/assign-reviewers-to-paper.component";
 import { RequestedRevisionsComponent } from "./requested-revisions/requested-revisions.component";
 import { RevisionReviewsComponent } from "./requested-revisions/revision-reviews/revision-reviews.component";
 import { RequestedRevisionPreviewComponent } from "./requested-revisions/requested-revision-preview/requested-revision-preview.component";
+import { PaperPreviewForReviewComponent } from "./review/paper-preview-for-review/paper-preview-for-review.component";
+import { AddReviewComponent } from "./review/add-review/add-review.component";
+import { AssignReviewersComponent } from "./assign-reviewers/assign-reviewers.component";
+import { AssignReviewersPaperPreviewComponent } from "./assign-reviewers/assign-reviewers-paper-preview/assign-reviewers-paper-preview.component";
+import { AssignReviewersToPaperComponent } from "./assign-reviewers/assign-reviewers-to-paper/assign-reviewers-to-paper.component";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { RequestedRevisionPreviewComponent } from "./requested-revisions/request
     ReviewedPapersComponent,
     ReviewedPaperPreviewComponent,
     PaperReviewsComponent,
+    AddReviewComponent,
     AssignReviewersComponent,
     AssignReviewersPaperPreviewComponent,
     AssignReviewersToPaperComponent,
