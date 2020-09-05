@@ -4,6 +4,7 @@ import { MatSnackBar} from '@angular/material';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {ReviewComponent} from '../review.component'
 import {PaperPreviewModel} from '../../../shared/models/paper-preview.model'
+import {ReviewService} from '../../../core/review.service'
 
 
 @Component({
@@ -16,7 +17,7 @@ export class PaperPreviewForReviewComponent implements OnInit {
 
   constructor(private snackBar: MatSnackBar,
               private route: ActivatedRoute, @Inject(ReviewComponent) private parentComponent: ReviewComponent,
-              private router: Router) { }
+              private router: Router, private reviewService: ReviewService) { }
 
   get getPaper(): PaperPreviewModel {
     return this.paper;
@@ -27,5 +28,14 @@ export class PaperPreviewForReviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  reject_review(title: string){
+    this.reviewService.rejectReview(title).subscribe({
+      next: (result) =>{
+        this.snackBar.open(result, 'Dismiss', {duration:3000});
+        this.parentComponent.ngOnInit();
+      }
+    })
   }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-           targetNamespace="https://github.com/milica152/XML_tim27"
-           xmlns:sp="https://github.com/milica152/XML_tim27">
+    targetNamespace="https://github.com/milica152/XML_tim27"
+    xmlns:sp="https://github.com/milica152/XML_tim27">
     <xs:element name="scientificPaper">
         <xs:complexType>
             <xs:sequence>
@@ -13,7 +13,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="sp:TStatusS">
                                             <xs:anyAttribute namespace="##local"
-                                                             processContents="skip"/>
+                                                processContents="skip"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -23,7 +23,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:date">
                                             <xs:anyAttribute namespace="##local"
-                                                             processContents="skip"/>
+                                                processContents="skip"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -33,7 +33,7 @@
                                     <xs:simpleContent>
                                         <xs:extension base="xs:date">
                                             <xs:anyAttribute namespace="##local"
-                                                             processContents="skip"/>
+                                                processContents="skip"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -44,10 +44,10 @@
                                         <xs:element maxOccurs="unbounded" name="keyword">
                                             <xs:complexType>
                                                 <xs:simpleContent>
-                                                    <xs:extension base="xs:string">
-                                                        <xs:anyAttribute namespace="##local"
-                                                                         processContents="skip"/>
-                                                    </xs:extension>
+                                                  <xs:extension base="xs:string">
+                                                  <xs:anyAttribute namespace="##local"
+                                                  processContents="skip"/>
+                                                  </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
                                         </xs:element>
@@ -89,7 +89,7 @@
                 </xs:element>
                 <xs:element name="references">
                     <xs:complexType>
-                        <xs:sequence>
+                        <xs:sequence maxOccurs="unbounded" minOccurs="0">
                             <xs:element name="reference">
                                 <xs:complexType>
                                     <xs:sequence>

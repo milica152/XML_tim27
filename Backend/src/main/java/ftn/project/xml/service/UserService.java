@@ -240,5 +240,9 @@ public class UserService {
         businessProcess.setStatus(StatusEnum.ON_REVIEW);
         businessProcessService.save(businessProcess);
     }
-
+  
+    public User getLoggedUser() {
+        User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return logged;
+    }
 }

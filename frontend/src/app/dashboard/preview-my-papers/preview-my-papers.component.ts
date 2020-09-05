@@ -95,6 +95,9 @@ export class PreviewMyPapersComponent implements OnInit {
       next: (result) => {
         console.log(result);
         this._papers = [];
+        if(result==null){
+          return;
+        }
         for(var paper of result) {
           var bool = false;
           if (this.getStatusOfPaper(paper) !== 'in process') {
@@ -148,7 +151,7 @@ export class PreviewMyPapersComponent implements OnInit {
 
   private resetForm(form) {
     form.reset();
-    this.searchParameter = '';
+    // this.searchParameter = '';
     if(this._content === 'previewMyPapers'){
       this.getMyPapers();
     }

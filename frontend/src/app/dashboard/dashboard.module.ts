@@ -23,6 +23,8 @@ import { PreviewMyPapersComponent } from './preview-my-papers/preview-my-papers.
 import { PaperPreviewComponent } from './preview-my-papers/paper-preview/paper-preview.component';
 import { PaperFullPreviewComponent } from './preview-my-papers/paper-full-preview/paper-full-preview.component';
 import { AddNewPaperComponent } from './add-new-paper/add-new-paper.component';
+import { PaperPreviewForReviewComponent } from './review/paper-preview-for-review/paper-preview-for-review.component';
+import { AddReviewComponent} from './review/add-review/add-review.component'
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { ReviewComponent } from './review/review.component';
@@ -43,6 +45,7 @@ import { AssignReviewersToPaperComponent } from './assign-reviewers/assign-revie
     AddNewPaperComponent,
     ReviewComponent,
     PaperPreviewForReviewComponent,
+    AddReviewComponent
     AssignReviewersComponent,
     AssignReviewersPaperPreviewComponent,
     AssignReviewersToPaperComponent

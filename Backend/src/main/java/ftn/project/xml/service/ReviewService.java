@@ -1,6 +1,9 @@
 package ftn.project.xml.service;
 
+import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
 import ftn.project.xml.repository.ReviewRepository;
+import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.DOMParser;
@@ -9,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -32,7 +36,7 @@ import java.util.Objects;
 
 @Service
 public class ReviewService {
-    private static String schemaPath = "src\\main\\resources\\static\\schemas\\Review.xsd";
+    private static String schemaPath = "backend\\src\\main\\resources\\static\\schemas\\Review.xsd";
     private static String reviewsCollectionPathInDB = "/db/xml/reviews";
     private static String reviewDocumentID = "review.xml";
 
@@ -41,6 +45,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private DBUtils dbUtils;
@@ -70,7 +77,7 @@ public class ReviewService {
         }
         String newXMLRes = domParser.DOMToXML(d);
         String generatedID = generateReviewID(conn, title);
-        return reviewRepository.save(conn, newXMLRes, generatedID);
+        return reviewRepository.save(conn, newXMLRes, generatedID.replaceAll(" ", ""), title);
     }
 
     private String generateReviewID(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -138,4 +145,11 @@ public class ReviewService {
         return reviewRepository.findAllBySPTitle(conn, title);
     }
 
+    public String rejectReview(AuthenticationUtilities.ConnectionProperties loadProperties, String title) throws Exception {
+        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TUser tUser = userRepository.getUserByEmail(loadProperties, user.getEmail());
+        tUser.getPendingPapersToReview().getPaperToReviewID().remove(title);
+        userRepository.save(loadProperties, tUser);
+        return "You successfully rejected reviewing the paper " + title;
+    }
 }

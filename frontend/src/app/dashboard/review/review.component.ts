@@ -17,18 +17,18 @@ export class ReviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMyPapers();
+    this.getPapersToReview();
   }
 
   get papers(): any[] {
     return this._papersToReview;
   }
 
-  public getMyPapers() {
+  public getPapersToReview() {
     this.userService.getMyReviews().subscribe({
       next: (result) => {
         this._papersToReview = [];
-        for(var paper of result.myReviewID) {
+        for(var paper of result.paperToReviewID) {
           var paperModel = new PaperPreviewModel(paper,  null, null);
           this._papersToReview.push(paperModel);
         }

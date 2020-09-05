@@ -98,6 +98,16 @@
             <artifactId>jena-rdfconnection</artifactId>
             <version>3.11.0</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.jena</groupId>-->
+<!--            <artifactId>jena-fuseki</artifactId>-->
+<!--            <version>3.11.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.topbraid</groupId>-->
+<!--            <artifactId>shacl</artifactId>-->
+<!--            <version>1.0.1</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>

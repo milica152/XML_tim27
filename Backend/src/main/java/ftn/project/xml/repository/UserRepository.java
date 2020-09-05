@@ -41,47 +41,30 @@ public class UserRepository {
     public TUser save(AuthenticationUtilities.ConnectionProperties conn, TUser user) throws Exception {
         dbUtils.initilizeDBserver(conn);
         Collection col = null;
-
+        logger.info("Retrieving the collection: " + usersCollectionPathInDB);
         try {
-            // usera pretvori u xml frag.
-            String xmlFragment = user2XML(user);
-
-            // get the collection
-            logger.info("Retrieving the collection: " + usersCollectionPathInDB);
             col = dbUtils.getOrCreateCollection(conn, usersCollectionPathInDB);
             col.setProperty("indent", "yes");
-
-            // first to add document
-            Resource resource = col.getResource(usersDocumentID);
-            System.out.println(resource);
-
-            if(resource == null){
-                String xmlResource = FileUtils.readFileToString(new File("src\\main\\resources\\static\\other\\test_users_emprz.xml"), StandardCharsets.UTF_8);
-                dbUtils.storeDocument(usersDocumentID, xmlResource, col);
-            }
-
-            // get an instance of xupdate query service
-            logger.info("Fetching XUpdate service for the collection.");
-            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
-            xupdateService.setProperty("indent", "yes");
-            String contextXPath = "/users";
-
-            logger.info("Appending fragments as last child of " + contextXPath + " node.");
-            long mods = xupdateService.updateResource(usersDocumentID, String.format(APPEND, contextXPath, xmlFragment));
-            logger.info(mods + " modifications processed.");
-
-        } finally {
-
-            // don't forget to cleanup
-            if (col != null) {
-                try {
-                    col.close();
-                } catch (XMLDBException xe) {
-                    xe.printStackTrace();
-                    return new TUser();
-                }
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            return null;
+        }
+        XMLResource res = (XMLResource)col.getResource(usersDocumentID );
+        if(res == null){
+            String xmlResource = FileUtils.readFileToString(new File("src\\main\\resources\\static\\other\\test_users_emprz.xml"), StandardCharsets.UTF_8);
+            dbUtils.storeDocument(usersDocumentID, xmlResource, col);
+        }
+        Users users = XML2Users(res.getContent().toString());
+        User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        for(int i = 0; i < users.getUser().size(); i++){
+            if(users.getUser().get(i).getEmail().equalsIgnoreCase(user.getEmail())){
+                users.getUser().remove(i);
+                users.getUser().add(user);
+                break;
             }
         }
+        String newXMLRes = users2XML(users);
+        dbUtils.storeDocument(usersDocumentID, newXMLRes, col);
         return user;
     }
 
@@ -290,6 +273,7 @@ public class UserRepository {
 
     public TUser.MyReviews getMyReviews(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         TUser user = getUserByEmail(conn, email);
+        System.out.println(user.getPendingPapersToReview());
         return user.getMyReviews();
     }
 
