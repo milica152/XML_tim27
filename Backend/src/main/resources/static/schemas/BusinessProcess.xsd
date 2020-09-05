@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="businessProcess">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="paperTitle" type="xs:string"/>
+                <xs:element name="version" type="xs:positiveInteger"/>
+                <xs:element name="status" type="statusEnum"/>
+                <xs:element name="reviewsGrade" type="reviewsGradeType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="statusEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="published"/>
+            <xs:enumeration value="rejected"/>
+            <xs:enumeration value="withdrawn"/>
+            <xs:enumeration value="on_review"/>
+            <xs:enumeration value="on_revision"/>
+            <xs:enumeration value="submitted"/>
+            <xs:enumeration value="revised"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="reviewsGradeType">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="grade" type="grade"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="grade">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="rejected"/>
+            <xs:enumeration value="submitted"/>
+            <xs:enumeration value="assigned"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

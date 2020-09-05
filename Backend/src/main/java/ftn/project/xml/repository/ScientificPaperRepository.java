@@ -165,7 +165,13 @@ public class ScientificPaperRepository {
 //            if(getByTitle(paper))
 //        }
 
-        return user.getMyPapers().getMyScientificPaperID();
+        try{
+            user.getMyPapers().getMyScientificPaperID();
+            return user.getMyPapers().getMyScientificPaperID();
+        }catch (NullPointerException ex){
+            return null;
+        }
+
     }
 
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
@@ -392,5 +398,13 @@ public class ScientificPaperRepository {
         Elements selector = doc.select("status");
         return selector.text();
     }
+
+//    public void changeStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paperId, TStatus) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+//        String paper = getByTitle(loadProperties, paperId);
+//        org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+//        Elements selector = doc.select("status");
+//        selector.text() = ""
+//        return selector.text();
+//    }
 
 }

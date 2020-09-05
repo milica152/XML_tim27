@@ -17,7 +17,7 @@ public class CoverLetterController {
     @Autowired
     private CoverLetterService coverLetterService;
 
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<String> save(@RequestBody String reviewXML, @RequestParam("title") String title) throws Exception {
@@ -41,7 +41,7 @@ public class CoverLetterController {
     }
 
     @GetMapping("/getByDocumentIdToHTML")
-    @PreAuthorize("(hasAuthority('AUTHOR'))")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
     @ResponseBody
     public ResponseEntity<String> getByDocumentIdHTML(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(coverLetterService.transformToHTML(coverLetterService.getByDocumentId(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);

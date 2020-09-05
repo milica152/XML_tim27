@@ -99,6 +99,9 @@ public class ScientificPaperService {
         }
 
         for(TUser u: usersAuthors){
+            if(u.getMyPapers()==null){
+                u.setMyPapers(new TUser.MyPapers());
+            }
             u.getMyPapers().getMyScientificPaperID().add(title);
             userRepository.save(conn, u);
         }

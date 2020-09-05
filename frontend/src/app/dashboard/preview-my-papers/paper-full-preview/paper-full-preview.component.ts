@@ -13,7 +13,7 @@ export class PaperFullPreviewComponent implements OnInit {
   html;
 
   constructor(private scientificPaperService: ScientificPaperService, private sanitizer: DomSanitizer,
-              private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute,) { }
+              private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
       this.getPaper(this.activatedRoute.snapshot.params.paperName);

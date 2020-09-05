@@ -2,6 +2,8 @@ package ftn.project.xml.repository;
 
 import ftn.project.xml.model.TRole;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
+import ftn.project.xml.model.Users;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import org.apache.commons.io.FileUtils;
@@ -9,9 +11,11 @@ import org.apache.jena.base.Sys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
@@ -40,47 +44,30 @@ public class UserRepository {
     public TUser save(AuthenticationUtilities.ConnectionProperties conn, TUser user) throws Exception {
         dbUtils.initilizeDBserver(conn);
         Collection col = null;
-
+        logger.info("Retrieving the collection: " + usersCollectionPathInDB);
         try {
-            // usera pretvori u xml frag.
-            String xmlFragment = user2XML(user);
-
-            // get the collection
-            logger.info("Retrieving the collection: " + usersCollectionPathInDB);
             col = dbUtils.getOrCreateCollection(conn, usersCollectionPathInDB);
             col.setProperty("indent", "yes");
-
-            // first to add document
-            Resource resource = col.getResource(usersDocumentID);
-            System.out.println(resource);
-
-            if(resource == null){
-                String xmlResource = FileUtils.readFileToString(new File("src\\main\\resources\\static\\other\\test_users_emprz.xml"), StandardCharsets.UTF_8);
-                dbUtils.storeDocument(usersDocumentID, xmlResource, col);
-            }
-
-            // get an instance of xupdate query service
-            logger.info("Fetching XUpdate service for the collection.");
-            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
-            xupdateService.setProperty("indent", "yes");
-            String contextXPath = "/users";
-
-            logger.info("Appending fragments as last child of " + contextXPath + " node.");
-            long mods = xupdateService.updateResource(usersDocumentID, String.format(APPEND, contextXPath, xmlFragment));
-            logger.info(mods + " modifications processed.");
-
-        } finally {
-
-            // don't forget to cleanup
-            if (col != null) {
-                try {
-                    col.close();
-                } catch (XMLDBException xe) {
-                    xe.printStackTrace();
-                    return new TUser();
-                }
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            return null;
+        }
+        XMLResource res = (XMLResource)col.getResource(usersDocumentID );
+        if(res == null){
+            String xmlResource = FileUtils.readFileToString(new File("src\\main\\resources\\static\\other\\test_users_emprz.xml"), StandardCharsets.UTF_8);
+            dbUtils.storeDocument(usersDocumentID, xmlResource, col);
+        }
+        Users users = XML2Users(res.getContent().toString());
+        User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        for(int i = 0; i < users.getUser().size(); i++){
+            if(users.getUser().get(i).getEmail().equalsIgnoreCase(user.getEmail())){
+                users.getUser().remove(i);
+                users.getUser().add(user);
+                break;
             }
         }
+        String newXMLRes = users2XML(users);
+        dbUtils.storeDocument(usersDocumentID, newXMLRes, col);
         return user;
     }
 
@@ -206,6 +193,18 @@ public class UserRepository {
         return userXml.substring(userXml.indexOf('\n') + 1);
     }
 
+    public static String users2XML(Users users) throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
+        OutputStream os = new ByteArrayOutputStream();
+
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+        marshaller.marshal(users, os);
+        String userXml = os.toString();
+        return userXml.substring(userXml.indexOf('\n') + 1);
+    }
+
     public static TUser XML2User(String xmlContent) throws JAXBException {
         TUser result;
         StringReader reader = new StringReader(xmlContent);
@@ -216,6 +215,18 @@ public class UserRepository {
 
         return result;
     }
+
+    public static Users XML2Users(String xmlContent) throws JAXBException {
+        Users result;
+        StringReader reader = new StringReader(xmlContent);
+
+        JAXBContext context = JAXBContext.newInstance("ftn.project.xml.model");
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        result = (Users) unmarshaller.unmarshal(reader);
+
+        return result;
+    }
+
 
     public String remove(AuthenticationUtilities.ConnectionProperties conn, TUser user) throws XMLDBException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 //        String contextXPath = "/users";
@@ -332,6 +343,7 @@ public class UserRepository {
 
     public TUser.MyReviews getMyReviews(AuthenticationUtilities.ConnectionProperties conn, String email) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         TUser user = getUserByEmail(conn, email);
+        System.out.println(user.getPendingPapersToReview());
         return user.getMyReviews();
     }
 

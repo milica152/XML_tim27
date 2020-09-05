@@ -4,6 +4,7 @@ import ftn.project.xml.dto.UserLoginDTO;
 import ftn.project.xml.dto.UserRegisterDTO;
 import ftn.project.xml.exceptions.EntityAlreadyExistsException;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
 import ftn.project.xml.service.UserService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import org.apache.jena.base.Sys;
@@ -61,6 +62,12 @@ public class UserController {
     public ResponseEntity<TUser> getUserByEmail(@RequestBody String email) throws Exception {
         conn = AuthenticationUtilities.loadProperties();
         return new ResponseEntity<>(userService.getUserByEmail(conn, email), HttpStatus.OK);
+    }
+
+    @GetMapping("/getLoggedUser")
+    @PreAuthorize("(hasAuthority('AUTHOR') or hasAuthority('REVIEWER') or hasAuthority('EDITOR'))")
+    public ResponseEntity<User> getLoggedUser(){
+        return new ResponseEntity<User>(userService.getLoggedUser(), HttpStatus.OK);
     }
 
     @PostMapping("/getByEmailAndPassword")
@@ -125,7 +132,7 @@ public class UserController {
         return new ResponseEntity<>(userService.findReviewerForSP(conn, title), HttpStatus.OK);
     }
 
-    @PreAuthorize("(hasAuthority('EDITOR'))")
+    @PreAuthorize("hasAnyAuthority('EDITOR','REVIEWER')")
     @PostMapping("/pickReviewers/{title}")
     @ResponseBody
     public ResponseEntity pickReviewers(@RequestBody ArrayList<String> emails, @PathVariable String title) throws Exception {

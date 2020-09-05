@@ -20,6 +20,10 @@ export class UserService {
     return this.httpClient.post(this.backendUrl + "login", userData);
   }
   getMyReviews(): Observable<any>{
-    return this.httpClient.get("user/getMyReviews");
+    return this.httpClient.get("user/getMyPendingReviews");
   }
+  getLoggedUser(): Observable<any>{
+    return this.httpClient.get("user/getLoggedUser");
+  }
+
 }

@@ -141,6 +141,8 @@ public class UserService {
             userRepository.addPendingPaper(title,conn, reviewer);
         }
     }
-
-
+    public User getLoggedUser() {
+        User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return logged;
+    }
 }
