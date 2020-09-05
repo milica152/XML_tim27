@@ -4,11 +4,11 @@ import { MatSnackBar } from "@angular/material";
 import { ReviewsService } from "src/app/core/reviews.service";
 
 @Component({
-  selector: "app-paper-reviews",
-  templateUrl: "./paper-reviews.component.html",
-  styleUrls: ["./paper-reviews.component.scss"],
+  selector: "app-revision-reviews",
+  templateUrl: "./revision-reviews.component.html",
+  styleUrls: ["./revision-reviews.component.scss"],
 })
-export class PaperReviewsComponent implements OnInit {
+export class RevisionReviewsComponent implements OnInit {
   private _paperName: string;
   private allReviews: string[];
   private htmlReview: string;
@@ -42,15 +42,17 @@ export class PaperReviewsComponent implements OnInit {
   }
 
   getTransformedReviews() {
-    this.reviewsService.getAllHTMLReviews(this.allReviews).subscribe({
-      next: (result) => {
-        this.htmlReview = result;
-      },
-      error: (message: string) => {
-        this.snackBar.open(message, "Dismiss", {
-          duration: 3000,
-        });
-      },
-    });
+    this.reviewsService
+      .getAllReviewerlessHTMLReviews(this.allReviews)
+      .subscribe({
+        next: (result) => {
+          this.htmlReview = result;
+        },
+        error: (message: string) => {
+          this.snackBar.open(message, "Dismiss", {
+            duration: 3000,
+          });
+        },
+      });
   }
 }

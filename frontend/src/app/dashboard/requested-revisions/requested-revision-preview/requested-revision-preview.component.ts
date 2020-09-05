@@ -2,21 +2,22 @@ import { Component, Input, OnInit, Inject } from "@angular/core";
 import { ScientificPaperService } from "src/app/core/scientificPaper.service";
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { ReviewComponent } from "../review.component";
 import { PaperPreviewModel } from "../../../shared/models/paper-preview.model";
+import { RequestedRevisionsComponent } from "../requested-revisions.component";
 
 @Component({
-  selector: "app-paper-preview-for-review",
-  templateUrl: "./paper-preview-for-review.component.html",
-  styleUrls: ["./paper-preview-for-review.component.scss"],
+  selector: "app-requested-revision-preview",
+  templateUrl: "./requested-revision-preview.component.html",
+  styleUrls: ["./requested-revision-preview.component.scss"],
 })
-export class PaperPreviewForReviewComponent implements OnInit {
-  @Input() private paper: PaperPreviewModel;
+export class RequestedRevisionPreviewComponent implements OnInit {
+  @Input() private paper;
 
   constructor(
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    @Inject(ReviewComponent) private parentComponent: ReviewComponent,
+    @Inject(RequestedRevisionsComponent)
+    private parentComponent: RequestedRevisionsComponent,
     private router: Router
   ) {}
 

@@ -33,5 +33,11 @@
     <div *ngIf="_content === 'preview'">
       <app-paper-full-preview></app-paper-full-preview>
     </div>
+    <div *ngIf="_content === 'requestedRevisions'">
+      <app-requested-revisions></app-requested-revisions>
+    </div>
+    <div *ngIf="content === 'revisionReviews'">
+      <app-revision-reviews></app-revision-reviews>
+    </div>
   </div>
 </div>

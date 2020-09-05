@@ -71,8 +71,14 @@ export class ReviewedPaperPreviewComponent implements OnInit {
 
   requestRevision(title: string) {
     this.scientificPaperService.requestRevision(title).subscribe({
-      next: (result) => {
-        console.log("next");
+      next: () => {
+        this.snackBar.open(
+          `Successfully accepted the ${title} paper.`,
+          "Dismiss",
+          {
+            duration: 3000,
+          }
+        );
       },
       error: (message: string) => {
         this.snackBar.open(message, "Dismiss", {

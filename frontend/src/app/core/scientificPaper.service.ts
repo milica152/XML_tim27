@@ -109,7 +109,9 @@ export class ScientificPaperService {
   }
 
   requestRevision(paperTitle: string) {
-    console.log("?");
-    return of("");
+    return this.httpClient.post(`scientificPaper/requestRevision`, paperTitle, {
+      headers: this._headers,
+      responseType: "text",
+    });
   }
 }

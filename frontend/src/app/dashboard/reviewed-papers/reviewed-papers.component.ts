@@ -26,9 +26,9 @@ export class ReviewedPapersComponent implements OnInit {
   getAllPapers() {
     this.scientificPaperService.getAllPapers().subscribe({
       next: (result) => {
-        // console.log(result);
+        console.log(result);
         this._papers = result.filter((paper) => this.checkIfReviewed(paper));
-        // this._papers = result;
+        this._papers = result;
       },
       error: (message: string) => {
         this.snackBar.open(message, "Dismiss", {

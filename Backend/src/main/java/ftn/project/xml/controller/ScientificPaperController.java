@@ -150,4 +150,10 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.checkIfReviewed(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
+    @PreAuthorize("(hasAuthority('EDITOR'))")
+    @PostMapping("/requestRevision")
+    @ResponseBody ResponseEntity requestRevision(@RequestBody String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.requestRevision(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
+    }
+
 }

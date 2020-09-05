@@ -12,33 +12,17 @@
       mat-raised-button
       color="primary"
       matTooltip="Reviews"
-      [routerLink]="['/dashboard/paperReviews', this.paper]"
+      [routerLink]="['/dashboard/revisionReviews', this.paper]"
     >
       <mat-icon>grading</mat-icon>
     </button>
     <button
       mat-raised-button
       color="primary"
-      matTooltip="Request revision"
-      (click)="this.requestRevision(this.paper)"
+      matTooltip="Add revision"
+      [routerLink]="['/dashboard/addPaper']"
     >
-      <mat-icon>loop</mat-icon>
-    </button>
-    <button
-      mat-raised-button
-      color="primary"
-      matTooltip="Reject Paper"
-      (click)="this.rejectPaper(this.paper)"
-    >
-      <mat-icon>cancel</mat-icon>
-    </button>
-    <button
-      mat-raised-button
-      color="primary"
-      matTooltip="Accept Paper"
-      (click)="this.acceptPaper(this.paper)"
-    >
-      <mat-icon>check</mat-icon>
+      <mat-icon>add</mat-icon>
     </button>
   </mat-card-actions>
 </mat-card>

@@ -40,6 +40,9 @@ import { PaperPreviewForReviewComponent } from "./review/paper-preview-for-revie
 import { AssignReviewersComponent } from "./assign-reviewers/assign-reviewers.component";
 import { AssignReviewersPaperPreviewComponent } from "./assign-reviewers/assign-reviewers-paper-preview/assign-reviewers-paper-preview.component";
 import { AssignReviewersToPaperComponent } from "./assign-reviewers/assign-reviewers-to-paper/assign-reviewers-to-paper.component";
+import { RequestedRevisionsComponent } from "./requested-revisions/requested-revisions.component";
+import { RevisionReviewsComponent } from "./requested-revisions/revision-reviews/revision-reviews.component";
+import { RequestedRevisionPreviewComponent } from "./requested-revisions/requested-revision-preview/requested-revision-preview.component";
 
 @NgModule({
   declarations: [
@@ -58,6 +61,9 @@ import { AssignReviewersToPaperComponent } from "./assign-reviewers/assign-revie
     AssignReviewersComponent,
     AssignReviewersPaperPreviewComponent,
     AssignReviewersToPaperComponent,
+    RequestedRevisionsComponent,
+    RevisionReviewsComponent,
+    RequestedRevisionPreviewComponent,
   ],
   imports: [
     CommonModule,
