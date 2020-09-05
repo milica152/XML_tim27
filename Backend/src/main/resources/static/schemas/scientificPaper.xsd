@@ -8,7 +8,7 @@
                 <xs:element minOccurs="1" name="metadata">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element minOccurs="1" name="status">
+                            <xs:element minOccurs="0" name="status">
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="sp:TStatusS">

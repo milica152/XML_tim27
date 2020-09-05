@@ -36,10 +36,20 @@ export class AssignReviewersToPaperComponent implements OnInit {
       this.reviewers = this.checked
         .filter((reviewer) => reviewer.selected)
         .map((reviewer) => reviewer.email);
-      this.userService.sendChosenReviewers(this._paperName, this.reviewers);
-      this.snackBar.open("Reviewers successfully chosen.", "Dismiss", {
-        duration: 3000,
-      });
+      this.userService
+        .sendChosenReviewers(this._paperName, this.reviewers)
+        .subscribe({
+          next: () => {
+            this.snackBar.open("Reviewers successfully chosen.", "Dismiss", {
+              duration: 3000,
+            });
+          },
+          error: (message: string) => {
+            this.snackBar.open(message, "Dismiss", {
+              duration: 3000,
+            });
+          },
+        });
     }
   }
   public getReviewers(title: string) {

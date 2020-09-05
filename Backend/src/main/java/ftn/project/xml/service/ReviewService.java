@@ -1,7 +1,6 @@
 package ftn.project.xml.service;
 
-import ftn.project.xml.model.TUser;
-import ftn.project.xml.model.User;
+import ftn.project.xml.model.*;
 import ftn.project.xml.repository.ReviewRepository;
 import ftn.project.xml.repository.UserRepository;
 import ftn.project.xml.util.AuthenticationUtilities;
@@ -50,6 +49,9 @@ public class ReviewService {
     private UserRepository userRepository;
 
     @Autowired
+    private BusinessProcessService businessProcessService;
+
+    @Autowired
     private DBUtils dbUtils;
 
     Logger logger = LoggerFactory.getLogger(ReviewService.class);
@@ -77,7 +79,20 @@ public class ReviewService {
         }
         String newXMLRes = domParser.DOMToXML(d);
         String generatedID = generateReviewID(conn, title);
-        return reviewRepository.save(conn, newXMLRes, generatedID.replaceAll(" ", ""), title);
+
+        String xmlRes = reviewRepository.save(conn, newXMLRes, generatedID.replaceAll(" ", ""), title);
+
+        // change business process
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        for(ReviewsGradeType reviewsGradeType: businessProcess.getReviewsGrade()){
+            if(reviewsGradeType.getEmail().equalsIgnoreCase(user.getEmail())){
+                reviewsGradeType.setGrade(Grade.SUBMITTED);
+            }
+        }
+
+        businessProcessService.save(businessProcess);
+        return xmlRes;
     }
 
     private String generateReviewID(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -93,7 +108,7 @@ public class ReviewService {
          while(!stop){
              int counter = 0;
              for(String res : resources){
-                 if(!res.equalsIgnoreCase(reviewDocumentID + title.replaceAll(" ","%20") + "%20Review%20" +  i)){
+                 if(!res.equalsIgnoreCase(reviewDocumentID + title + "Review" +  i)){
                      counter++;
                  }
              }
@@ -146,9 +161,16 @@ public class ReviewService {
     }
 
     public String rejectReview(AuthenticationUtilities.ConnectionProperties loadProperties, String title) throws Exception {
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
         User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         TUser tUser = userRepository.getUserByEmail(loadProperties, user.getEmail());
         tUser.getPendingPapersToReview().getPaperToReviewID().remove(title);
+        for(ReviewsGradeType reviewsGradeType: businessProcess.getReviewsGrade()){
+            if(reviewsGradeType.getEmail().equalsIgnoreCase(user.getEmail())){
+                reviewsGradeType.setGrade(Grade.REJECTED);
+            }
+        }
+        businessProcessService.save(businessProcess);  // update
         userRepository.save(loadProperties, tUser);
         return "You successfully rejected reviewing the paper " + title;
     }
