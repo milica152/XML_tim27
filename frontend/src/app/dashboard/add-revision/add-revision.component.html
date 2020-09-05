@@ -1,0 +1,18 @@
+<div fxLayout="row wrap"  fxLayoutGap="2%" fxLayout.xs="column" fxLayoutAlign="center">
+  <button
+    type="button"
+    mat-raised-button
+    (click)="sendRevision()">
+    Send Revision
+  </button>
+</div>
+
+<div
+  id = "Revisiondiv"
+  #editorRevision
+  [(ngModel)]="newRevision"
+  name="xonomyContentRevision"
+  ngDefaultControl
+></div>
+
+

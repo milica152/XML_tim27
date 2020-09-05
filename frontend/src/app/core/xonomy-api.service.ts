@@ -574,6 +574,7 @@ export class XonomyApiService {
     return reviewTemplate(currentUser, paperTitle);
   }
 
+
   public reviewSpecification = {
     elements: {
       "title": {

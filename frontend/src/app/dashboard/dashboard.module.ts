@@ -44,6 +44,7 @@ import { AddReviewComponent } from "./review/add-review/add-review.component";
 import { AssignReviewersComponent } from "./assign-reviewers/assign-reviewers.component";
 import { AssignReviewersPaperPreviewComponent } from "./assign-reviewers/assign-reviewers-paper-preview/assign-reviewers-paper-preview.component";
 import { AssignReviewersToPaperComponent } from "./assign-reviewers/assign-reviewers-to-paper/assign-reviewers-to-paper.component";
+import { AddRevisionComponent } from './add-revision/add-revision.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { AssignReviewersToPaperComponent } from "./assign-reviewers/assign-revie
     AssignReviewersComponent,
     AssignReviewersPaperPreviewComponent,
     AssignReviewersToPaperComponent,
+    AddRevisionComponent
     RequestedRevisionsComponent,
     RevisionReviewsComponent,
     RequestedRevisionPreviewComponent,

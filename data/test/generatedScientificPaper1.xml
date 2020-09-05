@@ -3,6 +3,8 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="https://github.com/milica152/XML_tim27 file:/D:/Faks/VII%20semestar%20-%20XML/XML-Projekat/schemas/scientificPaper.xsd" institution="t2f2ZDCYu">
     <metadata>
+        <status>submitted</status>
+        <datePublished>2021-03-13</datePublished>
         <keywords>
             <keyword>petar pan</keyword>
             <keyword>zvoncica</keyword>

@@ -351,9 +351,7 @@ public class ScientificPaperRepository {
             String email = authors.item(i).getTextContent();
             TUser user1 = userRepository.getUserByEmail(conn, email);
             usersAuthors.add(user1);
-
         }
-
         Collection col = null;
         Resource res = null;
         try {
@@ -563,6 +561,24 @@ public class ScientificPaperRepository {
 
         return foundTemp;
 
+    }
+
+    public String getByTitleNoMetadata(AuthenticationUtilities.ConnectionProperties conn, String title) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String paper = getByTitle(conn, title);
+        org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+        Elements selector = doc.select("metadata");
+        for (Element element : selector) {
+            element.remove();
+        }
+        return doc.text();
+    }
+
+    public String removeMetadata(String result) throws IOException, SAXException, ParserConfigurationException, TransformerException {
+        Document d = domParser.buildDocument(result, schemaPath);
+        NodeList metadataList =  d.getDocumentElement().getElementsByTagName("metadata");
+        Node metadata = metadataList.item(0);
+        d.getDocumentElement().removeChild(metadata);
+        return domParser.DOMToXML(d);
     }
 
 //    public void changeStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paperId, TStatus) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {

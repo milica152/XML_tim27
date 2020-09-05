@@ -60,16 +60,22 @@ public class ScientificPaperService {
     @Value("${scientificPaper.XHTMLPath}")
     private String htmlPath;
 
-    public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes) throws Exception {
+    public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, boolean revision, String titleOld) throws Exception {
         try{
             DOMParser parser = new DOMParser();
         Document d = parser.buildDocument(xmlRes, schemaPath);
 
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         NodeList nl = d.getElementsByTagName("title");
+        NodeList n2 = d.getElementsByTagName("status");
+        NodeList n3 = d.getElementsByTagName("datePublished");
+
         String title = nl.item(0).getTextContent();
         title = title.replaceAll("\\s","");
-
+        if(revision){
+           scientificPaperRepository.delete(conn, titleOld);
+        }
         if(scientificPaperRepository.getByTitle(conn, title)!=""){
             return "Paper with the title " + title + " already exists!";
         }
@@ -112,21 +118,23 @@ public class ScientificPaperService {
             userRepository.save(conn, u);
         }
         // date published
-        Element datePublished = d.createElement("datePublished");
-        datePublished.setTextContent(df.format(new Date()));
-        datePublished.setAttribute("property", "published");    // dodati rdf podatak na property
+
+        n3.item(0).setTextContent(df.format(new Date()));
+        // dodati rdf podatak na property
 
         // status
-        Element status = d.createElement("status");
-        status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
-        status.setTextContent("submitted");
+//        Element status = d.createElement("status");
+//        status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
 
+        if(!revision){
+            n2.item(0).setTextContent("submitted");
+        }else{
+            n2.item(0).setTextContent("revised");
+        }
         // about
         Element about = d.createElement("about");
         d.getDocumentElement().setAttribute("about", title);
 
-        metadata.item(0).insertBefore(datePublished, keywords.item(0));
-        metadata.item(0).insertBefore(status, datePublished);
 
         ByteArrayOutputStream metadataStream = new ByteArrayOutputStream();
         String newSciPap = domParser.DOMToXML(d);
@@ -153,6 +161,12 @@ public class ScientificPaperService {
 
     public String getByTitle(AuthenticationUtilities.ConnectionProperties conn, String s) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         return scientificPaperRepository.getByTitle(conn, s);
+    }
+
+    public String getByTitleNoMetadata(AuthenticationUtilities.ConnectionProperties conn, String title) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, SAXException, TransformerException, ParserConfigurationException, IOException {
+        String result = scientificPaperRepository.getByTitle(conn, title);
+        result = scientificPaperRepository.removeMetadata(result);
+        return result;
     }
 
     public List<String> search(AuthenticationUtilities.ConnectionProperties loadProperties, String author, String text) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
@@ -399,4 +413,6 @@ public class ScientificPaperService {
         }
 
     }
+
+
 }
