@@ -38,7 +38,7 @@ export class PaperPreviewComponent implements OnInit {
   getStatusOfPaper(paper: string): void {
     this.scientificPaperService.getStatusOfPaper(paper).subscribe({
       next: (result: string) => {
-        if (result === "in process") {
+        if (result === "submitted") {
           if (document.getElementById(paper) != null) {
             document.getElementById(paper).removeAttribute("disabled");
           }

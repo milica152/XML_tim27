@@ -7,12 +7,14 @@ import ftn.project.xml.model.User;
 import ftn.project.xml.model.Users;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.*;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
 import org.apache.jena.update.UpdateRequest;
+import org.checkerframework.checker.units.qual.A;
 import org.exist.xmldb.EXistResource;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -37,9 +39,16 @@ import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static ftn.project.xml.templates.XUpdateTemplate.TARGET_NAMESPACE;
 
@@ -192,9 +201,9 @@ public class ScientificPaperRepository {
             if(resources.length!=0){
                 for(String p: resources){
                     String status = getStatus(loadProperties, p.substring(9));
-                    if(status.equals("accepted")){
+                    if(status.equals("published")){
                         papers.add(p.substring(9));
-                    }else if(status.equals("in process")){
+                    }else if(status.equals("submitted")){
                         String xmlRes = getByTitle(loadProperties, p.substring(9));
                         Document d = parser.buildDocument(xmlRes, schemaPath);
                         NodeList authors = d.getElementsByTagName("contact");
@@ -437,6 +446,123 @@ public class ScientificPaperRepository {
         org.jsoup.nodes.Document doc = Jsoup.parse(paper);
         Elements selector = doc.select("status");
         return selector.text();
+    }
+
+    BiFunction<List<String>, Predicate<String>, List<String>> SP_FILTER =
+            (sps, fields) -> sps.stream().filter(fields).collect(Collectors.toList());
+
+    public List<String> advancedSearch(AuthenticationUtilities.ConnectionProperties loadProperties, String email,
+                                       String status, String title, String published,
+                                       String authorsName, String keywords, String accepted) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException, ParseException {
+        List<String> sps;
+        List<String> foundTemp = new ArrayList<>();
+        List<String> found = new ArrayList<>();
+        if(email == null || email.isEmpty()||email.trim().equals("null")){
+            sps = getAllPapers(loadProperties);
+        }
+        else{
+            sps = getMyPapers(loadProperties, email);
+        }
+
+        if(status.trim().equals("")||status==null||status.trim().equals("null")){
+            found = sps;
+        }else{
+            for(String paperId: sps){
+                String paper = getByTitle(loadProperties, paperId);
+                org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+                Elements selector = doc.select("status");
+                if(selector.get(0).text().equals(status.trim())){
+                    found.add(paperId);
+                }
+            }
+        }
+
+        if(title.trim().equals("")||title==null||title.trim().equals("null")){
+            foundTemp = found;
+        }else{
+            for(String paperId: found){
+                String paper = getByTitle(loadProperties, paperId);
+                org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+                Elements selector = doc.select("title");
+                if(selector.get(0).text().toLowerCase().contains(title.trim().toLowerCase())){
+                    foundTemp.add(paperId);
+                }
+            }
+        }
+        found = new ArrayList<>();
+
+        if(published.trim().equals("")||published==null||published.trim().equals("null")){
+            found = foundTemp;
+        }else{
+            for(String paperId: foundTemp){
+                String paper = getByTitle(loadProperties, paperId);
+                org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+                Elements selector = doc.select("datePublished");
+                if(selector.get(0).text().equals(published.trim()+"Z")){
+                    found.add(paperId);
+                }
+            }
+        }
+        foundTemp= new ArrayList<>();
+
+        if(authorsName.trim().equals("")||authorsName==null||authorsName.trim().equals("null")){
+            foundTemp = found;
+        }else{
+            for(String paperId: found){
+                String paper = getByTitle(loadProperties, paperId);
+                org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+                Elements selector = doc.select("author");
+                for (int i=0; i<selector.size(); i++) {
+                    String nameAuthor = selector.get(i).select("name").text() +" " + selector.get(i).select("surname").text();
+                    if(nameAuthor.toLowerCase().contains(authorsName.trim().toLowerCase())){
+                        foundTemp.add(paperId);
+                    }
+                }
+            }
+        }
+        found = new ArrayList<>();
+
+        if(keywords.trim().equals("")||keywords==null||keywords.trim().equals("null")){
+            found = foundTemp;
+        }else{
+            for(String paperId: foundTemp){
+                String paper = getByTitle(loadProperties, paperId);
+                org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+                Elements selector = doc.select("keyword");
+                String[] allKeywords = keywords.trim().split(";");
+                int foundKW = 0;
+                for (int i=0; i<selector.size(); i++) {
+                    if(ArrayUtils.contains( allKeywords, selector.get(i).text())){
+                        foundKW++;
+                    }
+                }
+                if(foundKW == allKeywords.length){
+                    found.add(paperId);
+                }
+
+
+            }
+        }
+        foundTemp = new ArrayList<>();
+
+        if(accepted.trim().equals("")||accepted==null||accepted.trim().equals("null")){
+            foundTemp = found;
+        }else{
+            for(String paperId: found){
+                String paper = getByTitle(loadProperties, paperId);
+                org.jsoup.nodes.Document doc = Jsoup.parse(paper);
+                Elements selector = doc.select("dateAccepted");
+                if(selector.size() != 0){
+                    if(selector.get(0).text().equals(accepted.trim()+"Z")){
+                        foundTemp.add(paperId);
+                    }
+                }
+            }
+        }
+
+
+        return foundTemp;
+
     }
 
 //    public void changeStatus(AuthenticationUtilities.ConnectionProperties loadProperties, String paperId, TStatus) throws XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException {

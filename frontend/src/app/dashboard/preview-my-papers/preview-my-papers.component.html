@@ -10,40 +10,40 @@
   <button type="button" mat-raised-button class="searchButton" (click)="advancedSearch()">Advanced</button>
 </form>
 
-<form *ngIf="advanced" #searchForm="ngForm" (ngSubmit)="onSubmitAdvanced()" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.xs="column"
+<form style= "margin-bottom: 75px" *ngIf="advanced" #searchForm="ngForm" (ngSubmit)="onSubmitAdvanced()" fxLayoutGap="2%"
       fxLayoutAlign="center">
-  <div fxLayout="column">
+  <div fxLayout="column" style="width: 70%;">
     <mat-form-field appearance="outline">
-        <mat-label>Abstract Content</mat-label>
-      <input [(ngModel)]="this.abstractContent" id="abstractContent" matInput type="text" name="abstractContent">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Headline</mat-label>
-      <input [(ngModel)]="this.headline" id="headline" matInput type="text" name="headline">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Date Published</mat-label>
-      <input [(ngModel)]="this.datePublished" id="datePublished" matInput type="date" name="datePublished">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Referenced Document ID</mat-label>
-      <input [(ngModel)]="this.referencedDocId" id="referencedDocId" matInput type="text" name="referencedDocId">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Authors Name</mat-label>
-      <input [(ngModel)]="this.authorsName" id="authorsName" matInput type="text" name="authorsName">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Keywords</mat-label>
-      <input [(ngModel)]="this.keywords" id="keywords" matInput type="text" name="keywords">
+        <mat-label>Status</mat-label>
+      <input [(ngModel)]="this.status" id="status" matInput type="text" name="status">
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Date Accepted</mat-label>
       <input [(ngModel)]="this.dateAccepted" id="dateAccepted" matInput type="date" name="dateAccepted">
     </mat-form-field>
-  <button type="submit" mat-raised-button class="searchButton">Search</button>
-  <button type="button" mat-raised-button class="searchButton" (click)="resetForm(searchForm)">Reset</button>
-  <button type="button" mat-raised-button class="searchButton" (click)="basicSearch()">Basic</button>
+    <button type="submit" mat-raised-button class="searchButton">Search</button>
+  </div>
+  <div fxLayout="column" style="width: 70%">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input [(ngModel)]="this.title" id="title" matInput type="text" name="title">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date Published</mat-label>
+      <input [(ngModel)]="this.datePublished" id="datePublished" matInput type="date" name="datePublished">
+    </mat-form-field>
+    <button type="button" mat-raised-button class="searchButton" (click)="resetForm(searchForm)">Reset</button>
+  </div>
+  <div fxLayout="column" style="width: 70%">
+    <mat-form-field appearance="outline">
+      <mat-label>Authors Name</mat-label>
+      <input [(ngModel)]="this.authorsName" id="authorsName" matInput type="text" name="authorsName">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Keywords (separated with ';')</mat-label>
+      <input [(ngModel)]="this.keywords" id="keywords" matInput type="text" name="keywords">
+    </mat-form-field>
+    <button type="button" mat-raised-button class="searchButton" (click)="basicSearch()">Basic</button>
   </div>
 
 </form>
