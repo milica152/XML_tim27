@@ -62,6 +62,7 @@ export class PaperPreviewComponent implements OnInit {
         this.showButton = false;
       } else {
         this.showButton = true;
+        this.getStatusOfPaper(this.paper.title);
       }
     });
     this.role = this.authenticationApiService.getRole();
@@ -70,6 +71,9 @@ export class PaperPreviewComponent implements OnInit {
   withdraw(paperId: string): void {
     this.scientificPaperService.withdraw(paperId).subscribe({
       next: () => {
+        this.snackBar.open("Paper "+paperId+" successfully withdrawn!", "Dismiss", {
+          duration: 3000,
+        });
         this.ngOnInit();
       },
       error: (message: string) => {

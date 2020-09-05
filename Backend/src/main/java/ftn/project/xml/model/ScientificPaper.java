@@ -573,7 +573,7 @@ public class ScientificPaper {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="status" minOccurs="0">
+     *         &lt;element name="status" minOccurs="1">
      *           &lt;complexType>
      *             &lt;simpleContent>
      *               &lt;extension base="&lt;https://github.com/milica152/XML_tim27>TStatusS">
