@@ -16,13 +16,13 @@ export class PreviewMyPapersComponent implements OnInit {
   private _content: string;
   private advanced = false;
   private basic = true;
-  private abstractContent = "";
-  private headline = "";
-  private datePublished = new Date();
+  private status = "";
+  private title = "";
+  private datePublished = null;
   private referencedDocId = "";
   private authorsName = "";
   private keywords = "";
-  private dateAccepted = new Date();
+  private dateAccepted = null;
 
   get content(): string {
     return this._content;
@@ -148,8 +148,14 @@ export class PreviewMyPapersComponent implements OnInit {
     }
   }
 
-
-
+  private onSubmitAdvanced() {
+    if(this._content === 'previewMyPapers'){
+      this.searchAdvanced('my');
+    }
+    else{
+      this.searchAdvanced('all');
+    }
+  }
   private resetForm(form) {
     form.reset();
     // this.searchParameter = '';
@@ -174,18 +180,17 @@ export class PreviewMyPapersComponent implements OnInit {
 
   private resetAdvancedForm(form){
     form.reset();
-    this.abstractContent = "";
-    this.headline = "";
-    this.datePublished = new Date();
-    this.referencedDocId = "";
+    this.status = "";
+    this.title = "";
+    this.datePublished = null;
     this.authorsName = "";
     this.keywords = "";
-    this.dateAccepted = new Date();
+    this.dateAccepted = null;
   }
 
-  private onSubmitAdvanced() {
-  console.log(this.dateAccepted);
-     this.scientificPaperService.advancePaperSearch(this.abstractContent, this.headline, this.datePublished.toString(), this.referencedDocId, this.authorsName, this.keywords, this.dateAccepted.toString()).subscribe(
+  private searchAdvanced(type: string) {
+    console.log(this.datePublished);
+     this.scientificPaperService.advancePaperSearch(this.status, this.title, this.datePublished, this.authorsName, this.keywords, this.dateAccepted, type).subscribe(
           {
             next: (result) => {
               this._papers=[];

@@ -54,6 +54,16 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scientificPaperService.transformToHTML(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title)), HttpStatus.OK);
     }
 
+    @GetMapping("/advancedSearch")
+    @ResponseBody
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
+    public ResponseEntity<List<String>> advancedSearch(@RequestParam("status") String status, @RequestParam("title")
+            String title, @RequestParam("published") String published, @RequestParam("authorsName") String authorsName,
+            @RequestParam("keywords") String keywords,@RequestParam("accepted") String accepted, @RequestParam("author") String author) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.advancedSearch(AuthenticationUtilities.loadProperties(), status,
+                title, published, authorsName, keywords, accepted, author), HttpStatus.OK);
+    }
+
     @GetMapping("/search")
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")

@@ -23,6 +23,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,7 +119,7 @@ public class ScientificPaperService {
         // status
         Element status = d.createElement("status");
         status.setAttribute("property", "spStatus");      // dodati rdf podatak na property
-        status.setTextContent("in process");
+        status.setTextContent("submitted");
 
         // about
         Element about = d.createElement("about");
@@ -269,8 +270,8 @@ public class ScientificPaperService {
 
         Node oldStatus = d.getElementsByTagName("status").item(0);
 
-        if(!oldStatus.getTextContent().equalsIgnoreCase("in process")){
-            return "error: scientific paper must be in process to be withdrawn";
+        if(!oldStatus.getTextContent().equalsIgnoreCase("submitted")){
+            return "error: scientific paper must be submitted to be withdrawn";
         }
         scientificPaperRepository.deleteMetadata(xmlRes);
         oldStatus.setTextContent("withdrawn");
@@ -296,7 +297,7 @@ public class ScientificPaperService {
         Node oldStatus = d.getElementsByTagName("status").item(0);
 
         scientificPaperRepository.deleteMetadata(xmlRes);
-        oldStatus.setTextContent("accepted");
+        oldStatus.setTextContent("published");
 
         xmlRes = domParser.DOMToXML(d);
 
@@ -362,5 +363,19 @@ public class ScientificPaperService {
             }
         }
         return true;
+    }
+
+    public List<String> advancedSearch(AuthenticationUtilities.ConnectionProperties loadProperties, String status,
+                                       String title, String published, String authorsName,
+                                       String keywords, String accepted, String author) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException, ParseException {
+        if(author.equals("my")){
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return scientificPaperRepository.advancedSearch(loadProperties,  user.getEmail(),  status, title,
+                    published, authorsName, keywords, accepted);
+        }else{
+            return scientificPaperRepository.advancedSearch(loadProperties,  null,  status, title,
+                    published, authorsName, keywords, accepted);
+        }
+
     }
 }
