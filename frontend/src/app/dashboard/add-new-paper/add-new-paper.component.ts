@@ -104,14 +104,14 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
   }
 
   getTitle(xmlDoc: Document){
-    this.paperTitle = xmlDoc.getElementsByTagName('title')[0].textContent;
+    return this.paperTitle = xmlDoc.getElementsByTagName('title')[0].textContent;
   }
 
  publishScientificPaper() {
    const newDocXml = new DOMParser().parseFromString(Xonomy.harvest(), 'text/xml');
    newDocXml.childNodes[0].insertBefore(this.metadata, newDocXml.childNodes[0].childNodes[0]); // vrati metadata
    this.scientificPaperService.saveScientificPaper(
-       newDocXml.documentElement.outerHTML
+       newDocXml.documentElement.outerHTML, 'false', this.getTitle(newDocXml)
      )
      .subscribe(
        response => {
@@ -122,10 +122,9 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
          this.snackBar.open(response, 'Dismiss', {
            duration: 3000,
          });
-         if(response.toString().startsWith("Paper with the title")){
+         if(response.toString().startsWith("Paper with the title") || response.toString().startsWith("You must be one of the authors")){
            this.newScientificPaperTemp = '';
            this.paperPublished =false;
-           // this.router.navigate(['/dashboard/addPaper']);
          }
        },
        error => {
@@ -149,6 +148,7 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
           this.snackBar.open(response, 'Dismiss', {
             duration: 3000,
           });
+          this.router.navigate(['dashboard/previewAllPapers'])
         },error => {
           this.snackBar.open(error, 'Dismiss', {
             duration: 3000,

@@ -24,10 +24,10 @@ public class ScientificPaperController {
     private ScientificPaperService scientificPaperService;
 
     @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
-    @PostMapping("/save")
+    @PostMapping("/save/{revision}/{title}")
     @ResponseBody
-    public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes) throws Exception {
-        return new ResponseEntity<>(scientificPaperService.save(AuthenticationUtilities.loadProperties(), xmlRes), HttpStatus.OK);
+    public ResponseEntity<String> saveScientificPaper(@RequestBody String xmlRes, @PathVariable String revision, @PathVariable String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.save(AuthenticationUtilities.loadProperties(), xmlRes, Boolean.parseBoolean(revision), title), HttpStatus.OK);
     }
 
     @GetMapping("/findByTitle")
@@ -35,6 +35,13 @@ public class ScientificPaperController {
     @ResponseBody
     public ResponseEntity<String> getScientificPaperById(@RequestParam("title") String title) throws Exception {
         return new ResponseEntity<>(scientificPaperService.getByTitle(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
+    }
+
+    @GetMapping("/findByTitleNoMetadata")
+    @PreAuthorize("hasAnyAuthority('AUTHOR','EDITOR','REVIEWER')")
+    @ResponseBody
+    public ResponseEntity<String> findByTitleNoMetadata(@RequestParam("title") String title) throws Exception {
+        return new ResponseEntity<>(scientificPaperService.getByTitleNoMetadata(AuthenticationUtilities.loadProperties(), title), HttpStatus.OK);
     }
 
 

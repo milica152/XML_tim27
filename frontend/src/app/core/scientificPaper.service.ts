@@ -15,8 +15,8 @@ export class ScientificPaperService {
 
   constructor(public httpClient: HttpClient) {}
 
-  saveScientificPaper(scientificPaper: string): Observable<any> {
-    return this.httpClient.post(this.backendUrl + "save/", scientificPaper, {
+  saveScientificPaper(scientificPaper: string, revision: string, title:string): Observable<any> {
+    return this.httpClient.post(this.backendUrl + `save/` + revision + `/` + title, scientificPaper, {
       headers: this._headers,
       responseType: "text",
     });
@@ -44,6 +44,13 @@ export class ScientificPaperService {
   getPaper(paperName: string) {
     return this.httpClient.get(
       `scientificPaper/findByTitleToHTML?title=${paperName}`,
+      { headers: this._headers, responseType: "text" }
+    );
+  }
+
+  getPaperXML(paperName: string) {
+    return this.httpClient.get(
+      `scientificPaper/findByTitle?title=${paperName}`,
       { headers: this._headers, responseType: "text" }
     );
   }

@@ -39,8 +39,6 @@ export class AddReviewComponent implements OnInit {
       elements: this.xonomyApiService.reviewSpecification.elements,
       onchange: () => { this.onReviewChange() }
     });
-    // console.log(this.xonomyService.removeArticleFromReview(this.reviewXML));
-    // this.reviewHTML.nativeElement.innerHTML = this.xonomyService.convertReviewXSLT(this.xonomyService.removeArticleFromReview(this.reviewXML));
   }
 
   onReviewChange() {
