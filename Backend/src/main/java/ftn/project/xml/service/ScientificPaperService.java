@@ -132,7 +132,6 @@ public class ScientificPaperService {
         // saving to RDF store
         scientificPaperRepository.saveMetadata(extractedMetadata);
         scientificPaperRepository.save(conn, title, newSciPap);
-        userRepository.addMyScientificPaper(title, conn);
 
         // start a business process
         businessProcessService.createBusinessProcess(title);
@@ -165,7 +164,7 @@ public class ScientificPaperService {
         return scientificPaperRepository.getMyPapers(loadProperties, user.getEmail());
     }
 
-    public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String delete(String title, AuthenticationUtilities.ConnectionProperties loadProperties) throws Exception {
         return scientificPaperRepository.delete(loadProperties, title);
     }
 

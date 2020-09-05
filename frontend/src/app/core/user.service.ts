@@ -24,7 +24,7 @@ export class UserService {
     return this.httpClient.get("user/getLoggedUser");
   }
   getMyReviews(): Observable<any> {
-    return this.httpClient.get("user/getMyReviews");
+    return this.httpClient.get("user/getMyPendingReviews");
   }
 
   getPotentialReviewers(title: string): Observable<any> {
@@ -37,4 +37,5 @@ export class UserService {
       reviewers
     );
   }
+
 }

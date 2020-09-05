@@ -3,6 +3,7 @@ import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.Users;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.*;
 import org.apache.jena.query.*;
@@ -301,12 +302,23 @@ public class ScientificPaperRepository {
         processor.execute();
     }
 
-    public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+    public String delete(AuthenticationUtilities.ConnectionProperties conn, String title) throws Exception {
         dbUtils.initilizeDBserver(conn);
+
+        DOMParser parser = new DOMParser();
+        String xmlRes = getByTitle(conn, title.replaceAll(" ",""));
+        Document d = parser.buildDocument(xmlRes, schemaPath);
+        NodeList authors = d.getElementsByTagName("contact");
+        ArrayList<TUser> usersAuthors = new ArrayList<>();
+        for(int i=0; i<authors.getLength();i++){
+            String email = authors.item(i).getTextContent();
+            TUser user1 = userRepository.getUserByEmail(conn, email);
+            usersAuthors.add(user1);
+
+        }
 
         Collection col = null;
         Resource res = null;
-
         try {
             col = DatabaseManager.getCollection(conn.uri + papersCollectionPathInDB);
             col.setProperty(OutputKeys.INDENT, "yes");
@@ -338,6 +350,11 @@ public class ScientificPaperRepository {
                     xe.printStackTrace();
                 }
             }
+            for(TUser u: usersAuthors){
+                u.getMyPapers().getMyScientificPaperID().remove(title);
+                userRepository.save(conn, u);
+            }
+
         }
         return "ok";
     }

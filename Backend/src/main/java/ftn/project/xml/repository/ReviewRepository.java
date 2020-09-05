@@ -1,12 +1,8 @@
 package ftn.project.xml.repository;
 
-import ftn.project.xml.dto.ScientificPaperDTO;
-import ftn.project.xml.model.Review;
-import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TUser;
 import ftn.project.xml.model.User;
 import ftn.project.xml.service.ScientificPaperService;
-import ftn.project.xml.service.UserService;
 import ftn.project.xml.util.AuthenticationUtilities;
 import ftn.project.xml.util.DBUtils;
 import ftn.project.xml.util.DOMParser;
@@ -48,9 +44,6 @@ public class ReviewRepository {
 
     @Autowired
     public DOMParser domParser;
-
-    @Autowired
-    private UserRepository userRepository;
 
 
     public String save(AuthenticationUtilities.ConnectionProperties conn, String xmlRes, String reviewID, String title) throws Exception {

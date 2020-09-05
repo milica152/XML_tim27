@@ -16,6 +16,8 @@ import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
+import sun.net.www.protocol.http.HttpURLConnection;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -285,10 +287,12 @@ public class UserRepository {
     public void addMyReview(String title, AuthenticationUtilities.ConnectionProperties conn) throws Exception {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         TUser user = getUserByEmail(conn, loggedUser.getEmail());
+        if(user.getMyReviews() == null){
+            user.setMyReviews(new TUser.MyReviews());
+        }
         TUser.MyReviews myReviews = user.getMyReviews();
         myReviews.getMyReviewID().add(title);
         user.setMyReviews(myReviews);
-        delete(conn, loggedUser.getEmail());
         save(conn, user);
     }
 
@@ -298,7 +302,6 @@ public class UserRepository {
         TUser.MyPapers myPapers = user.getMyPapers();
         myPapers.getMyScientificPaperID().add(title);
         user.setMyPapers(myPapers);
-        delete(conn, loggedUser.getEmail());
         save(conn, user);
     }
 

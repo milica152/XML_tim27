@@ -62,7 +62,6 @@ export class PaperPreviewComponent implements OnInit {
         this.showButton = false;
       } else {
         this.showButton = true;
-        this.getStatusOfPaper(this.paper.title);
       }
     });
     this.role = this.authenticationApiService.getRole();

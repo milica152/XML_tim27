@@ -155,5 +155,8 @@ public class BusinessProcess {
         return this.reviewsGrade;
     }
 
+    public void setReviewsGrade(List<ReviewsGradeType> reviewsGradeTypes) {
+        this.reviewsGrade = reviewsGradeTypes;
+    }
 }
 

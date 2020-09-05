@@ -11,6 +11,7 @@ import org.xmldb.api.base.XMLDBException;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 @Service
 public class BusinessProcessService {
@@ -21,7 +22,7 @@ public class BusinessProcessService {
         BusinessProcess businessProcess = new BusinessProcess();
         businessProcess.setPaperTitle(title);
         businessProcess.setStatus(StatusEnum.SUBMITTED);
-        businessProcess.setReviewsGrade(new ReviewsGradeType());
+        businessProcess.setReviewsGrade(new ArrayList<ReviewsGradeType>());
         businessProcess.setVersion(BigInteger.valueOf(1));
         return businessProcessRepository.save(businessProcess, title);
     }
