@@ -284,7 +284,7 @@ public class ScientificPaperService {
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.WITHDRAWN);
+        businessProcess.setStatus(TStatusS.WITHDRAWN);
         businessProcessService.save(businessProcess);
         return "ok";
     }
@@ -306,7 +306,7 @@ public class ScientificPaperService {
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.PUBLISHED);
+        businessProcess.setStatus(TStatusS.PUBLISHED);
         businessProcessService.save(businessProcess);
         return "ok";
     }
@@ -329,7 +329,7 @@ public class ScientificPaperService {
         scientificPaperRepository.save(loadXMLProperties, title, xmlRes);
         scientificPaperRepository.saveMetadata(extractedMetadata);
         BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
-        businessProcess.setStatus(StatusEnum.REJECTED);
+        businessProcess.setStatus(TStatusS.REJECTED);
         businessProcessService.save(businessProcess);
         return "ok";
     }

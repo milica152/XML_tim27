@@ -23,7 +23,14 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="paperTitle" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
- *         &lt;element name="status" type="{}statusEnum"/>
+ *         &lt;element name="status" minOccurs="1"/>
+ *         &lt;complexType>
+ *                  &lt;simpleContent>
+ *                    &lt;extension base="&lt;https://github.com/milica152/XML_tim27>TStatusS">
+ *                      &lt;anyAttribute processContents='skip' namespace=''/>
+ *                    &lt;/extension>
+ *                  &lt;/simpleContent>
+ *                 &lt;/complexType>
  *         &lt;element name="reviewsGrade" type="{}reviewsGradeType" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -50,7 +57,7 @@ public class BusinessProcess {
     protected BigInteger version;
     @XmlElement(required = true)
     @XmlSchemaType(name = "string")
-    protected StatusEnum status;
+    protected TStatusS status;
     @XmlElement(required = true)
     protected List<ReviewsGradeType> reviewsGrade;
 
@@ -107,10 +114,10 @@ public class BusinessProcess {
      * 
      * @return
      *     possible object is
-     *     {@link StatusEnum }
+     *     {@link TStatusS }
      *     
      */
-    public StatusEnum getStatus() {
+    public TStatusS getStatus() {
         return status;
     }
 
@@ -119,10 +126,10 @@ public class BusinessProcess {
      * 
      * @param value
      *     allowed object is
-     *     {@link StatusEnum }
+     *     {@link TStatusS }
      *     
      */
-    public void setStatus(StatusEnum value) {
+    public void setStatus(TStatusS value) {
         this.status = value;
     }
 

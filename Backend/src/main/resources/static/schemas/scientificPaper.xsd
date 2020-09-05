@@ -8,7 +8,7 @@
                 <xs:element minOccurs="1" name="metadata">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element minOccurs="0" name="status">
+                            <xs:element minOccurs="1" name="status">
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="sp:TStatusS">
@@ -280,10 +280,13 @@
     </xs:element>
     <xs:simpleType name="TStatusS">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="published"/>
             <xs:enumeration value="rejected"/>
             <xs:enumeration value="withdrawn"/>
-            <xs:enumeration value="in process"/>
+            <xs:enumeration value="on_review"/>
+            <xs:enumeration value="on_revision"/>
+            <xs:enumeration value="submitted"/>
+            <xs:enumeration value="revised"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>
