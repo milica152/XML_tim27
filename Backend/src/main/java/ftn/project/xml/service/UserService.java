@@ -228,15 +228,21 @@ public class UserService {
     }
 
     public void pickReviewers(AuthenticationUtilities.ConnectionProperties conn, ArrayList<String> emails, String title) throws Exception {
+        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
+        businessProcess.setReviewsGrade(new ArrayList<>());
+
         for(String reviewer : emails){
             TUser user = userRepository.getUserByEmail(conn, reviewer);
             TUser.PendingPapersToReview myPapers = user.getPendingPapersToReview();
             myPapers.getPaperToReviewID().add(title);
             user.setPendingPapersToReview(myPapers);
-            userRepository.delete(conn, reviewer);
+
+            ReviewsGradeType reviewsGradeType = new ReviewsGradeType();
+            reviewsGradeType.setEmail(reviewer);
+            reviewsGradeType.setGrade(Grade.ASSIGNED);
+            businessProcess.getReviewsGrade().add(reviewsGradeType);
             userRepository.save(conn, user);
         }
-        BusinessProcess businessProcess = businessProcessService.findByScientificPaperTitle(title);
         businessProcess.setStatus(TStatusS.ON_REVIEW);
         businessProcessService.save(businessProcess);
     }
