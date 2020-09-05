@@ -6,6 +6,7 @@ import {UserService} from '../../core/user.service';
 import {XonomyApiService} from "../../core/xonomy-api.service";
 declare const Xonomy: any;
 import { MatSnackBar} from '@angular/material';
+import {Router} from '@angular/router'
 
 @Component({
   selector: 'app-add-new-paper',
@@ -27,7 +28,7 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
   coverLetterPublished: boolean = false;
   constructor(private scientificPaperService: ScientificPaperService, private xonomyApiService: XonomyApiService,
               private snackBar: MatSnackBar, private coverLettersService: CoverLetterService,
-              private userService: UserService) {}
+              private userService: UserService, private router:Router) {}
 
   ngOnInit() {
     this.userService.getLoggedUser().subscribe({
@@ -46,9 +47,6 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
       ).subscribe(
         response => {
           this.paperPublished = false;
-          this.snackBar.open(response, 'Dismiss', {
-            duration: 3000,
-          });
         }, error => {
           this.snackBar.open(error, 'Dismiss', {
             duration: 3000,
@@ -124,14 +122,18 @@ export class AddNewPaperComponent implements OnInit, OnDestroy {
          this.snackBar.open(response, 'Dismiss', {
            duration: 3000,
          });
+         if(response.toString().startsWith("Paper with the title")){
+           this.newScientificPaperTemp = '';
+           this.paperPublished =false;
+           // this.router.navigate(['/dashboard/addPaper']);
+         }
        },
        error => {
+         this.newScientificPaperTemp = '';
+         this.paperPublished =false;
          this.snackBar.open(error, 'Dismiss', {
            duration: 3000,
          });
-       },
-       () => {
-         console.log('Done!');
        }
      );
  }

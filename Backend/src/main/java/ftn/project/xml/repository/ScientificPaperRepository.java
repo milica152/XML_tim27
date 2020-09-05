@@ -3,6 +3,7 @@ import ftn.project.xml.dto.MetadataDTO;
 import ftn.project.xml.dto.ScientificPaperDTO;
 import ftn.project.xml.model.ScientificPaper;
 import ftn.project.xml.model.TUser;
+import ftn.project.xml.model.User;
 import ftn.project.xml.model.Users;
 import ftn.project.xml.service.ScientificPaperService;
 import ftn.project.xml.util.*;
@@ -19,6 +20,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -173,6 +175,8 @@ public class ScientificPaperRepository {
     public List<String> getAllPapers(AuthenticationUtilities.ConnectionProperties loadProperties) {
         List<String> papers = new ArrayList<>();
         Collection col = null;
+        DOMParser parser = new DOMParser();
+        User logged = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
             dbUtils.initilizeDBserver(loadProperties);
@@ -187,13 +191,37 @@ public class ScientificPaperRepository {
             String[] resources = col.listResources();
             if(resources.length!=0){
                 for(String p: resources){
-                    System.out.println(p);
-                    papers.add(p.substring(9));
+                    String status = getStatus(loadProperties, p.substring(9));
+                    if(status.equals("accepted")){
+                        papers.add(p.substring(9));
+                    }else if(status.equals("in process")){
+                        String xmlRes = getByTitle(loadProperties, p.substring(9));
+                        Document d = parser.buildDocument(xmlRes, schemaPath);
+                        NodeList authors = d.getElementsByTagName("contact");
+                        for(int i=0; i<authors.getLength();i++){
+                            String email = authors.item(i).getTextContent();
+                            if(email.equals(logged.getEmail())){
+                                papers.add(p.substring(9));
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-
         } catch (XMLDBException e) {
             logger.error("Problem prilikom dobavljanj dokumenata.");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return papers;
@@ -356,7 +384,7 @@ public class ScientificPaperRepository {
             }
 
         }
-        return "ok";
+        return "Scientific paper deleted!";
     }
 
     public ArrayList<MetadataDTO> getMetadata(RDFAuthenticationUtilities.RDFConnectionProperties conn, String title) {

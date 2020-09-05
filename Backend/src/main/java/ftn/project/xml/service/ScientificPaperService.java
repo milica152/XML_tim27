@@ -68,6 +68,10 @@ public class ScientificPaperService {
         NodeList nl = d.getElementsByTagName("title");
         String title = nl.item(0).getTextContent();
         title = title.replaceAll("\\s","");
+
+        if(scientificPaperRepository.getByTitle(conn, title)!=""){
+            return "Paper with the title " + title + " already exists!";
+        }
         // pokreni bussiness process
 
         // popuni sp metapodacima
